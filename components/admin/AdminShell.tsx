@@ -46,7 +46,7 @@ export function AdminShell({
       </div>
 
       {demo ? (
-        <div className="mx-4 mb-2 rounded-lg bg-gold-400/10 px-3 py-2 text-center text-xs font-semibold text-gold-400 ring-1 ring-gold-400/25">
+        <div className="mx-4 mb-2 rounded-lg bg-sky-400/10 px-3 py-2 text-center text-xs font-semibold text-sky-400 ring-1 ring-sky-400/25">
           Demo mode · read-only
         </div>
       ) : null}
@@ -72,7 +72,7 @@ export function AdminShell({
         <Link
           href="/admin/courses/new"
           onClick={() => setOpen(false)}
-          className="mt-3 flex items-center gap-3 rounded-xl bg-gold-400 px-3 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-gold-300"
+          className="mt-3 flex items-center gap-3 rounded-xl bg-sky-400 px-3 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-sky-300"
         >
           <PlusCircle className="h-5 w-5" />
           New course

@@ -25,7 +25,7 @@ export function BookingStatusControl({
         name="booking_status"
         defaultValue={status}
         onChange={() => formRef.current?.requestSubmit()}
-        className="h-9 rounded-lg border border-ink-200 bg-white px-3 text-sm font-medium text-ink-800 focus:border-gold-400 focus:outline-none focus:ring-2 focus:ring-gold-400/20"
+        className="h-9 rounded-lg border border-ink-200 bg-white px-3 text-sm font-medium text-ink-800 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/20"
       >
         {BOOKING_STATUS_OPTIONS.map((o) => (
           <option key={o.value} value={o.value}>

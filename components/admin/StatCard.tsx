@@ -21,7 +21,7 @@ export function StatCard({
         <span
           className={cn(
             'flex h-9 w-9 items-center justify-center rounded-lg',
-            accent ? 'bg-gold-100 text-gold-700' : 'bg-ink-900 text-gold-400',
+            accent ? 'bg-sky-100 text-sky-700' : 'bg-ink-900 text-sky-400',
           )}
         >
           <Icon className="h-5 w-5" />

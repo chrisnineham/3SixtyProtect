@@ -34,8 +34,8 @@ export default async function BookPage({
       >
         <ul className="flex flex-wrap gap-x-6 gap-y-2">
           {assurances.map((a) => (
-            <li key={a.label} className="flex items-center gap-2 text-sm text-ink-200">
-              <a.icon className="h-4 w-4 text-gold-400" />
+            <li key={a.label} className="flex items-center gap-2 text-sm text-ink-500">
+              <a.icon className="h-4 w-4 text-sky-500" />
               {a.label}
             </li>
           ))}

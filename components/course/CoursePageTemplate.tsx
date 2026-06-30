@@ -20,6 +20,7 @@ import { SectionHeading } from '@/components/ui/Section';
 import { CheckList } from '@/components/ui/CheckList';
 import { CourseCard } from '@/components/CourseCard';
 import { CtaBand } from '@/components/CtaBand';
+import { CloudGlow } from '@/components/ui/CloudGlow';
 import { COURSE_TYPE_META } from '@/lib/constants';
 import { formatDateRange } from '@/lib/utils';
 import type { CoursePageContent } from '@/lib/course-content';
@@ -40,40 +41,36 @@ export function CoursePageTemplate({
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-ink-950 text-white">
-        <div className="absolute inset-0 spotlight" aria-hidden />
-        <div
-          className="absolute inset-0 bg-grid-faint [background-size:34px_34px] opacity-30"
-          aria-hidden
-        />
-        <div className="container relative py-16 md:py-24">
+      <section className="relative overflow-hidden border-b border-ink-200/60">
+        <CloudGlow />
+        <div className="container relative z-10 pb-14 pt-28 sm:pt-32 lg:pb-20 lg:pt-40">
           <div className="max-w-3xl">
             <Reveal>
-              <span className="eyebrow-on-dark">
-                <HeroIcon className="h-4 w-4" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-ink-200/80 bg-white/70 px-4 py-1.5 text-xs font-semibold text-ink-600 shadow-sm backdrop-blur">
+                <HeroIcon className="h-3.5 w-3.5 text-sky-500" />
                 {content.hero.eyebrow}
               </span>
             </Reveal>
             <Reveal delay={60}>
-              <h1 className="mt-5 text-balance text-4xl font-extrabold leading-[1.06] tracking-tight text-white sm:text-5xl lg:text-[3.25rem]">
+              <h1 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.06] tracking-[-0.02em] text-ink-900 sm:text-5xl lg:text-[3.25rem]">
                 {content.hero.title}{' '}
-                <span className="text-gradient-gold">{content.hero.highlight}</span>
+                <span className="text-gradient-sky">{content.hero.highlight}</span>
               </h1>
             </Reveal>
             <Reveal delay={120}>
-              <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink-200">
+              <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink-500">
                 {content.hero.description}
               </p>
             </Reveal>
             <Reveal delay={180}>
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button href="/book" size="lg">
                   Book a Course
                   <ArrowRight className="h-4 w-4" />
                 </Button>
                 <Button
                   href={`/calendar?type=${meta.slug}`}
-                  variant="outline-light"
+                  variant="outline"
                   size="lg"
                 >
                   View Upcoming Courses
@@ -81,7 +78,7 @@ export function CoursePageTemplate({
               </div>
             </Reveal>
             <Reveal delay={240}>
-              <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+              <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4 border-t border-ink-200/70 pt-6">
                 {[
                   { icon: Award, label: 'Qualification', value: content.level },
                   { icon: Clock, label: 'Duration', value: content.durationLabel },
@@ -92,12 +89,12 @@ export function CoursePageTemplate({
                   },
                 ].map((fact) => (
                   <div key={fact.label} className="flex items-center gap-3">
-                    <fact.icon className="h-5 w-5 text-gold-400" />
+                    <fact.icon className="h-5 w-5 text-sky-500" />
                     <div>
                       <dt className="text-xs uppercase tracking-wide text-ink-400">
                         {fact.label}
                       </dt>
-                      <dd className="font-semibold text-white">{fact.value}</dd>
+                      <dd className="font-semibold text-ink-900">{fact.value}</dd>
                     </div>
                   </div>
                 ))}
@@ -125,7 +122,7 @@ export function CoursePageTemplate({
           <div className="lg:col-span-5">
             <Reveal delay={120}>
               <div className="sticky top-24 rounded-3xl border border-ink-100 bg-ink-950 p-7 text-white shadow-card">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-400">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
                   Course at a glance
                 </p>
                 <ul className="mt-5 divide-y divide-white/10">
@@ -142,7 +139,7 @@ export function CoursePageTemplate({
                     },
                   ].map((row) => (
                     <li key={row.label} className="flex items-center gap-4 py-3.5">
-                      <row.icon className="h-5 w-5 shrink-0 text-gold-400" />
+                      <row.icon className="h-5 w-5 shrink-0 text-sky-400" />
                       <div className="flex flex-1 items-center justify-between gap-3">
                         <span className="text-sm text-ink-300">{row.label}</span>
                         <span className="text-right text-sm font-semibold text-white">
@@ -169,7 +166,7 @@ export function CoursePageTemplate({
       <section className="section bg-ink-50">
         <div className="container grid gap-10 lg:grid-cols-2">
           <Reveal className="rounded-3xl border border-ink-100 bg-white p-8 shadow-card">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-ink-900 text-gold-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-ink-900 text-sky-400">
               <Users className="h-6 w-6" strokeWidth={1.75} />
             </div>
             <h2 className="mt-5 text-2xl font-bold text-ink-900">
@@ -183,7 +180,7 @@ export function CoursePageTemplate({
             delay={100}
             className="rounded-3xl border border-ink-100 bg-white p-8 shadow-card"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-ink-900 text-gold-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-ink-900 text-sky-400">
               <Star className="h-6 w-6" strokeWidth={1.75} />
             </div>
             <h2 className="mt-5 text-2xl font-bold text-ink-900">
@@ -228,7 +225,7 @@ export function CoursePageTemplate({
                   delay={i * 50}
                   className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-5"
                 >
-                  <BadgeCheck className="mt-0.5 h-5 w-5 shrink-0 text-gold-400" />
+                  <BadgeCheck className="mt-0.5 h-5 w-5 shrink-0 text-sky-400" />
                   <span className="text-[0.95rem] text-ink-200">{item}</span>
                 </Reveal>
               ))}
@@ -259,7 +256,7 @@ export function CoursePageTemplate({
                   delay={i * 60}
                   className="flex items-center gap-4 rounded-2xl border border-ink-100 bg-white p-5 shadow-card"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold-100 text-gold-700">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
                     <Briefcase className="h-5 w-5" />
                   </div>
                   <span className="font-medium text-ink-800">{item}</span>
@@ -359,7 +356,7 @@ function DetailCard({
 }) {
   return (
     <Reveal className="flex h-full flex-col rounded-3xl border border-ink-100 bg-white p-7 shadow-card">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-ink-900 text-gold-400">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-ink-900 text-sky-400">
         <Icon className="h-6 w-6" strokeWidth={1.75} />
       </div>
       <h3 className="mt-5 text-xl font-bold text-ink-900">{title}</h3>

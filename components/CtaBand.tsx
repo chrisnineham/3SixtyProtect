@@ -46,9 +46,9 @@ export function CtaBand({
             </div>
             <a
               href={SITE.phoneHref}
-              className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink-300 transition-colors hover:text-gold-400"
+              className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink-300 transition-colors hover:text-sky-400"
             >
-              <Phone className="h-4 w-4 text-gold-500" />
+              <Phone className="h-4 w-4 text-sky-500" />
               Prefer to talk? Call {SITE.phone}
             </a>
           </div>

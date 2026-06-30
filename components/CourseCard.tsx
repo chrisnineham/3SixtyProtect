@@ -62,7 +62,7 @@ export function CourseCard({
             )}
           >
             <div className="absolute inset-0 bg-grid-faint [background-size:22px_22px] opacity-50" />
-            <div className="absolute -right-6 -top-10 h-40 w-40 rounded-full bg-gold-400/20 blur-2xl" />
+            <div className="absolute -right-6 -top-10 h-40 w-40 rounded-full bg-sky-400/20 blur-2xl" />
             <Icon className="absolute bottom-4 right-4 h-20 w-20 text-white/10" strokeWidth={1.2} />
           </div>
         )}
@@ -77,7 +77,7 @@ export function CourseCard({
         <h3 className="text-pretty text-lg font-semibold leading-snug text-ink-900">
           <Link
             href={`/book?course=${course.id}`}
-            className="transition-colors before:absolute before:inset-0 before:z-10 hover:text-gold-700"
+            className="transition-colors before:absolute before:inset-0 before:z-10 hover:text-sky-700"
           >
             {course.title}
           </Link>
@@ -85,23 +85,23 @@ export function CourseCard({
 
         <dl className="mt-4 space-y-2.5 text-sm text-ink-600">
           <div className="flex items-center gap-2.5">
-            <CalendarDays className="h-4 w-4 shrink-0 text-gold-500" />
+            <CalendarDays className="h-4 w-4 shrink-0 text-sky-500" />
             <span>{formatDateRange(course.start_date, course.end_date)}</span>
             <span className="text-ink-300">·</span>
             <span className="text-ink-500">{days} {days === 1 ? 'day' : 'days'}</span>
           </div>
           {(course.start_time || course.end_time) && (
             <div className="flex items-center gap-2.5">
-              <Clock className="h-4 w-4 shrink-0 text-gold-500" />
+              <Clock className="h-4 w-4 shrink-0 text-sky-500" />
               <span>{formatTimeRange(course.start_time, course.end_time)}</span>
             </div>
           )}
           <div className="flex items-center gap-2.5">
-            <MapPin className="h-4 w-4 shrink-0 text-gold-500" />
+            <MapPin className="h-4 w-4 shrink-0 text-sky-500" />
             <span className="line-clamp-1">{course.location}</span>
           </div>
           <div className="flex items-center gap-2.5">
-            <Users className="h-4 w-4 shrink-0 text-gold-500" />
+            <Users className="h-4 w-4 shrink-0 text-sky-500" />
             <span>{course.max_spaces} max group size</span>
           </div>
         </dl>
@@ -118,7 +118,7 @@ export function CourseCard({
           <span
             className={cn(
               'inline-flex items-center gap-1.5 text-sm font-semibold',
-              soldOut ? 'text-ink-400' : 'text-gold-600 group-hover:text-gold-700',
+              soldOut ? 'text-ink-400' : 'text-sky-600 group-hover:text-sky-700',
             )}
           >
             {soldOut ? 'Join waitlist' : 'Book now'}

@@ -14,6 +14,7 @@ import {
   Quote,
   CalendarDays,
   MapPin,
+  CheckCircle2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -22,6 +23,7 @@ import { SectionHeading } from '@/components/ui/Section';
 import { FeatureCard } from '@/components/ui/FeatureCard';
 import { CourseCard } from '@/components/CourseCard';
 import { CtaBand } from '@/components/CtaBand';
+import { CloudGlow } from '@/components/ui/CloudGlow';
 import { getUpcomingCourses } from '@/lib/courses';
 import { COURSE_TYPE_META } from '@/lib/constants';
 import { formatDateRange, formatPrice } from '@/lib/utils';
@@ -33,102 +35,104 @@ export default async function HomePage() {
   return (
     <>
       {/* ───────────────────────── Hero ───────────────────────── */}
-      <section className="relative overflow-hidden bg-ink-950 text-white">
-        <div className="absolute inset-0 spotlight" aria-hidden />
-        <div
-          className="absolute inset-0 bg-grid-faint [background-size:34px_34px] opacity-[0.35]"
-          aria-hidden
-        />
-        <div className="absolute -left-32 top-1/3 h-72 w-72 rounded-full bg-gold-500/10 blur-3xl" aria-hidden />
+      <section className="relative overflow-hidden">
+        <CloudGlow />
 
-        <div className="container relative grid items-center gap-14 pb-20 pt-16 md:pt-24 lg:grid-cols-12 lg:gap-10 lg:pb-28">
-          <div className="lg:col-span-7">
+        <div className="container relative z-10 grid items-center gap-12 pb-16 pt-28 sm:pt-32 lg:grid-cols-12 lg:gap-8 lg:pb-24 lg:pt-40">
+          {/* Left — text */}
+          <div className="lg:col-span-6">
             <Reveal>
-              <span className="eyebrow-on-dark">
-                <ShieldCheck className="h-4 w-4" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-ink-200/80 bg-white/70 px-4 py-1.5 text-xs font-semibold text-ink-600 shadow-sm backdrop-blur">
+                <ShieldCheck className="h-3.5 w-3.5 text-sky-500" />
                 SIA Door Supervision &amp; Close Protection
               </span>
             </Reveal>
             <Reveal delay={60}>
-              <h1 className="mt-5 text-balance text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
-                Professional SIA Security Training Built Around{' '}
-                <span className="text-gradient-gold">Real-World Standards</span>
+              <h1 className="mt-6 text-balance font-display text-[2.4rem] font-extrabold leading-[1.06] tracking-[-0.02em] text-ink-900 sm:text-5xl lg:text-[3.4rem]">
+                Professional SIA security training built around{' '}
+                <span className="text-gradient-sky">real-world standards</span>
               </h1>
             </Reveal>
             <Reveal delay={120}>
-              <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink-200">
+              <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink-500">
                 3Sixty Protect delivers high-quality Door Supervision and Close
                 Protection training for people looking to enter or progress within
                 the private security industry.
               </p>
             </Reveal>
             <Reveal delay={180}>
-              <div className="mt-9 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button href="/book" size="lg">
                   Book a Course
                   <ArrowRight className="h-4 w-4" />
                 </Button>
-                <Button href="/calendar" variant="outline-light" size="lg">
+                <Button href="/calendar" variant="outline" size="lg">
                   View Training Calendar
                 </Button>
               </div>
             </Reveal>
             <Reveal delay={240}>
-              <ul className="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm text-ink-300">
-                {[
-                  'SIA-aligned curriculum',
-                  'Industry-active trainers',
-                  'Full licence support',
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <BadgeCheck className="h-4 w-4 text-gold-400" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-10 border-t border-ink-200/70 pt-6">
+                <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-ink-400">
+                  What you get
+                </p>
+                <ul className="flex flex-wrap gap-2">
+                  {[
+                    'SIA-aligned curriculum',
+                    'Industry-active trainers',
+                    'Full licence support',
+                  ].map((item) => (
+                    <li
+                      key={item}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-ink-200/80 bg-white px-3.5 py-1.5 text-xs font-medium text-ink-600 shadow-sm"
+                    >
+                      <BadgeCheck className="h-3.5 w-3.5 text-sky-500" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </Reveal>
           </div>
 
-          {/* Next intake card */}
-          <div className="lg:col-span-5">
-            <Reveal delay={200}>
-              <div className="relative rounded-3xl border border-white/10 bg-white/[0.04] p-2 backdrop-blur-sm">
-                <div className="rounded-[1.25rem] bg-gradient-to-b from-white/[0.06] to-transparent p-6">
+          {/* Right — floating card cluster */}
+          <div className="lg:col-span-6">
+            <Reveal delay={160}>
+              <div className="relative mx-auto max-w-sm lg:mr-0 lg:max-w-md">
+                {/* Main next-intake card */}
+                <div className="relative overflow-hidden rounded-2xl border border-ink-200/80 bg-white p-6 shadow-[0_18px_50px_-16px_rgba(15,23,42,0.25)]">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-400">
-                      Next Intake
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-600">
+                      Next intake
                     </span>
                     <span className="relative flex h-2.5 w-2.5">
-                      <span className="absolute inline-flex h-2.5 w-2.5 animate-ping rounded-full bg-gold-400/60" />
-                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-gold-400" />
+                      <span className="absolute inline-flex h-2.5 w-2.5 animate-ping rounded-full bg-sky-400/70" />
+                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-sky-500" />
                     </span>
                   </div>
 
                   {nextCourse ? (
-                    <div className="mt-5">
+                    <div className="mt-4">
                       <Badge tone="gold">
                         {COURSE_TYPE_META[nextCourse.course_type].shortLabel}
                       </Badge>
-                      <h2 className="mt-3 text-xl font-bold text-white">
+                      <h2 className="mt-3 text-lg font-bold text-ink-900">
                         {nextCourse.title}
                       </h2>
-                      <div className="mt-4 space-y-2.5 text-sm text-ink-200">
-                        <p className="flex items-center gap-2.5">
-                          <CalendarDays className="h-4 w-4 text-gold-400" />
-                          {formatDateRange(
-                            nextCourse.start_date,
-                            nextCourse.end_date,
-                          )}
-                        </p>
-                        <p className="flex items-center gap-2.5">
-                          <MapPin className="h-4 w-4 text-gold-400" />
+                      <dl className="mt-4 space-y-2.5 text-sm text-ink-600">
+                        <div className="flex items-center gap-2.5">
+                          <CalendarDays className="h-4 w-4 text-sky-500" />
+                          {formatDateRange(nextCourse.start_date, nextCourse.end_date)}
+                        </div>
+                        <div className="flex items-center gap-2.5">
+                          <MapPin className="h-4 w-4 text-sky-500" />
                           {nextCourse.location}
-                        </p>
-                      </div>
-                      <div className="mt-5 flex items-end justify-between border-t border-white/10 pt-5">
+                        </div>
+                      </dl>
+                      <div className="mt-5 flex items-end justify-between border-t border-ink-100 pt-4">
                         <div>
                           <span className="block text-xs text-ink-400">From</span>
-                          <span className="text-2xl font-bold text-white">
+                          <span className="text-2xl font-bold text-ink-900">
                             {formatPrice(nextCourse.price)}
                           </span>
                         </div>
@@ -138,7 +142,7 @@ export default async function HomePage() {
                       </div>
                     </div>
                   ) : (
-                    <div className="mt-5 text-sm text-ink-200">
+                    <div className="mt-4 text-sm text-ink-500">
                       New course dates are being scheduled. Get in touch and we’ll
                       let you know as soon as they’re live.
                       <div className="mt-5">
@@ -149,22 +153,61 @@ export default async function HomePage() {
                     </div>
                   )}
                 </div>
+
+                {/* Floating — booking confirmation */}
+                <div className="absolute -right-4 -top-6 hidden w-[224px] animate-float-1 motion-reduce:animate-none sm:block">
+                  <div className="rounded-xl border border-ink-200/70 bg-white p-3.5 shadow-float">
+                    <div className="mb-2 flex items-center gap-2.5">
+                      <div className="grid h-8 w-8 place-items-center rounded-full bg-sky-50">
+                        <CheckCircle2 className="h-4 w-4 text-sky-600" />
+                      </div>
+                      <span className="rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-semibold text-sky-700">
+                        Booked
+                      </span>
+                      <span className="ml-auto text-[11px] text-ink-300">Just now</span>
+                    </div>
+                    <p className="text-sm font-semibold text-ink-900">New booking</p>
+                    <p className="text-xs text-ink-400">Door Supervision · London</p>
+                  </div>
+                </div>
+
+                {/* Floating — availability */}
+                {nextCourse ? (
+                  <div className="absolute -bottom-7 -left-5 hidden w-[208px] animate-float-2 motion-reduce:animate-none sm:block">
+                    <div className="rounded-xl border border-ink-200/70 bg-white p-4 shadow-float">
+                      <p className="text-[11px] font-medium text-ink-400">
+                        Availability
+                      </p>
+                      <p className="mt-0.5 text-sm font-bold text-ink-900">
+                        {nextCourse.available_spaces} of {nextCourse.max_spaces} spaces left
+                      </p>
+                      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink-100">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-sky-400 to-sky-500"
+                          style={{
+                            width: `${Math.min(100, Math.round((1 - nextCourse.available_spaces / Math.max(1, nextCourse.max_spaces)) * 100))}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </Reveal>
           </div>
         </div>
 
-        {/* Stat band */}
-        <div className="relative border-t border-white/10 bg-ink-950/60">
-          <div className="container grid grid-cols-2 divide-x divide-white/5 py-6 md:grid-cols-4">
+        {/* Trust band */}
+        <div className="relative z-10 border-y border-ink-200/60 bg-white/70 backdrop-blur">
+          <div className="container grid grid-cols-2 gap-y-5 py-7 md:grid-cols-4">
             {[
-              { value: 'Level 2 & 3', label: 'SIA Qualifications' },
+              { value: 'Level 2 & 3', label: 'SIA qualifications' },
               { value: 'Small groups', label: 'Personal attention' },
               { value: '6–15 days', label: 'Course durations' },
               { value: 'Licence-ready', label: 'On completion' },
             ].map((stat) => (
               <div key={stat.label} className="px-4 text-center md:px-6">
-                <p className="text-lg font-bold text-white md:text-xl">
+                <p className="font-display text-lg font-extrabold text-ink-900 md:text-xl">
                   {stat.value}
                 </p>
                 <p className="mt-1 text-xs uppercase tracking-wide text-ink-400">
@@ -269,7 +312,7 @@ export default async function HomePage() {
             <div className="mt-8 grid gap-x-6 gap-y-5 sm:grid-cols-2">
               {trustPoints.map((point) => (
                 <div key={point.title} className="flex gap-3">
-                  <point.icon className="mt-0.5 h-5 w-5 shrink-0 text-gold-400" />
+                  <point.icon className="mt-0.5 h-5 w-5 shrink-0 text-sky-400" />
                   <div>
                     <p className="font-semibold text-white">{point.title}</p>
                     <p className="mt-1 text-sm text-ink-300">{point.text}</p>
@@ -281,18 +324,18 @@ export default async function HomePage() {
 
           <Reveal delay={120}>
             <figure className="relative rounded-3xl border border-white/10 bg-white/[0.03] p-8">
-              <Quote className="h-9 w-9 text-gold-400/70" />
+              <Quote className="h-9 w-9 text-sky-400/70" />
               <blockquote className="mt-4 text-pretty text-xl font-medium leading-relaxed text-ink-100">
                 “The training was practical, professional and genuinely prepared me
                 for the job. I passed, got my licence, and was working within weeks.”
               </blockquote>
               <figcaption className="mt-6 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gold-400/15 font-heading font-bold text-gold-400">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sky-400/15 font-heading font-bold text-sky-400">
                   RM
                 </div>
                 <div>
                   <p className="font-semibold text-white">Recent graduate</p>
-                  <div className="flex items-center gap-0.5 text-gold-400">
+                  <div className="flex items-center gap-0.5 text-sky-400">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star key={i} className="h-3.5 w-3.5 fill-current" />
                     ))}
@@ -318,10 +361,10 @@ export default async function HomePage() {
               <Reveal key={step.title} delay={i * 70}>
                 <li className="relative h-full rounded-2xl border border-ink-100 bg-white p-6 shadow-card">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink-900 font-heading text-lg font-bold text-gold-400">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink-900 font-heading text-lg font-bold text-sky-400">
                       {i + 1}
                     </span>
-                    <step.icon className="h-5 w-5 text-gold-500" />
+                    <step.icon className="h-5 w-5 text-sky-500" />
                   </div>
                   <h3 className="mt-4 text-base font-semibold text-ink-900">
                     {step.title}
@@ -365,13 +408,13 @@ function CourseOverviewCard({
   return (
     <Reveal className="h-full">
       <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-ink-100 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
-        <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold-100/60 blur-2xl transition-opacity group-hover:opacity-100" />
+        <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-sky-100/60 blur-2xl transition-opacity group-hover:opacity-100" />
         <div className="relative flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-ink-900 text-gold-400">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-ink-900 text-sky-400">
             <Icon className="h-7 w-7" strokeWidth={1.75} />
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-gold-600">
+            <p className="text-xs font-semibold uppercase tracking-wider text-sky-600">
               {meta.abbr === 'DS' ? 'Level 2 Award' : 'Level 3 Award'}
             </p>
             <h3 className="text-2xl font-bold text-ink-900">{meta.label}</h3>
@@ -383,7 +426,7 @@ function CourseOverviewCard({
         <ul className="relative mt-6 space-y-3">
           {points.map((p) => (
             <li key={p} className="flex items-start gap-3 text-sm text-ink-700">
-              <BadgeCheck className="mt-0.5 h-5 w-5 shrink-0 text-gold-500" />
+              <BadgeCheck className="mt-0.5 h-5 w-5 shrink-0 text-sky-500" />
               {p}
             </li>
           ))}
@@ -392,7 +435,7 @@ function CourseOverviewCard({
           <Button href={meta.href}>Explore course</Button>
           <Link
             href={`/calendar?type=${meta.slug}`}
-            className="text-sm font-semibold text-ink-600 transition-colors hover:text-gold-600"
+            className="text-sm font-semibold text-ink-600 transition-colors hover:text-sky-600"
           >
             See dates →
           </Link>

@@ -41,7 +41,7 @@ export function CourseListItem({ course }: { course: Course }) {
             isCP ? 'bg-ink-900' : 'bg-ink-800',
           )}
         >
-          <span className="text-[0.65rem] font-semibold uppercase tracking-wide text-gold-400">
+          <span className="text-[0.65rem] font-semibold uppercase tracking-wide text-sky-400">
             {parts.month}
           </span>
           <span className="text-2xl font-bold leading-none">{parts.day}</span>
@@ -69,7 +69,7 @@ export function CourseListItem({ course }: { course: Course }) {
         <h3 className="mt-2 text-lg font-semibold text-ink-900">
           <Link
             href={`/book?course=${course.id}`}
-            className="transition-colors before:absolute before:inset-0 hover:text-gold-700"
+            className="transition-colors before:absolute before:inset-0 hover:text-sky-700"
           >
             {course.title}
           </Link>
@@ -79,17 +79,17 @@ export function CourseListItem({ course }: { course: Course }) {
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-600">
           <span className="flex items-center gap-1.5">
-            <MapPin className="h-4 w-4 text-gold-500" />
+            <MapPin className="h-4 w-4 text-sky-500" />
             {course.location}
           </span>
           {(course.start_time || course.end_time) && (
             <span className="flex items-center gap-1.5">
-              <Clock className="h-4 w-4 text-gold-500" />
+              <Clock className="h-4 w-4 text-sky-500" />
               {formatTimeRange(course.start_time, course.end_time)}
             </span>
           )}
           <span className="flex items-center gap-1.5">
-            <Users className="h-4 w-4 text-gold-500" />
+            <Users className="h-4 w-4 text-sky-500" />
             Max {course.max_spaces}
           </span>
         </div>
@@ -110,7 +110,7 @@ export function CourseListItem({ course }: { course: Course }) {
             'relative z-10 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors',
             soldOut
               ? 'text-ink-400'
-              : 'bg-ink-900 text-white group-hover:bg-gold-400 group-hover:text-ink-950',
+              : 'bg-ink-900 text-white group-hover:bg-sky-400 group-hover:text-ink-950',
           )}
         >
           {soldOut ? 'Waitlist' : 'Book'}

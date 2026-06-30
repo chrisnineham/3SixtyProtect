@@ -59,16 +59,16 @@ export default async function AdminBookingsPage() {
                   <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-600">
                     <a
                       href={`mailto:${b.customer_email}`}
-                      className="flex items-center gap-1.5 hover:text-gold-700"
+                      className="flex items-center gap-1.5 hover:text-sky-700"
                     >
-                      <Mail className="h-4 w-4 text-gold-500" />
+                      <Mail className="h-4 w-4 text-sky-500" />
                       {b.customer_email}
                     </a>
                     <a
                       href={`tel:${b.customer_phone}`}
-                      className="flex items-center gap-1.5 hover:text-gold-700"
+                      className="flex items-center gap-1.5 hover:text-sky-700"
                     >
-                      <Phone className="h-4 w-4 text-gold-500" />
+                      <Phone className="h-4 w-4 text-sky-500" />
                       {b.customer_phone}
                     </a>
                   </div>

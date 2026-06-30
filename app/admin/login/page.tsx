@@ -36,8 +36,8 @@ export default async function AdminLoginPage() {
 
         <div className="rounded-3xl border border-white/10 bg-white p-7 text-ink-900 shadow-2xl sm:p-8">
           {demo ? (
-            <div className="mb-6 flex items-start gap-3 rounded-xl bg-gold-50 px-4 py-3 text-sm text-ink-700 ring-1 ring-gold-200">
-              <Info className="mt-0.5 h-4 w-4 shrink-0 text-gold-600" />
+            <div className="mb-6 flex items-start gap-3 rounded-xl bg-sky-50 px-4 py-3 text-sm text-ink-700 ring-1 ring-sky-200">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-600" />
               <p>
                 <span className="font-semibold">Demo mode.</span> Connect Supabase to
                 enable secure login. You can still preview the dashboard below.
@@ -50,7 +50,7 @@ export default async function AdminLoginPage() {
           {demo ? (
             <Link
               href="/admin/dashboard"
-              className="mt-4 flex items-center justify-center gap-1.5 text-sm font-semibold text-gold-700 hover:underline"
+              className="mt-4 flex items-center justify-center gap-1.5 text-sm font-semibold text-sky-700 hover:underline"
             >
               Preview the dashboard <ArrowRight className="h-4 w-4" />
             </Link>
@@ -60,7 +60,7 @@ export default async function AdminLoginPage() {
         <div className="mt-6 text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm text-ink-300 transition-colors hover:text-gold-400"
+            className="inline-flex items-center gap-1.5 text-sm text-ink-300 transition-colors hover:text-sky-400"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to website

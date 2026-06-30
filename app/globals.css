@@ -28,7 +28,7 @@
   }
 
   ::selection {
-    @apply bg-gold-300/40 text-ink-900;
+    @apply bg-sky-300/40 text-ink-900;
   }
 
   /* Respect users who prefer reduced motion */
@@ -52,16 +52,16 @@
 
   /* Small uppercase label / eyebrow */
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-gold-600;
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-600;
   }
 
   .eyebrow-on-dark {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-gold-400;
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-400;
   }
 
   /* Gradient text used sparingly for emphasis */
-  .text-gradient-gold {
-    @apply bg-gradient-to-r from-gold-300 via-gold-400 to-gold-200 bg-clip-text text-transparent;
+  .text-gradient-sky {
+    @apply bg-gradient-to-r from-sky-300 via-sky-400 to-sky-200 bg-clip-text text-transparent;
   }
 
   /* Reusable prose-ish content column for course pages */
@@ -88,10 +88,30 @@
     text-wrap: pretty;
   }
 
-  /* Subtle radial spotlight for dark hero backgrounds */
+  /* Subtle radial spotlight for dark sections */
   .spotlight {
     background:
-      radial-gradient(60% 50% at 50% 0%, rgba(228, 185, 62, 0.16) 0%, transparent 70%),
-      radial-gradient(40% 40% at 85% 20%, rgba(40, 52, 73, 0.6) 0%, transparent 70%);
+      radial-gradient(60% 50% at 50% 0%, rgba(34, 181, 115, 0.18) 0%, transparent 70%),
+      radial-gradient(45% 45% at 88% 12%, rgba(74, 206, 148, 0.12) 0%, transparent 70%);
+  }
+
+  /* Light "cloud" background for SkySign-style heroes */
+  .cloud-bg {
+    background:
+      radial-gradient(60% 55% at 88% 6%, rgba(74, 206, 148, 0.18) 0%, transparent 46%),
+      radial-gradient(55% 60% at 8% 100%, rgba(34, 181, 115, 0.12) 0%, transparent 52%),
+      radial-gradient(circle at 50% -10%, #ffffff 0%, #f6faf8 55%, #eef3f1 100%);
+  }
+
+  /* Tiled film grain overlay (used on heroes) */
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+    mix-blend-mode: overlay;
+  }
+
+  .font-display {
+    font-family: var(--font-heading), system-ui, sans-serif;
+    letter-spacing: -0.02em;
   }
 }

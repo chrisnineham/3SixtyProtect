@@ -69,7 +69,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-ink-300 transition-colors hover:text-gold-400"
+                      className="text-sm text-ink-300 transition-colors hover:text-sky-400"
                     >
                       {link.label}
                     </Link>
@@ -87,23 +87,23 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${SITE.email}`}
-                  className="flex items-center gap-3 text-ink-300 transition-colors hover:text-gold-400"
+                  className="flex items-center gap-3 text-ink-300 transition-colors hover:text-sky-400"
                 >
-                  <Mail className="h-4 w-4 shrink-0 text-gold-500" />
+                  <Mail className="h-4 w-4 shrink-0 text-sky-500" />
                   {SITE.email}
                 </a>
               </li>
               <li>
                 <a
                   href={SITE.phoneHref}
-                  className="flex items-center gap-3 text-ink-300 transition-colors hover:text-gold-400"
+                  className="flex items-center gap-3 text-ink-300 transition-colors hover:text-sky-400"
                 >
-                  <Phone className="h-4 w-4 shrink-0 text-gold-500" />
+                  <Phone className="h-4 w-4 shrink-0 text-sky-500" />
                   {SITE.phone}
                 </a>
               </li>
               <li className="flex items-center gap-3 text-ink-300">
-                <MapPin className="h-4 w-4 shrink-0 text-gold-500" />
+                <MapPin className="h-4 w-4 shrink-0 text-sky-500" />
                 {SITE.serviceArea}
               </li>
             </ul>
@@ -124,7 +124,7 @@ export function Footer() {
             </Link>
             <Link
               href="/admin/login"
-              className="transition-colors hover:text-gold-400"
+              className="transition-colors hover:text-sky-400"
             >
               Admin Login
             </Link>

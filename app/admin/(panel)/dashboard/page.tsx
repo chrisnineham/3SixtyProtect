@@ -90,7 +90,7 @@ export default async function DashboardPage() {
             <h2 className="font-semibold text-ink-900">Recent bookings</h2>
             <Link
               href="/admin/bookings"
-              className="flex items-center gap-1 text-sm font-semibold text-gold-700 hover:underline"
+              className="flex items-center gap-1 text-sm font-semibold text-sky-700 hover:underline"
             >
               View all <ArrowRight className="h-4 w-4" />
             </Link>
@@ -125,7 +125,7 @@ export default async function DashboardPage() {
             <h2 className="font-semibold text-ink-900">Upcoming courses</h2>
             <Link
               href="/admin/courses"
-              className="flex items-center gap-1 text-sm font-semibold text-gold-700 hover:underline"
+              className="flex items-center gap-1 text-sm font-semibold text-sky-700 hover:underline"
             >
               Manage <ArrowRight className="h-4 w-4" />
             </Link>

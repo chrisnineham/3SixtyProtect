@@ -71,15 +71,15 @@ export default async function AdminCoursesPage({
                 </h2>
                 <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-500">
                   <span className="flex items-center gap-1.5">
-                    <CalendarDays className="h-4 w-4 text-gold-500" />
+                    <CalendarDays className="h-4 w-4 text-sky-500" />
                     {formatDateRange(course.start_date, course.end_date)}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <MapPin className="h-4 w-4 text-gold-500" />
+                    <MapPin className="h-4 w-4 text-sky-500" />
                     {course.location}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Users className="h-4 w-4 text-gold-500" />
+                    <Users className="h-4 w-4 text-sky-500" />
                     {course.available_spaces}/{course.max_spaces} available
                   </span>
                 </div>

@@ -13,7 +13,7 @@ export default function NotFound() {
       />
       <div className="relative">
         <Logo light className="justify-center" />
-        <p className="mt-10 font-heading text-7xl font-extrabold text-gradient-gold">
+        <p className="mt-10 font-heading text-7xl font-extrabold text-gradient-sky">
           404
         </p>
         <h1 className="mt-4 text-2xl font-bold text-white">Page not found</h1>

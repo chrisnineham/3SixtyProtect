@@ -9,7 +9,7 @@ import { AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const controlBase =
-  'w-full rounded-xl border border-ink-200 bg-white px-4 text-[0.95rem] text-ink-900 placeholder:text-ink-400 transition-colors focus:border-gold-400 focus:outline-none focus:ring-4 focus:ring-gold-400/15 disabled:cursor-not-allowed disabled:bg-ink-50 disabled:text-ink-400';
+  'w-full rounded-xl border border-ink-200 bg-white px-4 text-[0.95rem] text-ink-900 placeholder:text-ink-400 transition-colors focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-400/15 disabled:cursor-not-allowed disabled:bg-ink-50 disabled:text-ink-400';
 
 export function Label({
   htmlFor,
@@ -28,7 +28,7 @@ export function Label({
       className={cn('block text-sm font-semibold text-ink-800', className)}
     >
       {children}
-      {required ? <span className="ml-0.5 text-gold-600">*</span> : null}
+      {required ? <span className="ml-0.5 text-sky-600">*</span> : null}
     </label>
   );
 }

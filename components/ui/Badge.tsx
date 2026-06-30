@@ -8,7 +8,7 @@ const tones: Record<Tone, string> = {
   success: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
   warning: 'bg-amber-50 text-amber-700 ring-amber-200',
   danger: 'bg-rose-50 text-rose-700 ring-rose-200',
-  gold: 'bg-gold-100 text-gold-800 ring-gold-300',
+  gold: 'bg-sky-100 text-sky-800 ring-sky-300',
   ink: 'bg-ink-900 text-white ring-ink-800',
 };
 

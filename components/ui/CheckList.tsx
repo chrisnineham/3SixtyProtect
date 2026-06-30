@@ -25,7 +25,7 @@ export function CheckList({
           <span
             className={cn(
               'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full',
-              dark ? 'bg-gold-400/15 text-gold-400' : 'bg-gold-100 text-gold-700',
+              dark ? 'bg-sky-400/15 text-sky-400' : 'bg-sky-100 text-sky-700',
             )}
           >
             <Check className="h-3 w-3" strokeWidth={3} />

@@ -1,17 +1,18 @@
 import type { Metadata } from 'next';
-import { Inter, Sora } from 'next/font/google';
+import { Montserrat, Plus_Jakarta_Sans } from 'next/font/google';
 import { SITE } from '@/lib/constants';
 import './globals.css';
 
-const sora = Sora({
+const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['500', '600', '700', '800'],
   variable: '--font-heading',
   display: 'swap',
 });
 
-const inter = Inter({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
   variable: '--font-body',
   display: 'swap',
 });
@@ -58,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-GB" className={`${sora.variable} ${inter.variable}`}>
+    <html lang="en-GB" className={`${montserrat.variable} ${plusJakarta.variable}`}>
       <body>{children}</body>
     </html>
   );

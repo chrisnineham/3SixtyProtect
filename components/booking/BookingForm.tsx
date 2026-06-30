@@ -74,8 +74,8 @@ export function BookingForm({
         <div className="rounded-3xl border border-ink-100 bg-white p-6 shadow-card sm:p-8">
           {/* 1 — choose course */}
           <fieldset>
-            <legend className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-gold-600">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gold-100 text-xs text-gold-700">
+            <legend className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-sky-600">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-sky-100 text-xs text-sky-700">
                 1
               </span>
               Choose your course
@@ -124,8 +124,8 @@ export function BookingForm({
 
           {/* 2 — your details */}
           <fieldset>
-            <legend className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-gold-600">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gold-100 text-xs text-gold-700">
+            <legend className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-sky-600">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-sky-100 text-xs text-sky-700">
                 2
               </span>
               Your details
@@ -237,17 +237,17 @@ export function BookingForm({
                   </h3>
                   <dl className="mt-4 space-y-2.5 text-sm text-ink-600">
                     <div className="flex items-center gap-2.5">
-                      <CalendarDays className="h-4 w-4 text-gold-500" />
+                      <CalendarDays className="h-4 w-4 text-sky-500" />
                       {formatDateRange(selected.start_date, selected.end_date)}
                     </div>
                     {(selected.start_time || selected.end_time) && (
                       <div className="flex items-center gap-2.5">
-                        <Clock className="h-4 w-4 text-gold-500" />
+                        <Clock className="h-4 w-4 text-sky-500" />
                         {formatTimeRange(selected.start_time, selected.end_time)}
                       </div>
                     )}
                     <div className="flex items-center gap-2.5">
-                      <MapPin className="h-4 w-4 text-gold-500" />
+                      <MapPin className="h-4 w-4 text-sky-500" />
                       {selected.location}
                     </div>
                   </dl>
@@ -282,7 +282,7 @@ export function BookingForm({
                 'You’ll get joining details and what to bring.',
               ].map((step, i) => (
                 <li key={step} className="flex gap-3">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ink-900 text-[0.65rem] font-bold text-gold-400">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ink-900 text-[0.65rem] font-bold text-sky-400">
                     {i + 1}
                   </span>
                   {step}
@@ -303,8 +303,8 @@ function BookingConfirmation({ state }: { state: BookingFormState }) {
         <div className="relative overflow-hidden bg-ink-950 px-8 py-12 text-center text-white">
           <div className="absolute inset-0 spotlight" aria-hidden />
           <div className="relative">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gold-400/15 ring-1 ring-gold-400/40">
-              <CheckCircle2 className="h-9 w-9 text-gold-400" />
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-sky-400/15 ring-1 ring-sky-400/40">
+              <CheckCircle2 className="h-9 w-9 text-sky-400" />
             </div>
             <h1 className="mt-5 text-2xl font-bold text-white sm:text-3xl">
               Booking received
@@ -316,7 +316,7 @@ function BookingConfirmation({ state }: { state: BookingFormState }) {
             {state.reference ? (
               <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm">
                 <span className="text-ink-300">Reference</span>
-                <span className="font-mono font-semibold text-gold-400">
+                <span className="font-mono font-semibold text-sky-400">
                   {state.reference}
                 </span>
               </div>
@@ -344,8 +344,8 @@ function BookingConfirmation({ state }: { state: BookingFormState }) {
             </dl>
           ) : null}
 
-          <div className="mt-6 flex items-start gap-3 rounded-xl bg-gold-50 p-4 text-sm text-ink-700 ring-1 ring-gold-200">
-            <Mail className="mt-0.5 h-5 w-5 shrink-0 text-gold-600" />
+          <div className="mt-6 flex items-start gap-3 rounded-xl bg-sky-50 p-4 text-sm text-ink-700 ring-1 ring-sky-200">
+            <Mail className="mt-0.5 h-5 w-5 shrink-0 text-sky-600" />
             <p>
               We’ve logged your booking and our team will be in touch shortly to
               confirm your place and share joining instructions.
@@ -365,7 +365,7 @@ function BookingConfirmation({ state }: { state: BookingFormState }) {
 
       <p className="mt-5 text-center text-sm text-ink-500">
         Need to change something?{' '}
-        <Link href="/contact" className="font-semibold text-gold-700 hover:underline">
+        <Link href="/contact" className="font-semibold text-sky-700 hover:underline">
           Contact us
         </Link>
       </p>

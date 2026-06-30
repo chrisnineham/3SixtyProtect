@@ -62,7 +62,7 @@ export default function ContactPage() {
               {contactCards.map((card) => {
                 const inner = (
                   <>
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-ink-900 text-gold-400">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-ink-900 text-sky-400">
                       <card.icon className="h-5 w-5" />
                     </div>
                     <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-400">

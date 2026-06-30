@@ -19,7 +19,7 @@ export function FeatureCard({
       className={cn(
         'group rounded-2xl border p-6 transition-all duration-300',
         dark
-          ? 'border-white/10 bg-white/[0.03] hover:border-gold-400/40 hover:bg-white/[0.06]'
+          ? 'border-white/10 bg-white/[0.03] hover:border-sky-400/40 hover:bg-white/[0.06]'
           : 'border-ink-100 bg-white shadow-card hover:-translate-y-1 hover:shadow-card-hover',
         className,
       )}
@@ -28,8 +28,8 @@ export function FeatureCard({
         className={cn(
           'flex h-12 w-12 items-center justify-center rounded-xl transition-colors',
           dark
-            ? 'bg-gold-400/10 text-gold-400 group-hover:bg-gold-400/20'
-            : 'bg-ink-900 text-gold-400',
+            ? 'bg-sky-400/10 text-sky-400 group-hover:bg-sky-400/20'
+            : 'bg-ink-900 text-sky-400',
         )}
       >
         <Icon className="h-6 w-6" strokeWidth={1.75} />
