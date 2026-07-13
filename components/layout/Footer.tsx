@@ -6,6 +6,29 @@ import { SITE } from '@/lib/constants';
 
 const footerNav = [
   {
+    title: 'Services',
+    links: [
+      { label: 'All Services', href: '/services' },
+      { label: 'Executive Protection', href: '/services/executive-protection' },
+      {
+        label: 'Risk Management',
+        href: '/services/security-risk-management-consultancy',
+      },
+      {
+        label: 'Technical Surveillance',
+        href: '/services/technical-surveillance',
+      },
+      {
+        label: 'Manpower Supply',
+        href: '/services/manpower-supply-management',
+      },
+      {
+        label: 'Private Investigations',
+        href: '/services/private-investigations',
+      },
+    ],
+  },
+  {
     title: 'Training',
     links: [
       { label: 'Door Supervision', href: '/door-supervision' },
@@ -28,16 +51,15 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden bg-ink-950 text-ink-200">
-      <div className="absolute inset-0 spotlight opacity-40" aria-hidden />
-      <div className="container relative">
+    <footer className="bg-background text-ink-900 border-t border-ink-950">
+      <div className="container">
         {/* CTA band */}
-        <div className="flex flex-col items-start justify-between gap-6 border-b border-white/10 py-12 md:flex-row md:items-center">
+        <div className="flex flex-col items-start justify-between gap-6 border-b border-ink-200 py-12 md:flex-row md:items-center">
           <div className="max-w-xl">
-            <h2 className="text-balance text-2xl font-bold text-white sm:text-3xl">
+            <h2 className="text-balance font-heading uppercase tracking-tight text-headline-md text-ink-900">
               Ready to start your security career?
             </h2>
-            <p className="mt-2 text-ink-300">
+            <p className="mt-3 text-lg leading-relaxed text-ink-500">
               Secure your place on an upcoming SIA course and get fully qualified
               with 3Sixty Protect.
             </p>
@@ -51,17 +73,17 @@ export function Footer() {
         </div>
 
         {/* Main footer */}
-        <div className="grid grid-cols-1 gap-10 py-14 md:grid-cols-2 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <Logo light />
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-ink-300">
+        <div className="grid grid-cols-1 gap-10 pt-20 pb-10 md:grid-cols-2 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <Logo />
+            <p className="mt-5 max-w-xs text-lg leading-relaxed text-ink-500">
               {SITE.description}
             </p>
           </div>
 
           {footerNav.map((col) => (
             <div key={col.title} className="lg:col-span-2">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-400">
                 {col.title}
               </h3>
               <ul className="mt-4 space-y-3">
@@ -69,7 +91,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-ink-300 transition-colors hover:text-sky-400"
+                      className="text-ink-600 underline-offset-4 transition-colors hover:text-ink-950 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
                     >
                       {link.label}
                     </Link>
@@ -79,52 +101,65 @@ export function Footer() {
             </div>
           ))}
 
-          <div className="lg:col-span-4">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+          <div className="lg:col-span-3">
+            <h3 className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-400">
               Get in touch
             </h3>
-            <ul className="mt-4 space-y-3 text-sm">
+            <ul className="mt-4 space-y-3">
               <li>
                 <a
                   href={`mailto:${SITE.email}`}
-                  className="flex items-center gap-3 text-ink-300 transition-colors hover:text-sky-400"
+                  className="flex items-center gap-3 text-ink-600 underline-offset-4 transition-colors hover:text-ink-950 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
                 >
-                  <Mail className="h-4 w-4 shrink-0 text-sky-500" />
+                  <Mail className="h-4 w-4 shrink-0 text-ink-400" />
                   {SITE.email}
                 </a>
               </li>
               <li>
                 <a
                   href={SITE.phoneHref}
-                  className="flex items-center gap-3 text-ink-300 transition-colors hover:text-sky-400"
+                  className="flex items-center gap-3 text-ink-600 underline-offset-4 transition-colors hover:text-ink-950 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
                 >
-                  <Phone className="h-4 w-4 shrink-0 text-sky-500" />
+                  <Phone className="h-4 w-4 shrink-0 text-ink-400" />
                   {SITE.phone}
                 </a>
               </li>
-              <li className="flex items-center gap-3 text-ink-300">
-                <MapPin className="h-4 w-4 shrink-0 text-sky-500" />
-                {SITE.serviceArea}
-              </li>
+              {SITE.addresses.map((addr) => (
+                <li key={addr.label} className="flex gap-3 text-ink-600">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-ink-400" />
+                  <span className="text-sm leading-relaxed">
+                    <span className="mb-0.5 block font-mono text-[10px] uppercase tracking-[0.1em] text-ink-400">
+                      {addr.label}
+                    </span>
+                    {addr.lines.join(', ')}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-6 text-xs text-ink-400 sm:flex-row">
-          <p>
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-ink-200 pt-6 sm:flex-row">
+          <p className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400">
             © {year} {SITE.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
-            <Link href="/contact" className="transition-colors hover:text-ink-200">
+            <Link
+              href="/contact"
+              className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400 transition-colors hover:text-ink-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
+            >
               Contact
             </Link>
-            <Link href="/calendar" className="transition-colors hover:text-ink-200">
+            <Link
+              href="/calendar"
+              className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400 transition-colors hover:text-ink-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
+            >
               Courses
             </Link>
             <Link
               href="/admin/login"
-              className="transition-colors hover:text-sky-400"
+              className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400 transition-colors hover:text-ink-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
             >
               Admin Login
             </Link>

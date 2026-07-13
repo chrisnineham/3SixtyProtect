@@ -38,15 +38,15 @@ export function CourseForm({ course }: { course?: Course }) {
       {isEdit ? <input type="hidden" name="id" value={course!.id} /> : null}
 
       {state.status === 'error' && state.message ? (
-        <p className="flex items-start gap-2 rounded-xl bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700 ring-1 ring-rose-200">
+        <p className="flex items-start gap-2 border border-error px-4 py-3 text-sm font-medium text-error">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
           {state.message}
         </p>
       ) : null}
 
       {/* Details */}
-      <section className="rounded-2xl border border-ink-100 bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-500">
+      <section className="border border-ink-950 bg-background p-6">
+        <h2 className="font-mono uppercase text-[11px] tracking-[0.05em] text-ink-500">
           Course details
         </h2>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
@@ -61,7 +61,7 @@ export function CourseForm({ course }: { course?: Course }) {
               id="title"
               name="title"
               defaultValue={course?.title}
-              placeholder="SIA Door Supervision — Level 2 Award"
+              placeholder="SIA Door Supervision: Level 2 Award"
               required
             />
           </Field>
@@ -120,8 +120,8 @@ export function CourseForm({ course }: { course?: Course }) {
       </section>
 
       {/* Schedule */}
-      <section className="rounded-2xl border border-ink-100 bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-500">
+      <section className="border border-ink-950 bg-background p-6">
+        <h2 className="font-mono uppercase text-[11px] tracking-[0.05em] text-ink-500">
           Schedule &amp; location
         </h2>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
@@ -148,7 +148,7 @@ export function CourseForm({ course }: { course?: Course }) {
               id="location"
               name="location"
               defaultValue={course?.location}
-              placeholder="London — Stratford Training Centre"
+              placeholder="London, Stratford Training Centre"
               required
             />
           </Field>
@@ -156,8 +156,8 @@ export function CourseForm({ course }: { course?: Course }) {
       </section>
 
       {/* Pricing & capacity */}
-      <section className="rounded-2xl border border-ink-100 bg-white p-6 shadow-sm">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-500">
+      <section className="border border-ink-950 bg-background p-6">
+        <h2 className="font-mono uppercase text-[11px] tracking-[0.05em] text-ink-500">
           Pricing &amp; capacity
         </h2>
         <div className="mt-5 grid gap-5 sm:grid-cols-3">
@@ -204,7 +204,7 @@ export function CourseForm({ course }: { course?: Course }) {
           <Field
             label="Course image URL"
             htmlFor="image_url"
-            hint="Optional — a public image URL (e.g. from Supabase storage)."
+            hint="Optional: a public image URL (e.g. from Supabase storage)."
             error={state.errors?.image_url}
           >
             <Input
@@ -222,7 +222,7 @@ export function CourseForm({ course }: { course?: Course }) {
         <SubmitButton label={isEdit ? 'Save changes' : 'Create course'} />
         <Link
           href="/admin/courses"
-          className="rounded-full px-5 py-2.5 text-sm font-semibold text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-900"
+          className="px-5 py-2.5 font-mono uppercase text-[11px] tracking-[0.05em] text-ink-600 transition-colors hover:bg-ink-50 hover:text-ink-900"
         >
           Cancel
         </Link>

@@ -10,15 +10,15 @@ import type { Booking, Course } from './types';
 export const MOCK_COURSES: Course[] = [
   {
     id: 'demo-ds-london-jul',
-    title: 'SIA Door Supervision — Level 2 Award',
+    title: 'SIA Door Supervision: Level 2 Award',
     course_type: 'door_supervision',
     description:
-      'Our flagship 6-day Door Supervisor course delivers everything you need to apply for your SIA licence — physical intervention, conflict management, and the law, taught by working professionals.',
+      'Our flagship 6-day Door Supervisor course delivers everything you need to apply for your SIA licence: physical intervention, conflict management, and the law, taught by working professionals.',
     start_date: '2026-07-13',
     end_date: '2026-07-18',
     start_time: '09:00',
     end_time: '17:00',
-    location: 'London — Stratford Training Centre',
+    location: 'London, Stratford Training Centre',
     price: 249,
     max_spaces: 16,
     available_spaces: 5,
@@ -29,15 +29,15 @@ export const MOCK_COURSES: Course[] = [
   },
   {
     id: 'demo-cp-london-jul',
-    title: 'SIA Close Protection — Level 3 Award',
+    title: 'SIA Close Protection: Level 3 Award',
     course_type: 'close_protection',
     description:
-      'An intensive 14-day Close Protection programme covering operational planning, foot and vehicle drills, threat assessment and professional conduct — the standard required to work as a CPO.',
+      'An intensive 14-day Close Protection programme covering operational planning, foot and vehicle drills, threat assessment and professional conduct, the standard required to work as a CPO.',
     start_date: '2026-07-20',
     end_date: '2026-08-02',
     start_time: '08:30',
     end_time: '18:00',
-    location: 'London — Stratford Training Centre',
+    location: 'London, Stratford Training Centre',
     price: 1895,
     max_spaces: 12,
     available_spaces: 3,
@@ -48,7 +48,7 @@ export const MOCK_COURSES: Course[] = [
   },
   {
     id: 'demo-ds-birmingham-aug',
-    title: 'SIA Door Supervision — Level 2 Award',
+    title: 'SIA Door Supervision: Level 2 Award',
     course_type: 'door_supervision',
     description:
       'The complete Door Supervisor qualification delivered over six days in central Birmingham. Small group sizes, experienced trainers and full exam support included.',
@@ -56,7 +56,7 @@ export const MOCK_COURSES: Course[] = [
     end_date: '2026-08-15',
     start_time: '09:00',
     end_time: '17:00',
-    location: 'Birmingham — City Centre Venue',
+    location: 'Birmingham, City Centre Venue',
     price: 239,
     max_spaces: 16,
     available_spaces: 11,
@@ -67,7 +67,7 @@ export const MOCK_COURSES: Course[] = [
   },
   {
     id: 'demo-ds-london-aug',
-    title: 'SIA Door Supervision — Level 2 Award (Weekend Friendly)',
+    title: 'SIA Door Supervision: Level 2 Award (Weekend Friendly)',
     course_type: 'door_supervision',
     description:
       'Same comprehensive Door Supervisor qualification, scheduled across two weeks to suit those balancing work commitments. Includes first aid and physical intervention modules.',
@@ -75,7 +75,7 @@ export const MOCK_COURSES: Course[] = [
     end_date: '2026-08-29',
     start_time: '09:00',
     end_time: '17:00',
-    location: 'London — Stratford Training Centre',
+    location: 'London, Stratford Training Centre',
     price: 249,
     max_spaces: 16,
     available_spaces: 16,
@@ -86,7 +86,7 @@ export const MOCK_COURSES: Course[] = [
   },
   {
     id: 'demo-cp-manchester-sep',
-    title: 'SIA Close Protection — Level 3 Award',
+    title: 'SIA Close Protection: Level 3 Award',
     course_type: 'close_protection',
     description:
       'Our Close Protection course returns to Manchester. Build the operational skillset and professional standards expected of a modern Close Protection Officer across a focused 15-day programme.',
@@ -94,7 +94,7 @@ export const MOCK_COURSES: Course[] = [
     end_date: '2026-09-21',
     start_time: '08:30',
     end_time: '18:00',
-    location: 'Manchester — Training Academy',
+    location: 'Manchester, Training Academy',
     price: 1850,
     max_spaces: 12,
     available_spaces: 9,
@@ -105,7 +105,7 @@ export const MOCK_COURSES: Course[] = [
   },
   {
     id: 'demo-ds-london-sep',
-    title: 'SIA Door Supervision — Level 2 Award',
+    title: 'SIA Door Supervision: Level 2 Award',
     course_type: 'door_supervision',
     description:
       'Start your security career this autumn. A complete six-day Door Supervisor qualification with full SIA licence application support on completion.',
@@ -113,7 +113,7 @@ export const MOCK_COURSES: Course[] = [
     end_date: '2026-09-19',
     start_time: '09:00',
     end_time: '17:00',
-    location: 'London — Stratford Training Centre',
+    location: 'London, Stratford Training Centre',
     price: 249,
     max_spaces: 16,
     available_spaces: 14,
@@ -138,7 +138,7 @@ export const MOCK_BOOKINGS: Booking[] = [
     updated_at: '2026-06-21T14:05:00Z',
     course: {
       id: 'demo-ds-london-jul',
-      title: 'SIA Door Supervision — Level 2 Award',
+      title: 'SIA Door Supervision: Level 2 Award',
       course_type: 'door_supervision',
       start_date: '2026-07-13',
     },
@@ -155,7 +155,7 @@ export const MOCK_BOOKINGS: Booking[] = [
     updated_at: '2026-06-19T11:00:00Z',
     course: {
       id: 'demo-cp-london-jul',
-      title: 'SIA Close Protection — Level 3 Award',
+      title: 'SIA Close Protection: Level 3 Award',
       course_type: 'close_protection',
       start_date: '2026-07-20',
     },
@@ -172,7 +172,7 @@ export const MOCK_BOOKINGS: Booking[] = [
     updated_at: '2026-06-25T16:20:00Z',
     course: {
       id: 'demo-ds-birmingham-aug',
-      title: 'SIA Door Supervision — Level 2 Award',
+      title: 'SIA Door Supervision: Level 2 Award',
       course_type: 'door_supervision',
       start_date: '2026-08-10',
     },

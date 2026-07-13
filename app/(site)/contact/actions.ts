@@ -64,7 +64,7 @@ export async function createEnquiryAction(
     return {
       status: 'error',
       message:
-        'Sorry — something went wrong sending your message. Please try again or email us directly.',
+        'Sorry, something went wrong sending your message. Please try again or email us directly.',
     };
   }
 }

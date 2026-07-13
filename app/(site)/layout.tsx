@@ -1,21 +1,44 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { SITE } from '@/lib/constants';
+import { SERVICES } from '@/lib/services';
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'EducationalOrganization',
+  '@type': 'Organization',
   name: SITE.name,
   description: SITE.description,
   url: SITE.url,
   email: SITE.email,
   telephone: SITE.phone,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '20-22 Wenlock Road',
+    addressLocality: 'London',
+    postalCode: 'N1 7GU',
+    addressCountry: 'GB',
+  },
   areaServed: 'GB',
   knowsAbout: [
+    'Executive protection',
+    'Close protection',
+    'Security risk management consultancy',
+    'Technical surveillance',
+    'Manpower supply and management',
+    'Private investigations',
     'SIA Door Supervision training',
     'SIA Close Protection training',
     'Security training',
   ],
+  makesOffer: SERVICES.map((s) => ({
+    '@type': 'Offer',
+    itemOffered: {
+      '@type': 'Service',
+      name: s.name,
+      description: s.tagline,
+      provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+    },
+  })),
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'SIA Security Training Courses',
@@ -24,7 +47,7 @@ const jsonLd = {
         '@type': 'Course',
         name: 'SIA Door Supervision Training',
         description:
-          'Level 2 SIA Door Supervisor qualification — your route to an SIA licence.',
+          'Level 2 SIA Door Supervisor qualification: your route to an SIA licence.',
         provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
       },
       {

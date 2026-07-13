@@ -118,7 +118,7 @@ export async function createBookingAction(
     return {
       status: 'error',
       message:
-        'Sorry — something went wrong submitting your booking. Please try again or call us.',
+        'Sorry, something went wrong submitting your booking. Please try again or call us.',
     };
   }
 }

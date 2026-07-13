@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { Reveal } from './Reveal';
-import { CloudGlow } from './CloudGlow';
 
 export function PageHeader({
   eyebrow,
@@ -14,20 +13,19 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden border-b border-ink-200/60">
-      <CloudGlow />
-      <div className="container relative z-10 pb-12 pt-28 sm:pb-16 sm:pt-32 lg:pt-40">
+    <section className="relative bg-background border-b border-ink-950">
+      <div className="container pb-12 pt-28 md:pb-16 md:pt-36">
         <Reveal className="max-w-2xl">
           {eyebrow ? (
-            <span className="inline-flex items-center gap-2 rounded-full border border-ink-200/80 bg-white/70 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-sky-600 shadow-sm backdrop-blur">
+            <span className="inline-flex items-center gap-2 bg-ink-950 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.1em] text-white">
               {eyebrow}
             </span>
           ) : null}
-          <h1 className="mt-5 text-balance font-display text-4xl font-extrabold leading-[1.08] tracking-[-0.02em] text-ink-900 sm:text-5xl">
+          <h1 className="mt-5 font-heading font-bold uppercase tracking-tight text-display-lg-mobile text-ink-900 md:text-display-lg">
             {title}
           </h1>
           {description ? (
-            <p className="mt-5 text-pretty text-lg leading-relaxed text-ink-500">
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-500">
               {description}
             </p>
           ) : null}

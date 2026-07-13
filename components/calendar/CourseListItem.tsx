@@ -22,32 +22,24 @@ function dateParts(iso: string) {
 
 export function CourseListItem({ course }: { course: Course }) {
   const meta = COURSE_TYPE_META[course.course_type];
-  const isCP = course.course_type === 'close_protection';
   const parts = dateParts(course.start_date);
   const days = durationInDays(course.start_date, course.end_date);
   const soldOut = course.status === 'fully_booked' || course.available_spaces <= 0;
 
   return (
-    <article className="group relative flex flex-col gap-5 rounded-2xl border border-ink-100 bg-white p-5 shadow-card transition-all duration-300 hover:border-ink-200 hover:shadow-card-hover sm:flex-row sm:items-center sm:gap-6 sm:p-6">
-      {/* Date chip */}
-      <div
-        className={cn(
-          'flex shrink-0 flex-row items-center gap-4 sm:w-24 sm:flex-col sm:gap-1 sm:text-center',
-        )}
-      >
-        <div
-          className={cn(
-            'flex h-16 w-16 flex-col items-center justify-center rounded-xl text-white',
-            isCP ? 'bg-ink-900' : 'bg-ink-800',
-          )}
-        >
-          <span className="text-[0.65rem] font-semibold uppercase tracking-wide text-sky-400">
+    <article className="group relative flex flex-col gap-5 border border-ink-950 bg-background p-5 transition-colors sm:flex-row sm:items-center sm:gap-6 sm:p-6">
+      {/* Date block */}
+      <div className="flex shrink-0 flex-row items-center gap-4 sm:w-24 sm:flex-col sm:gap-1 sm:text-center">
+        <div className="flex h-16 w-16 flex-col items-center justify-center border border-ink-950 bg-ink-950 text-white">
+          <span className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-white/60">
             {parts.month}
           </span>
-          <span className="text-2xl font-bold leading-none">{parts.day}</span>
+          <span className="font-heading text-2xl font-bold leading-none">
+            {parts.day}
+          </span>
         </div>
-        <div className="text-sm text-ink-500 sm:text-xs">
-          <span className="font-medium text-ink-700">{parts.weekday}</span>
+        <div className="font-mono text-[11px] uppercase tracking-[0.05em] text-ink-500 sm:text-center">
+          <span className="text-ink-800">{parts.weekday}</span>
           <span className="block">
             {days} {days === 1 ? 'day' : 'days'}
           </span>
@@ -57,7 +49,7 @@ export function CourseListItem({ course }: { course: Course }) {
       {/* Details */}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge tone="gold">{meta.shortLabel}</Badge>
+          <Badge tone="neutral">{meta.shortLabel}</Badge>
           {soldOut ? (
             <Badge tone="danger">Fully booked</Badge>
           ) : course.available_spaces <= 4 ? (
@@ -66,10 +58,10 @@ export function CourseListItem({ course }: { course: Course }) {
             <Badge tone="success">{course.available_spaces} spaces</Badge>
           )}
         </div>
-        <h3 className="mt-2 text-lg font-semibold text-ink-900">
+        <h3 className="mt-3 font-heading text-lg font-bold uppercase tracking-tight text-ink-900">
           <Link
             href={`/book?course=${course.id}`}
-            className="transition-colors before:absolute before:inset-0 hover:text-sky-700"
+            className="underline-offset-4 transition-colors before:absolute before:inset-0 hover:underline"
           >
             {course.title}
           </Link>
@@ -79,42 +71,42 @@ export function CourseListItem({ course }: { course: Course }) {
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-600">
           <span className="flex items-center gap-1.5">
-            <MapPin className="h-4 w-4 text-sky-500" />
+            <MapPin className="h-4 w-4 text-ink-400" strokeWidth={1.5} />
             {course.location}
           </span>
           {(course.start_time || course.end_time) && (
             <span className="flex items-center gap-1.5">
-              <Clock className="h-4 w-4 text-sky-500" />
+              <Clock className="h-4 w-4 text-ink-400" strokeWidth={1.5} />
               {formatTimeRange(course.start_time, course.end_time)}
             </span>
           )}
           <span className="flex items-center gap-1.5">
-            <Users className="h-4 w-4 text-sky-500" />
+            <Users className="h-4 w-4 text-ink-400" strokeWidth={1.5} />
             Max {course.max_spaces}
           </span>
         </div>
       </div>
 
       {/* Price + CTA */}
-      <div className="flex shrink-0 items-center justify-between gap-4 border-t border-ink-100 pt-4 sm:flex-col sm:items-end sm:border-l sm:border-t-0 sm:pl-6 sm:pt-0">
+      <div className="flex shrink-0 items-center justify-between gap-4 border-t border-ink-200 pt-4 sm:flex-col sm:items-end sm:border-l sm:border-t-0 sm:pl-6 sm:pt-0">
         <div className="sm:text-right">
-          <span className="block text-xs font-medium uppercase tracking-wide text-ink-400">
+          <span className="block font-mono text-[11px] uppercase tracking-[0.05em] text-ink-400">
             From
           </span>
-          <span className="text-xl font-bold text-ink-900">
+          <span className="font-heading text-xl font-bold text-ink-900">
             {formatPrice(course.price)}
           </span>
         </div>
         <span
           className={cn(
-            'relative z-10 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors',
+            'relative z-10 inline-flex items-center gap-1.5 border px-4 py-2 font-mono text-[12px] uppercase tracking-[0.05em] transition-colors',
             soldOut
-              ? 'text-ink-400'
-              : 'bg-ink-900 text-white group-hover:bg-sky-400 group-hover:text-ink-950',
+              ? 'border-ink-200 text-ink-400'
+              : 'border-ink-950 bg-ink-950 text-white group-hover:bg-background group-hover:text-ink-950',
           )}
         >
           {soldOut ? 'Waitlist' : 'Book'}
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </span>
       </div>
     </article>

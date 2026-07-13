@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #0b111c;
+    --background: #fcf9f8;
+    --foreground: #1c1b1b;
   }
 
   * {
@@ -18,17 +18,17 @@
   }
 
   body {
-    @apply bg-white text-ink-800 antialiased;
-    font-feature-settings: 'ss01', 'cv01', 'cv03';
+    @apply bg-background text-on-background antialiased;
     text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-semibold tracking-tight text-ink-900;
+    @apply font-heading font-bold tracking-tight text-ink-900;
   }
 
+  /* Interaction = color inversion */
   ::selection {
-    @apply bg-sky-300/40 text-ink-900;
+    @apply bg-ink-950 text-white;
   }
 
   /* Respect users who prefer reduced motion */
@@ -45,23 +45,23 @@
 }
 
 @layer components {
-  /* Section vertical rhythm */
+  /* Section vertical rhythm — pragmatic voids (160px reserved for hero/CTA) */
   .section {
-    @apply py-20 md:py-28;
+    @apply py-24 md:py-32;
   }
 
-  /* Small uppercase label / eyebrow */
+  /* Small uppercase monospace label / eyebrow (architectural blueprint) */
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-600;
+    @apply inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400;
   }
 
   .eyebrow-on-dark {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-400;
+    @apply inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em] text-white/70;
   }
 
-  /* Gradient text used sparingly for emphasis */
+  /* Emphasis span in a headline → inverted black highlight (very Monolith) */
   .text-gradient-sky {
-    @apply bg-gradient-to-r from-sky-300 via-sky-400 to-sky-200 bg-clip-text text-transparent;
+    @apply box-decoration-clone bg-ink-950 px-[0.15em] text-white;
   }
 
   /* Reusable prose-ish content column for course pages */
@@ -69,13 +69,13 @@
     @apply max-w-2xl;
   }
 
-  /* Hairline divider that reads on both light and dark */
+  /* Hairline dividers — solid, no gradient */
   .hairline {
-    @apply h-px w-full bg-gradient-to-r from-transparent via-ink-200 to-transparent;
+    @apply h-px w-full bg-ink-950 opacity-20;
   }
 
   .hairline-on-dark {
-    @apply h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent;
+    @apply h-px w-full bg-white opacity-20;
   }
 }
 
@@ -88,30 +88,8 @@
     text-wrap: pretty;
   }
 
-  /* Subtle radial spotlight for dark sections */
-  .spotlight {
-    background:
-      radial-gradient(60% 50% at 50% 0%, rgba(34, 181, 115, 0.18) 0%, transparent 70%),
-      radial-gradient(45% 45% at 88% 12%, rgba(74, 206, 148, 0.12) 0%, transparent 70%);
-  }
-
-  /* Light "cloud" background for SkySign-style heroes */
-  .cloud-bg {
-    background:
-      radial-gradient(60% 55% at 88% 6%, rgba(74, 206, 148, 0.18) 0%, transparent 46%),
-      radial-gradient(55% 60% at 8% 100%, rgba(34, 181, 115, 0.12) 0%, transparent 52%),
-      radial-gradient(circle at 50% -10%, #ffffff 0%, #f6faf8 55%, #eef3f1 100%);
-  }
-
-  /* Tiled film grain overlay (used on heroes) */
-  .grain {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 128px 128px;
-    mix-blend-mode: overlay;
-  }
-
   .font-display {
     font-family: var(--font-heading), system-ui, sans-serif;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
   }
 }

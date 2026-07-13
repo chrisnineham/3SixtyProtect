@@ -24,16 +24,16 @@ export function CheckList({
         <li key={item} className="flex items-start gap-3">
           <span
             className={cn(
-              'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full',
-              dark ? 'bg-sky-400/15 text-sky-400' : 'bg-sky-100 text-sky-700',
+              'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border',
+              dark ? 'border-white text-white' : 'border-ink-950 text-ink-950',
             )}
           >
-            <Check className="h-3 w-3" strokeWidth={3} />
+            <Check className="h-3 w-3" strokeWidth={2} />
           </span>
           <span
             className={cn(
-              'text-[0.95rem] leading-relaxed',
-              dark ? 'text-ink-200' : 'text-ink-600',
+              'font-sans text-[0.95rem] leading-relaxed',
+              dark ? 'text-white' : 'text-ink-800',
             )}
           >
             {item}

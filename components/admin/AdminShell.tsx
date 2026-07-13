@@ -46,7 +46,7 @@ export function AdminShell({
       </div>
 
       {demo ? (
-        <div className="mx-4 mb-2 rounded-lg bg-sky-400/10 px-3 py-2 text-center text-xs font-semibold text-sky-400 ring-1 ring-sky-400/25">
+        <div className="mx-4 mb-2 border border-white/25 px-3 py-2 text-center font-mono text-[11px] uppercase tracking-[0.05em] text-white">
           Demo mode · read-only
         </div>
       ) : null}
@@ -58,10 +58,10 @@ export function AdminShell({
             href={item.href}
             onClick={() => setOpen(false)}
             className={cn(
-              'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
+              'flex items-center gap-3 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] transition-colors',
               isActive(item.href)
-                ? 'bg-white/10 text-white'
-                : 'text-ink-300 hover:bg-white/5 hover:text-white',
+                ? 'bg-white text-ink-950'
+                : 'text-ink-300 hover:bg-white/10 hover:text-white',
             )}
           >
             <item.icon className="h-5 w-5" />
@@ -72,7 +72,7 @@ export function AdminShell({
         <Link
           href="/admin/courses/new"
           onClick={() => setOpen(false)}
-          className="mt-3 flex items-center gap-3 rounded-xl bg-sky-400 px-3 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-sky-300"
+          className="mt-3 flex items-center gap-3 border border-white bg-white px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-950 transition-colors hover:bg-transparent hover:text-white"
         >
           <PlusCircle className="h-5 w-5" />
           New course
@@ -83,14 +83,14 @@ export function AdminShell({
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-ink-300 transition-colors hover:bg-white/5 hover:text-white"
+          className="flex items-center gap-3 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-300 transition-colors hover:bg-white/10 hover:text-white"
         >
           <ExternalLink className="h-5 w-5" />
           View website
         </Link>
-        <div className="mt-2 flex items-center justify-between gap-2 rounded-xl px-3 py-2">
+        <div className="mt-2 flex items-center justify-between gap-2 px-3 py-2">
           <div className="min-w-0">
-            <p className="truncate text-xs text-ink-400">Signed in as</p>
+            <p className="truncate font-mono text-[11px] uppercase tracking-[0.05em] text-ink-400">Signed in as</p>
             <p className="truncate text-sm font-medium text-white">
               {email ?? 'Demo admin'}
             </p>
@@ -99,7 +99,7 @@ export function AdminShell({
             <button
               type="submit"
               title="Sign out"
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-300 transition-colors hover:bg-white/10 hover:text-white"
+              className="flex h-9 w-9 items-center justify-center text-ink-300 transition-colors hover:bg-white/10 hover:text-white"
             >
               <LogOut className="h-4 w-4" />
             </button>
@@ -117,7 +117,7 @@ export function AdminShell({
       </aside>
 
       {/* Mobile top bar */}
-      <div className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-ink-100 bg-white px-4 lg:hidden">
+      <div className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-ink-950 bg-background px-4 lg:hidden">
         <Link href="/admin/dashboard">
           <Logo />
         </Link>
@@ -125,7 +125,7 @@ export function AdminShell({
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Open menu"
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-200 text-ink-700"
+          className="flex h-10 w-10 items-center justify-center border border-ink-950 text-ink-800"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -143,7 +143,7 @@ export function AdminShell({
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close menu"
-              className="absolute right-3 top-5 flex h-9 w-9 items-center justify-center rounded-lg text-ink-300 hover:bg-white/10"
+              className="absolute right-3 top-5 flex h-9 w-9 items-center justify-center text-ink-300 hover:bg-white/10"
             >
               <X className="h-5 w-5" />
             </button>

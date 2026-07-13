@@ -27,7 +27,9 @@ export default async function AdminBookingsPage() {
   return (
     <div>
       <div>
-        <h1 className="text-2xl font-bold text-ink-900">Bookings</h1>
+        <h1 className="font-heading text-2xl font-bold uppercase tracking-tight text-ink-900">
+          Bookings
+        </h1>
         <p className="mt-1 text-sm text-ink-500">
           Online bookings received from the website.
         </p>
@@ -44,12 +46,12 @@ export default async function AdminBookingsPage() {
           {bookings.map((b) => (
             <article
               key={b.id}
-              className="rounded-2xl border border-ink-100 bg-white p-5 shadow-sm"
+              className="border border-ink-950 bg-white p-5"
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="font-semibold text-ink-900">{b.customer_name}</h2>
+                    <h2 className="font-heading font-semibold text-ink-900">{b.customer_name}</h2>
                     {b.course ? (
                       <Badge tone="gold">
                         {COURSE_TYPE_META[b.course.course_type].shortLabel}
@@ -59,16 +61,16 @@ export default async function AdminBookingsPage() {
                   <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-600">
                     <a
                       href={`mailto:${b.customer_email}`}
-                      className="flex items-center gap-1.5 hover:text-sky-700"
+                      className="flex items-center gap-1.5 hover:text-ink-900"
                     >
-                      <Mail className="h-4 w-4 text-sky-500" />
+                      <Mail className="h-4 w-4 text-ink-500" />
                       {b.customer_email}
                     </a>
                     <a
                       href={`tel:${b.customer_phone}`}
-                      className="flex items-center gap-1.5 hover:text-sky-700"
+                      className="flex items-center gap-1.5 hover:text-ink-900"
                     >
-                      <Phone className="h-4 w-4 text-sky-500" />
+                      <Phone className="h-4 w-4 text-ink-500" />
                       {b.customer_phone}
                     </a>
                   </div>
@@ -78,7 +80,7 @@ export default async function AdminBookingsPage() {
                 </div>
               </div>
 
-              <div className="mt-4 grid gap-3 border-t border-ink-100 pt-4 text-sm text-ink-600 sm:grid-cols-2">
+              <div className="mt-4 grid gap-3 border-t border-ink-200 pt-4 text-sm text-ink-600 sm:grid-cols-2">
                 <p className="flex items-center gap-2">
                   <ClipboardList className="h-4 w-4 text-ink-400" />
                   <span className="font-medium text-ink-800">
@@ -98,7 +100,7 @@ export default async function AdminBookingsPage() {
               </div>
 
               {b.message ? (
-                <div className="mt-3 flex gap-2 rounded-xl bg-ink-50 p-3 text-sm text-ink-600">
+                <div className="mt-3 flex gap-2 border border-ink-200 bg-ink-50 p-3 text-sm text-ink-600">
                   <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-ink-400" />
                   <p className="whitespace-pre-line">{b.message}</p>
                 </div>
@@ -107,9 +109,9 @@ export default async function AdminBookingsPage() {
           ))}
         </div>
       ) : (
-        <div className="mt-6 flex flex-col items-center rounded-2xl border border-dashed border-ink-200 bg-white px-6 py-16 text-center">
+        <div className="mt-6 flex flex-col items-center border border-dashed border-ink-300 bg-white px-6 py-16 text-center">
           <ClipboardList className="h-9 w-9 text-ink-300" />
-          <h2 className="mt-4 text-lg font-semibold text-ink-900">No bookings yet</h2>
+          <h2 className="mt-4 font-heading text-lg font-semibold text-ink-900">No bookings yet</h2>
           <p className="mt-1 text-sm text-ink-500">
             Bookings made on the website will appear here.
           </p>

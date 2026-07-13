@@ -22,7 +22,7 @@ export function CourseRowActions({
       <Link
         href={`/admin/courses/${id}/edit`}
         title="Edit"
-        className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900"
+        className="flex h-9 w-9 items-center justify-center text-ink-500 transition-colors hover:bg-ink-50 hover:text-ink-900"
       >
         <Pencil className="h-4 w-4" />
       </Link>
@@ -37,7 +37,7 @@ export function CourseRowActions({
         <button
           type="submit"
           title={isPublished ? 'Unpublish (set to draft)' : 'Publish'}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900"
+          className="flex h-9 w-9 items-center justify-center text-ink-500 transition-colors hover:bg-ink-50 hover:text-ink-900"
         >
           {isPublished ? (
             <EyeOff className="h-4 w-4" />
@@ -59,7 +59,7 @@ export function CourseRowActions({
         <button
           type="submit"
           title="Delete"
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-500 transition-colors hover:bg-rose-50 hover:text-rose-600"
+          className="flex h-9 w-9 items-center justify-center text-ink-500 transition-colors hover:text-error"
         >
           <Trash2 className="h-4 w-4" />
         </button>

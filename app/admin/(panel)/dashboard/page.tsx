@@ -44,7 +44,9 @@ export default async function DashboardPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-ink-900">Dashboard</h1>
+          <h1 className="font-heading text-2xl font-bold uppercase tracking-tight text-ink-900">
+            Dashboard
+          </h1>
           <p className="mt-1 text-sm text-ink-500">
             An overview of your courses and bookings.
           </p>
@@ -85,18 +87,20 @@ export default async function DashboardPage() {
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         {/* Recent bookings */}
-        <section className="rounded-2xl border border-ink-100 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-ink-100 px-5 py-4">
-            <h2 className="font-semibold text-ink-900">Recent bookings</h2>
+        <section className="border border-ink-950 bg-white">
+          <div className="flex items-center justify-between border-b border-ink-950 px-5 py-4">
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.05em] text-ink-900">
+              Recent bookings
+            </h2>
             <Link
               href="/admin/bookings"
-              className="flex items-center gap-1 text-sm font-semibold text-sky-700 hover:underline"
+              className="flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-900 hover:underline"
             >
               View all <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           {bookings.length > 0 ? (
-            <ul className="divide-y divide-ink-50">
+            <ul className="divide-y divide-ink-200">
               {bookings.slice(0, 5).map((b) => (
                 <li
                   key={b.id}
@@ -120,18 +124,20 @@ export default async function DashboardPage() {
         </section>
 
         {/* Upcoming courses */}
-        <section className="rounded-2xl border border-ink-100 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-ink-100 px-5 py-4">
-            <h2 className="font-semibold text-ink-900">Upcoming courses</h2>
+        <section className="border border-ink-950 bg-white">
+          <div className="flex items-center justify-between border-b border-ink-950 px-5 py-4">
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.05em] text-ink-900">
+              Upcoming courses
+            </h2>
             <Link
               href="/admin/courses"
-              className="flex items-center gap-1 text-sm font-semibold text-sky-700 hover:underline"
+              className="flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-900 hover:underline"
             >
               Manage <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           {upcoming.length > 0 ? (
-            <ul className="divide-y divide-ink-50">
+            <ul className="divide-y divide-ink-200">
               {upcoming.slice(0, 5).map((c) => (
                 <li
                   key={c.id}

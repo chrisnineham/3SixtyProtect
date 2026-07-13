@@ -36,8 +36,8 @@ export const DOOR_SUPERVISION_CONTENT: CoursePageContent = {
   whatIs: {
     heading: 'What is Door Supervision?',
     paragraphs: [
-      'Door Supervisors are the front line of safety and security at licensed premises — from bars, clubs and pubs to concerts, festivals and private events. The role goes far beyond standing on a door: it’s about managing access, defusing conflict, keeping people safe and acting professionally under pressure.',
-      'To work as a Door Supervisor in the UK you need a valid SIA Door Supervisor licence, and to apply for that licence you must first complete an approved Level 2 Door Supervision qualification. Our course delivers exactly that — combining the law, communication skills and practical techniques you’ll use every shift.',
+      'Door Supervisors are the front line of safety and security at licensed premises, from bars, clubs and pubs to concerts, festivals and private events. The role goes far beyond standing on a door: it’s about managing access, defusing conflict, keeping people safe and acting professionally under pressure.',
+      'To work as a Door Supervisor in the UK you need a valid SIA Door Supervisor licence, and to apply for that licence you must first complete an approved Level 2 Door Supervision qualification. Our course delivers exactly that, combining the law, communication skills and practical techniques you’ll use every shift.',
     ],
   },
   whoFor: {
@@ -84,7 +84,7 @@ export const DOOR_SUPERVISION_CONTENT: CoursePageContent = {
   careers: {
     heading: 'Where it can take you',
     intro:
-      'A Door Supervisor licence opens the door to varied, flexible and well-paid work — and to further qualifications.',
+      'A Door Supervisor licence opens the door to varied, flexible and well-paid work, and to further qualifications.',
     items: [
       'Door Supervisor at bars, clubs and licensed venues',
       'Event and festival security',
@@ -126,9 +126,9 @@ export const DOOR_SUPERVISION_CONTENT: CoursePageContent = {
     ],
   },
   seo: {
-    title: 'SIA Door Supervision Training — Door Supervisor Course',
+    title: 'SIA Door Supervision Training: Door Supervisor Course',
     description:
-      'Get qualified with our SIA Door Supervision training. The Level 2 Door Supervisor course covers conflict management, physical intervention and the law — your route to an SIA licence.',
+      'Get qualified with our SIA Door Supervision training. The Level 2 Door Supervisor course covers conflict management, physical intervention and the law. Your route to an SIA licence.',
   },
 };
 
@@ -141,13 +141,13 @@ export const CLOSE_PROTECTION_CONTENT: CoursePageContent = {
     title: 'Train for a career in',
     highlight: 'Close Protection',
     description:
-      'Our advanced Close Protection programme prepares you for one of the most respected and rewarding roles in private security — protecting people to the highest professional standard.',
+      'Our advanced Close Protection programme prepares you for one of the most respected and rewarding roles in private security, protecting people to the highest professional standard.',
   },
   whatIs: {
     heading: 'What is Close Protection?',
     paragraphs: [
-      'Close Protection is the discipline of protecting individuals — often public figures, executives, dignitaries or high-net-worth clients — from risks to their safety. A Close Protection Officer (CPO) plans ahead, assesses threats, controls environments and is ready to act decisively when it matters.',
-      'It’s a profession built on judgement, discretion and meticulous preparation as much as physical capability. To work as a CPO in the UK you need a valid SIA Close Protection licence, which requires an approved Level 3 Close Protection qualification — exactly what this course provides.',
+      'Close Protection is the discipline of protecting individuals, often public figures, executives, dignitaries or high-net-worth clients, from risks to their safety. A Close Protection Officer (CPO) plans ahead, assesses threats, controls environments and is ready to act decisively when it matters.',
+      'It’s a profession built on judgement, discretion and meticulous preparation as much as physical capability. To work as a CPO in the UK you need a valid SIA Close Protection licence, which requires an approved Level 3 Close Protection qualification, exactly what this course provides.',
     ],
   },
   whoFor: {
@@ -252,9 +252,9 @@ export const CLOSE_PROTECTION_CONTENT: CoursePageContent = {
     ],
   },
   seo: {
-    title: 'SIA Close Protection Training — Close Protection Course',
+    title: 'SIA Close Protection Training: Close Protection Course',
     description:
-      'Train as a Close Protection Officer with our SIA Level 3 Close Protection course. Covering threat assessment, foot and vehicle drills and professional standards — your route to a CP licence.',
+      'Train as a Close Protection Officer with our SIA Level 3 Close Protection course. Covering threat assessment, foot and vehicle drills and professional standards. Your route to a CP licence.',
   },
 };
 

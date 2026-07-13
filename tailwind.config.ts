@@ -10,63 +10,111 @@ const config: Config = {
     container: {
       center: true,
       padding: {
-        DEFAULT: '1.25rem',
-        sm: '1.5rem',
-        lg: '2rem',
+        DEFAULT: '1.25rem', // 20px — mobile side margin
+        md: '4rem', // 64px — desktop margin
       },
       screens: {
-        '2xl': '1200px',
+        '2xl': '1440px',
       },
     },
     extend: {
       spacing: {
         18: '4.5rem',
+        gutter: '1.5rem', // 24px
+        'section-gap': '10rem', // 160px — reserved for hero/CTA voids
       },
       colors: {
-        // Cool slate neutrals (SkySign-aligned: #0F172A heads, #F8FAFC surfaces)
+        // ── Canonical Monolith tokens (use in NEW markup) ──
+        primary: '#000000',
+        'on-primary': '#ffffff',
+        background: '#fcf9f8',
+        'on-background': '#1c1b1b',
+        'on-surface': '#1c1b1b',
+        'on-surface-variant': '#4c4546',
+        outline: '#7e7576',
+        'outline-variant': '#cfc4c5',
+        'surface-container': '#f0eded',
+        'surface-container-high': '#eae7e7',
+        'surface-container-highest': '#e5e2e1',
+        // The single retained semantic accent — errors / cancelled / fully-booked only
+        error: '#ba1a1a',
+        'error-container': '#ffdad6',
+
+        // ── Legacy `ink` scale remapped: cool slate → warm monochrome ──
+        // (keeps every existing bg-ink-*/text-ink-*/border-ink-* class on-system)
         ink: {
-          50: '#F8FAFC',
-          100: '#F1F5F9',
-          200: '#E2E8F0',
-          300: '#CBD5E1',
-          400: '#94A3B8',
-          500: '#64748B',
-          600: '#475569',
-          700: '#334155',
-          800: '#1E293B',
-          900: '#0F172A',
-          950: '#0B1120',
+          50: '#fcf9f8', // page background / lightest surface
+          100: '#f0eded', // subtle surface + default border
+          200: '#cfc4c5', // subtle divider (outline-variant)
+          300: '#a89fa0',
+          400: '#7e7576', // muted labels (outline)
+          500: '#4c4546', // readable muted text (on-surface-variant)
+          600: '#3a3435',
+          700: '#2b2626',
+          800: '#1c1b1b', // body text
+          900: '#0a0a0a', // headings
+          950: '#000000', // pure-black dark sections
         },
-        // SkySign emerald — the signature accent
+
+        // ── Legacy `sky` scale (was the emerald accent) collapsed to monochrome ──
         sky: {
-          50: '#ECFBF3',
-          100: '#D8F1E4',
-          200: '#B3E6CC',
-          300: '#82D6AC',
-          400: '#4ACE94',
-          500: '#22B573',
-          600: '#1B9460',
-          700: '#16774E',
-          800: '#145E3F',
-          900: '#114B34',
+          50: '#f0eded',
+          100: '#e5e2e1',
+          200: '#cfc4c5',
+          300: '#a89fa0',
+          400: '#4c4546',
+          500: '#1c1b1b',
+          600: '#7e7576',
+          700: '#000000',
+          800: '#000000',
+          900: '#000000',
         },
       },
       fontFamily: {
-        heading: ['var(--font-heading)', 'system-ui', 'sans-serif'],
-        sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-heading)', 'system-ui', 'sans-serif'], // Hanken Grotesk
+        sans: ['var(--font-body)', 'system-ui', 'sans-serif'], // Inter
+        mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'], // JetBrains Mono
+      },
+      fontSize: {
+        // Monolith display/type scale (family + size applied together)
+        'display-2xl': ['7.5rem', { lineHeight: '6.875rem', letterSpacing: '-0.04em', fontWeight: '800' }], // 120/110
+        'display-lg': ['4.5rem', { lineHeight: '4.5rem', letterSpacing: '-0.03em', fontWeight: '700' }], // 72/72
+        'display-lg-mobile': ['3rem', { lineHeight: '3rem', letterSpacing: '-0.02em', fontWeight: '700' }], // 48/48
+        'headline-md': ['2rem', { lineHeight: '2.5rem', letterSpacing: '-0.02em', fontWeight: '600' }], // 32/40
+        'body-lg': ['1.125rem', { lineHeight: '1.8', letterSpacing: '0em', fontWeight: '400' }], // 18
+        'body-md': ['1rem', { lineHeight: '1.6', letterSpacing: '0em', fontWeight: '400' }], // 16
+        'label-mono': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.05em', fontWeight: '500' }], // 12
       },
       borderRadius: {
-        '4xl': '2rem',
+        // Sharp 0px everywhere — the defining Monolith shape rule. `full` kept for status dots.
+        none: '0',
+        sm: '0',
+        DEFAULT: '0',
+        md: '0',
+        lg: '0',
+        xl: '0',
+        '2xl': '0',
+        '3xl': '0',
+        '4xl': '0',
+        full: '9999px',
       },
       boxShadow: {
-        card: '0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px -14px rgba(15, 23, 42, 0.14)',
-        'card-hover': '0 1px 2px rgba(15, 23, 42, 0.06), 0 24px 48px -18px rgba(15, 23, 42, 0.22)',
-        glow: '0 10px 30px -10px rgba(34, 181, 115, 0.45)',
-        float: '0 4px 24px -4px rgba(15, 23, 42, 0.12)',
+        // Brutalism uses hard 1px borders, not shadows — flatten everything.
+        none: 'none',
+        sm: 'none',
+        DEFAULT: 'none',
+        md: 'none',
+        lg: 'none',
+        xl: 'none',
+        '2xl': 'none',
+        card: 'none',
+        'card-hover': 'none',
+        glow: 'none',
+        float: 'none',
       },
       backgroundImage: {
         'grid-faint':
-          'linear-gradient(to right, rgba(148,163,184,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.07) 1px, transparent 1px)',
+          'linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)',
       },
       keyframes: {
         'fade-up': {
@@ -81,32 +129,11 @@ const config: Config = {
           '0%': { opacity: '0', transform: 'scale(0.96)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
-        'float-1': {
-          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-          '50%': { transform: 'translateY(-10px) rotate(0deg)' },
-          '25%': { transform: 'translateY(-5px) rotate(1deg)' },
-          '75%': { transform: 'translateY(-5px) rotate(-1deg)' },
-        },
-        'float-2': {
-          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-          '50%': { transform: 'translateY(-12px) rotate(0deg)' },
-          '25%': { transform: 'translateY(-6px) rotate(-1.4deg)' },
-          '75%': { transform: 'translateY(-6px) rotate(1.4deg)' },
-        },
-        'float-3': {
-          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-          '50%': { transform: 'translateY(-8px) rotate(0deg)' },
-          '25%': { transform: 'translateY(-4px) rotate(1deg)' },
-          '75%': { transform: 'translateY(-4px) rotate(-1deg)' },
-        },
       },
       animation: {
         'fade-up': 'fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both',
         'fade-in': 'fade-in 0.8s ease both',
         'scale-in': 'scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both',
-        'float-1': 'float-1 6s ease-in-out infinite',
-        'float-2': 'float-2 7s ease-in-out infinite',
-        'float-3': 'float-3 8s ease-in-out infinite',
       },
     },
   },

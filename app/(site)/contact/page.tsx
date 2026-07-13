@@ -37,7 +37,7 @@ const contactCards = [
     icon: Clock,
     label: 'Opening hours',
     value: 'Mon–Fri, 9am–6pm',
-    detail: 'Enquiries online anytime — we’ll respond promptly.',
+    detail: 'Enquiries online anytime, we’ll respond promptly.',
   },
 ];
 
@@ -51,63 +51,98 @@ export default function ContactPage() {
       />
 
       <section className="section">
-        <div className="container grid gap-10 lg:grid-cols-12">
-          {/* Contact info */}
-          <div className="lg:col-span-5">
-            <h2 className="text-2xl font-bold text-ink-900">Ways to reach us</h2>
-            <p className="mt-2 text-ink-500">
+        <div className="container grid gap-x-10 gap-y-8 lg:grid-cols-12">
+          {/* Section heading — spans both columns so the boxes and form top-align */}
+          <div className="lg:col-span-12">
+            <h2 className="font-heading text-headline-md uppercase tracking-tight text-ink-900">
+              Ways to reach us
+            </h2>
+            <p className="mt-3 text-lg leading-relaxed text-ink-500">
               Prefer to talk it through? Use whichever works best for you.
             </p>
-            <div className="mt-7 grid gap-4 sm:grid-cols-2">
+          </div>
+
+          {/* Contact boxes — same grid row as the form, so both stretch to equal height */}
+          <div className="lg:col-span-5">
+            <div className="grid h-full gap-px border border-ink-950 bg-ink-950 sm:grid-cols-2">
               {contactCards.map((card) => {
                 const inner = (
                   <>
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-ink-900 text-sky-400">
+                    <div className="flex h-11 w-11 items-center justify-center border border-ink-950 bg-ink-950 text-white group-hover:border-white group-hover:bg-white group-hover:text-ink-950">
                       <card.icon className="h-5 w-5" />
                     </div>
-                    <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-400">
+                    <p className="mt-5 font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500 group-hover:text-white/70">
                       {card.label}
                     </p>
-                    <p className="mt-1 font-semibold text-ink-900">{card.value}</p>
-                    <p className="mt-1 text-sm text-ink-500">{card.detail}</p>
+                    <p className="mt-2 font-heading text-lg uppercase tracking-tight text-ink-900 group-hover:text-white">
+                      {card.value}
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-ink-500 group-hover:text-white/70">
+                      {card.detail}
+                    </p>
                   </>
                 );
                 return card.href ? (
                   <a
                     key={card.label}
                     href={card.href}
-                    className="group rounded-2xl border border-ink-100 bg-white p-5 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover"
+                    className="group bg-background p-6 transition-colors hover:bg-ink-950"
                   >
                     {inner}
                   </a>
                 ) : (
                   <div
                     key={card.label}
-                    className="rounded-2xl border border-ink-100 bg-white p-5 shadow-card"
+                    className="group bg-background p-6 transition-colors hover:bg-ink-950"
                   >
                     {inner}
                   </div>
                 );
               })}
             </div>
+          </div>
 
-            <div className="mt-6 flex flex-col items-start gap-4 rounded-2xl bg-ink-950 p-6 text-white sm:flex-row sm:items-center sm:justify-between">
+          {/* Form — same grid row as the boxes; stretches to match their height exactly */}
+          <div className="lg:col-span-7">
+            <ContactForm />
+          </div>
+
+          {/* Addresses + book prompt — row below the boxes */}
+          <div className="lg:col-span-5">
+            <div className="grid gap-px border border-ink-950 bg-ink-950 sm:grid-cols-2">
+              {SITE.addresses.map((addr) => (
+                <div key={addr.label} className="bg-background p-6">
+                  <div className="flex items-center gap-2.5">
+                    <MapPin className="h-4 w-4 shrink-0 text-ink-400" />
+                    <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-400">
+                      {addr.label}
+                    </p>
+                  </div>
+                  <address className="mt-3 not-italic leading-relaxed text-ink-800">
+                    {addr.lines.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </address>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-col items-start gap-4 border border-ink-950 bg-ink-950 p-8 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="font-semibold">Ready to book?</p>
-                <p className="text-sm text-ink-300">
+                <p className="font-heading text-xl uppercase tracking-tight text-white">
+                  Ready to book?
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-white/70">
                   Skip the queue and reserve your place online.
                 </p>
               </div>
-              <Button href="/book" className="shrink-0">
+              <Button href="/book" variant="light" className="shrink-0">
                 Book a Course
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
-          </div>
-
-          {/* Form */}
-          <div className="lg:col-span-7">
-            <ContactForm />
           </div>
         </div>
       </section>

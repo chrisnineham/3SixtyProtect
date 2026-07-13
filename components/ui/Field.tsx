@@ -9,7 +9,7 @@ import { AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const controlBase =
-  'w-full rounded-xl border border-ink-200 bg-white px-4 text-[0.95rem] text-ink-900 placeholder:text-ink-400 transition-colors focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-400/15 disabled:cursor-not-allowed disabled:bg-ink-50 disabled:text-ink-400';
+  'w-full border border-ink-400 bg-background px-4 text-ink-900 placeholder:text-ink-400 transition-colors focus:border-ink-950 focus:border-2 focus:outline-none disabled:cursor-not-allowed disabled:bg-ink-50 disabled:text-ink-400';
 
 export function Label({
   htmlFor,
@@ -25,10 +25,13 @@ export function Label({
   return (
     <label
       htmlFor={htmlFor}
-      className={cn('block text-sm font-semibold text-ink-800', className)}
+      className={cn(
+        'block mb-2 font-mono uppercase text-[12px] tracking-[0.05em] text-ink-500',
+        className,
+      )}
     >
       {children}
-      {required ? <span className="ml-0.5 text-sky-600">*</span> : null}
+      {required ? <span className="ml-0.5 text-error">*</span> : null}
     </label>
   );
 }
@@ -36,7 +39,7 @@ export function Label({
 export function FieldError({ children }: { children?: ReactNode }) {
   if (!children) return null;
   return (
-    <p className="mt-1.5 flex items-center gap-1.5 text-sm text-rose-600">
+    <p className="mt-1.5 flex items-center gap-1.5 text-error text-sm">
       <AlertCircle className="h-4 w-4 shrink-0" />
       {children}
     </p>
@@ -67,7 +70,7 @@ export function Field({
         {label}
       </Label>
       {children}
-      {hint && !error ? <p className="text-xs text-ink-400">{hint}</p> : null}
+      {hint && !error ? <p className="text-xs text-ink-500">{hint}</p> : null}
       <FieldError>{error}</FieldError>
     </div>
   );
@@ -86,7 +89,7 @@ export const Textarea = forwardRef<
   return (
     <textarea
       ref={ref}
-      className={cn(controlBase, 'min-h-[120px] resize-y py-3', className)}
+      className={cn(controlBase, 'min-h-[8rem] resize-y py-3', className)}
       {...props}
     />
   );
@@ -102,7 +105,7 @@ export const Select = forwardRef<
         ref={ref}
         className={cn(
           controlBase,
-          'h-12 appearance-none bg-white pr-10',
+          'h-12 appearance-none bg-background pr-10',
           className,
         )}
         {...props}

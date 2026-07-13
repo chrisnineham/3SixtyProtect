@@ -40,10 +40,13 @@ export function Reveal({ children, className, delay = 0, as }: RevealProps) {
   return (
     <Tag
       ref={ref}
-      style={{ transitionDelay: shown ? `${delay}ms` : '0ms' }}
+      style={{
+        transitionDelay: shown ? `${delay}ms` : '0ms',
+        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
       className={cn(
-        'transition-all duration-700 ease-out will-change-transform motion-reduce:transition-none',
-        shown ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0',
+        'transition-all duration-700 will-change-transform motion-reduce:transition-none',
+        shown ? 'translate-y-0 opacity-100' : 'translate-y-[30px] opacity-0',
         className,
       )}
     >

@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormState, useFormStatus } from 'react-dom';
-import { CheckCircle2, Send } from 'lucide-react';
+import { Check, Send } from 'lucide-react';
 import { Field, Input, Textarea, Select } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
 import { ENQUIRY_TYPES } from '@/lib/constants';
@@ -27,14 +27,14 @@ export function ContactForm() {
 
   if (state.status === 'success') {
     return (
-      <div className="rounded-3xl border border-ink-100 bg-white p-8 text-center shadow-card">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 ring-1 ring-emerald-200">
-          <CheckCircle2 className="h-8 w-8 text-emerald-600" />
+      <div className="border border-ink-950 bg-background p-8 text-center sm:p-10">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center border border-ink-950 bg-ink-950 text-white">
+          <Check className="h-8 w-8" />
         </div>
-        <h2 className="mt-5 text-xl font-bold text-ink-900">
-          Thanks{state.name ? `, ${state.name.split(' ')[0]}` : ''} — message sent
+        <h2 className="mt-6 font-heading text-headline-md uppercase tracking-tight text-ink-900">
+          Thanks{state.name ? `, ${state.name.split(' ')[0]}` : ''}, message sent
         </h2>
-        <p className="mt-2 text-ink-500">
+        <p className="mt-3 text-lg leading-relaxed text-ink-500">
           We’ve received your enquiry and will get back to you as soon as possible.
         </p>
       </div>
@@ -44,9 +44,13 @@ export function ContactForm() {
   return (
     <form
       action={formAction}
-      className="rounded-3xl border border-ink-100 bg-white p-6 shadow-card sm:p-8"
+      className="flex h-full flex-col border border-ink-950 bg-background p-5 sm:p-6"
     >
-      <div className="grid gap-5 sm:grid-cols-2">
+      <p className="mb-4 font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500">
+        Send an enquiry
+      </p>
+      <div className="hairline mb-4" />
+      <div className="grid gap-4 sm:grid-cols-2">
         <Field
           label="Name"
           htmlFor="name"
@@ -87,29 +91,30 @@ export function ContactForm() {
             ))}
           </Select>
         </Field>
-        <Field
-          label="Message"
-          htmlFor="message"
-          required
-          error={state.errors?.message}
-          className="sm:col-span-2"
-        >
-          <Textarea
-            id="message"
-            name="message"
-            placeholder="How can we help? Let us know which course you’re interested in…"
-            required
-          />
-        </Field>
       </div>
+      <Field
+        label="Message"
+        htmlFor="message"
+        required
+        error={state.errors?.message}
+        className="mt-4 flex flex-1 flex-col"
+      >
+        <Textarea
+          id="message"
+          name="message"
+          className="min-h-[5rem] flex-1"
+          placeholder="How can we help? Let us know which course you’re interested in…"
+          required
+        />
+      </Field>
 
       {state.status === 'error' && state.message ? (
-        <p className="mt-6 rounded-xl bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700 ring-1 ring-rose-200">
+        <p className="mt-6 border border-error px-4 py-3 text-sm font-medium text-error">
           {state.message}
         </p>
       ) : null}
 
-      <div className="mt-7">
+      <div className="mt-5">
         <SubmitButton />
       </div>
     </form>

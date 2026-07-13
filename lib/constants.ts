@@ -8,23 +8,33 @@ import type {
 export const SITE = {
   name: '3Sixty Protect',
   shortName: '3Sixty',
-  tagline: 'Professional SIA Security Training',
+  tagline: 'Private Security, Protection & Training',
   description:
-    'Professional SIA Door Supervision and Close Protection training built around real-world standards. Train with experienced instructors and launch your career in the private security industry.',
+    'A full-spectrum UK private security company: executive protection, risk consultancy, technical surveillance, manpower and investigations, plus accredited SIA training. Delivered to a professional standard.',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://3sixtyprotect.co.uk',
-  email: 'info@3sixtyprotect.co.uk',
-  phone: '0800 123 4567',
-  phoneHref: 'tel:08001234567',
+  email: 'info@3sixtyprotect.com',
+  phone: '020 3989 7024',
+  phoneHref: 'tel:+442039897024',
   serviceArea: 'London & the South East · Nationwide group bookings',
+  addresses: [
+    {
+      label: 'Registered Address',
+      lines: ['3Sixty Protect Ltd', '20-22 Wenlock Road', 'London', 'N1 7GU'],
+    },
+    {
+      label: 'Centre Address',
+      lines: ['3Sixty Protect Ltd', '10-16 Tiller Road', 'London', 'E14 8PX'],
+    },
+  ],
 } as const;
 
 /** Primary navigation shown in the header. */
 export const NAV_LINKS = [
   { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
   { label: 'Door Supervision', href: '/door-supervision' },
   { label: 'Close Protection', href: '/close-protection' },
   { label: 'Training Calendar', href: '/calendar' },
-  { label: 'Book Online', href: '/book' },
   { label: 'Contact', href: '/contact' },
 ] as const;
 
@@ -55,7 +65,7 @@ export const COURSE_TYPE_META: Record<
     href: '/close-protection',
     abbr: 'CP',
     blurb:
-      'The advanced qualification for protecting individuals — the gateway to a career as a professional bodyguard or CPO.',
+      'The advanced qualification for protecting individuals, the gateway to a career as a professional bodyguard or CPO.',
   },
 };
 

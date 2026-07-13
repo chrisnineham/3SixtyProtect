@@ -5,7 +5,7 @@ import { getPublicCourses } from '@/lib/courses';
 import type { CourseType } from '@/lib/types';
 
 export const metadata: Metadata = {
-  title: 'Training Calendar — Upcoming SIA Courses',
+  title: 'Training Calendar: Upcoming SIA Courses',
   description:
     'View all upcoming 3Sixty Protect training dates. Filter SIA Door Supervision and Close Protection courses by type, see locations, prices and availability, and book online.',
   alternates: { canonical: '/calendar' },

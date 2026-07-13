@@ -8,28 +8,32 @@ type Variant =
   | 'secondary'
   | 'outline'
   | 'outline-light'
+  | 'light'
   | 'ghost';
 type Size = 'sm' | 'md' | 'lg';
 
 const base =
-  'group/btn inline-flex items-center justify-center gap-2 rounded-xl font-heading font-semibold tracking-tight transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60';
+  'group/btn inline-flex items-center justify-center gap-2 font-mono uppercase tracking-[0.05em] text-[12px] leading-none transition-colors duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-60';
 
 const variants: Record<Variant, string> = {
   primary:
-    'bg-sky-500 text-white shadow-glow hover:bg-sky-600 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-10px_rgba(34,181,115,0.5)] active:translate-y-0',
+    'bg-ink-950 text-white border border-ink-950 hover:bg-background hover:text-ink-950',
   secondary:
-    'bg-ink-900 text-white shadow-sm hover:bg-ink-800 hover:-translate-y-0.5 active:translate-y-0',
+    'bg-ink-950 text-white border border-ink-950 hover:bg-background hover:text-ink-950',
   outline:
-    'border border-ink-200 bg-white text-ink-900 shadow-sm hover:border-ink-300 hover:bg-ink-50 hover:-translate-y-0.5 active:translate-y-0',
+    'bg-transparent text-ink-950 border border-ink-950 hover:bg-ink-950 hover:text-white',
   'outline-light':
-    'border border-white/25 bg-white/10 text-white backdrop-blur hover:bg-white/15 hover:border-white/40',
-  ghost: 'text-ink-700 hover:bg-ink-100 hover:text-ink-900',
+    'bg-transparent text-white border border-white hover:bg-white hover:text-ink-950',
+  // Solid white on-dark CTA (strongest button on a black band); inverts to outline on hover
+  light:
+    'bg-white text-ink-950 border border-white hover:bg-transparent hover:text-white',
+  ghost: 'text-ink-950 underline-offset-4 hover:underline',
 };
 
 const sizes: Record<Size, string> = {
-  sm: 'h-9 px-4 text-sm',
-  md: 'h-11 px-5 text-[0.95rem]',
-  lg: 'h-[3.25rem] px-7 text-base',
+  sm: 'px-4 py-2',
+  md: 'px-6 py-3',
+  lg: 'px-8 py-4',
 };
 
 interface CommonProps {

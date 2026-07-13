@@ -4,12 +4,12 @@ import type { ReactNode } from 'react';
 type Tone = 'neutral' | 'success' | 'warning' | 'danger' | 'gold' | 'ink';
 
 const tones: Record<Tone, string> = {
-  neutral: 'bg-ink-100 text-ink-600 ring-ink-200',
-  success: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
-  warning: 'bg-amber-50 text-amber-700 ring-amber-200',
-  danger: 'bg-rose-50 text-rose-700 ring-rose-200',
-  gold: 'bg-sky-100 text-sky-800 ring-sky-300',
-  ink: 'bg-ink-900 text-white ring-ink-800',
+  neutral: 'border-ink-950 text-ink-900 bg-transparent',
+  success: 'border-ink-950 bg-ink-950 text-white',
+  warning: 'border-ink-200 text-ink-400',
+  danger: 'border-error text-error bg-transparent',
+  gold: 'border-ink-950 bg-ink-950 text-white',
+  ink: 'border-ink-950 bg-ink-950 text-white',
 };
 
 export function Badge({
@@ -24,7 +24,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset',
+        'inline-flex items-center gap-1.5 border px-2 py-1 font-mono text-[11px] uppercase tracking-[0.05em]',
         tones[tone],
         className,
       )}
