@@ -1,25 +1,30 @@
 # 3Sixty Protect
 
-A modern, premium marketing **and** booking website for **3Sixty Protect**, a professional
-SIA security training company specialising in **Door Supervision** and **Close Protection**
-courses. Built with Next.js, TypeScript, Tailwind CSS and Supabase, and ready to deploy on
-Vercel.
+A marketing, services and booking website for **3Sixty Protect**, a UK private security company.
+Alongside flagship **SIA training** (Door Supervision & Close Protection), it offers executive
+protection, security risk-management consultancy, technical surveillance, manpower supply and
+private investigations. Built with Next.js, TypeScript, Tailwind CSS and Supabase, and deployed
+on Vercel.
 
-> **Works out of the box.** The site ships with built-in demo data, so you can run it and
-> click through every page (including the admin portal in read-only "demo mode") before
-> connecting a database. Add your Supabase keys to switch on real data, auth and bookings.
+**Live:** <https://3-sixty-protect.vercel.app>
+
+> **Works out of the box.** The site ships with built-in demo data, so you can run it and click
+> through every page (including the admin portal in read-only "demo mode") before connecting a
+> database. Add your Supabase keys to switch on real data, auth and bookings.
 
 ---
 
 ## ✨ Features
 
 **Public website**
-- Striking, responsive homepage with hero, course overviews, trust and booking-journey sections
-- Dedicated **Door Supervision** and **Close Protection** course pages
-- **Training Calendar** with live course-type filtering
-- Online **booking flow** with a live summary and confirmation screen (Stripe-ready)
-- **Contact** page with enquiry form
-- SEO-friendly metadata, Open Graph tags, `sitemap.xml` and `robots.txt`
+- Full-spectrum hero and an **"Our Services"** overview
+- **Services** overview (`/services`) with a detail page for each discipline — Executive
+  Protection, Security Risk Management Consultancy, Technical Surveillance, Manpower Supply &
+  Management, and Private Investigations
+- **SIA training:** dedicated **Door Supervision** and **Close Protection** course pages, a
+  filterable **Training Calendar**, and an online **booking flow** with a live summary
+- **Contact** page with an enquiry form plus registered / centre addresses
+- SEO-friendly metadata, Open Graph tags, JSON-LD, `sitemap.xml` and `robots.txt`
 
 **Owner / admin portal** (`/admin`)
 - Secure email + password login (Supabase Auth), restricted to authorised admins
@@ -35,7 +40,7 @@ Vercel.
 |---|---|
 | Framework | Next.js 14 (App Router) + React 18 |
 | Language | TypeScript |
-| Styling | Tailwind CSS |
+| Styling | Tailwind CSS — "Monolith" monochrome design system |
 | Database & Auth | Supabase (Postgres + Auth + Storage) |
 | Payments (optional) | Stripe (wired, switched off until configured) |
 | Icons | lucide-react |
@@ -66,26 +71,35 @@ built-in sample courses and bookings.
 
 1. Create a project at [supabase.com](https://supabase.com).
 2. In the **SQL Editor**, run [`supabase/schema.sql`](supabase/schema.sql) to create the
-   tables, enums, row-level-security policies and triggers.
+   tables, row-level-security policies and helper functions.
 3. *(Optional)* Run [`supabase/seed.sql`](supabase/seed.sql) to insert a few published
    courses so the site has content.
-4. In **Project Settings → API**, copy your keys into `.env.local`:
+4. In **Project Settings → API Keys**, copy your keys into `.env.local`. The app accepts either
+   Supabase's **new** API keys (publishable / secret) **or** the **legacy** keys (anon /
+   service_role) — the new keys are preferred when both are present:
 
    ```env
    NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=ey...
-   SUPABASE_SERVICE_ROLE_KEY=ey...     # server only — never expose
+
+   # Public client key — new "publishable" key (preferred) OR legacy anon key
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+   # NEXT_PUBLIC_SUPABASE_ANON_KEY=ey...
+
+   # Server-only key (bypasses RLS) — new "secret" key (preferred) OR legacy service_role key
+   SUPABASE_SERVICE_ROLE_KEY=ey...
+   # SUPABASE_SECRET_KEY=sb_secret_...
+
    NEXT_PUBLIC_SITE_URL=https://your-domain.com
    ```
 
 5. **Create an admin user:**
-   - In **Authentication → Users**, add a user (email + password).
+   - In **Authentication → Users**, add a user (email + password; tick *Auto Confirm*).
    - In the **SQL Editor**, promote them to admin:
 
      ```sql
      insert into admin_users (id, email, role)
      select id, email, 'owner' from auth.users
-     where email = 'owner@3sixtyprotect.co.uk'
+     where email = 'owner@3sixtyprotect.com'
      on conflict (id) do nothing;
      ```
 
@@ -97,12 +111,43 @@ built-in sample courses and bookings.
 | Variable | Required | Notes |
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | for live data | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | for live data | Public anon key |
-| `SUPABASE_SERVICE_ROLE_KEY` | recommended | Server-only key for trusted writes |
-| `NEXT_PUBLIC_SITE_URL` | recommended | Used for SEO/canonical URLs |
-| `STRIPE_SECRET_KEY` | optional | Enables online payment (see below) |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | optional | Stripe.js publishable key |
-| `STRIPE_WEBHOOK_SECRET` | optional | For payment webhooks |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | for live data | New publishable key (or use the anon key below) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | alt. to publishable | Legacy anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | recommended | Legacy service-role key — server only, bypasses RLS |
+| `SUPABASE_SECRET_KEY` | alt. to service_role | New secret key — server only |
+| `NEXT_PUBLIC_SITE_URL` | recommended | Production URL, used for SEO/canonical links |
+| `CONTACT_NOTIFICATION_EMAIL` | optional | Inbox for new enquiry/booking notifications |
+| `STRIPE_SECRET_KEY` · `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` · `STRIPE_WEBHOOK_SECRET` | optional | Online payments (see below) |
+
+Key resolution lives in [`lib/supabase/config.ts`](lib/supabase/config.ts): the client key is
+`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || NEXT_PUBLIC_SUPABASE_ANON_KEY`, and the server key is
+`SUPABASE_SECRET_KEY || SUPABASE_SERVICE_ROLE_KEY`.
+
+---
+
+## ☁️ Deploying to Vercel
+
+Deployed on **Vercel**; every push to `main` auto-deploys.
+
+1. Push the repo to GitHub.
+2. In Vercel: **Add New → Project** → import the repo. Next.js is auto-detected — accept the
+   default build settings.
+3. Add the **environment variables** (Project → Settings → Environment Variables) — the same
+   ones as your local `.env.local`:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (or `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
+   - `SUPABASE_SERVICE_ROLE_KEY` (or `SUPABASE_SECRET_KEY`)
+   - `NEXT_PUBLIC_SITE_URL` — set to your production URL
+4. **Deploy.** Build command (`next build`) and output are auto-detected.
+5. Set `NEXT_PUBLIC_SITE_URL` to the live URL (or your custom domain) and **redeploy** so
+   canonical / SEO links point at production.
+
+**Custom domain:** Project → **Settings → Domains** → add your domain, follow the DNS records,
+then update `NEXT_PUBLIC_SITE_URL`.
+
+> Without the Supabase vars the deploy still works in read-only **demo mode**. The build logs a
+> few *"dynamic server usage / serving demo data"* notices for pages that read cookies — these
+> are expected (those pages render dynamically) and don't fail the build.
 
 ---
 
@@ -125,7 +170,8 @@ admin portal.
 ```
 app/
   (site)/            Public website (header + footer layout)
-    page.tsx           Homepage
+    page.tsx           Homepage (hero, Our Services, training)
+    services/          Services overview + [slug] detail pages
     door-supervision/  Door Supervision course page
     close-protection/  Close Protection course page
     calendar/          Training calendar (filterable)
@@ -136,34 +182,35 @@ app/
     (panel)/           Authenticated portal (dashboard, courses, bookings)
     _actions/          Server actions (auth, course CRUD, bookings)
   sitemap.ts, robots.ts
-components/            Reusable UI, layout, course, booking, admin components
-lib/                  Supabase clients, data access, types, content, utils, validation
-supabase/             schema.sql + seed.sql
+components/
+  ui/                UI primitives (Button, Field, Section, …)
+  service/           ServicePageTemplate; ServiceCard + ServiceIcon (top level)
+  course/, booking/, contact/, calendar/, admin/, layout/
+lib/
+  services.ts        Services content model
+  supabase/          Clients + key/config resolution
+  courses.ts, course-content.ts, mock-data.ts, constants.ts, types.ts, …
+supabase/            schema.sql + seed.sql
+public/images/       Site imagery
 ```
 
 ---
 
-## 🎨 Branding
+## 🎨 Design system — "Monolith"
 
-The visual identity (deep charcoal base + premium gold accent) is themed via
-[`tailwind.config.ts`](tailwind.config.ts) (`ink` and `gold` colour scales) and
-[`app/globals.css`](app/globals.css). Change those tokens to re-skin the whole site.
+Monochrome **brutalist-minimalism / Swiss typographic** style: warm off-white (`#fcf9f8`) and
+black, sharp **0px corners**, hard **1px borders** instead of shadows, oversized display
+headlines, monospace metadata labels, and **hover = colour inversion**. Type is **Hanken
+Grotesk** (display), **Inter** (body) and **JetBrains Mono** (labels), loaded via `next/font`.
 
-Course imagery uses branded gradient panels by default; add a real `image_url` to a course
-(any public URL, e.g. Supabase Storage) and it will render automatically.
-
----
-
-## ☁️ Deploying to Vercel
-
-1. Push this repo to GitHub.
-2. Import it into Vercel.
-3. Add the environment variables above in **Project Settings → Environment Variables**.
-4. Deploy. (Build command `next build` and output are auto-detected.)
+Design tokens live in [`tailwind.config.ts`](tailwind.config.ts) — the `ink` scale is a warm
+monochrome ramp and `error` (`#ba1a1a`) is the single retained accent — and
+[`app/globals.css`](app/globals.css). Change those to re-skin the whole site.
 
 ---
 
 ## 🛣️ Built to extend
 
 The structure is ready for the natural next features: online payments (Stripe is wired),
-learner accounts, certificate uploads, automated email confirmations and reminders.
+per-service enquiry routing, learner accounts, certificate uploads, and automated email
+confirmations and reminders.
