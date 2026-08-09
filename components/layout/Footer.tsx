@@ -54,7 +54,7 @@ export function Footer() {
     <footer className="bg-background text-ink-900 border-t border-ink-950">
       <div className="container">
         {/* CTA band */}
-        <div className="flex flex-col items-start justify-between gap-6 border-b border-ink-200 py-12 md:flex-row md:items-center">
+        <div className="flex flex-col items-start justify-between gap-6 border-b border-ink-200 py-10 md:flex-row md:items-center md:py-12">
           <div className="max-w-xl">
             <h2 className="text-balance font-heading uppercase tracking-tight text-headline-md text-ink-900">
               Ready to start your security career?
@@ -73,7 +73,7 @@ export function Footer() {
         </div>
 
         {/* Main footer */}
-        <div className="grid grid-cols-1 gap-10 pt-20 pb-10 md:grid-cols-2 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-8 pt-12 pb-8 md:grid-cols-2 md:gap-10 md:pt-20 md:pb-10 lg:grid-cols-12">
           <div className="lg:col-span-3">
             <Logo />
             <p className="mt-5 max-w-xs text-lg leading-relaxed text-ink-500">
@@ -81,25 +81,27 @@ export function Footer() {
             </p>
           </div>
 
-          {footerNav.map((col) => (
-            <div key={col.title} className="lg:col-span-2">
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-400">
-                {col.title}
-              </h3>
-              <ul className="mt-4 space-y-3">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-ink-600 underline-offset-4 transition-colors hover:text-ink-950 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div className="grid grid-cols-3 gap-4 md:col-span-2 md:gap-8 lg:contents">
+            {footerNav.map((col) => (
+              <div key={col.title} className="lg:col-span-2">
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-400">
+                  {col.title}
+                </h3>
+                <ul className="mt-4 space-y-3">
+                  {col.links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        className="text-ink-600 underline-offset-4 transition-colors hover:text-ink-950 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
 
           <div className="lg:col-span-3">
             <h3 className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-400">
@@ -140,7 +142,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-ink-200 pt-6 sm:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-ink-200 pt-6 sm:flex-row md:mt-16">
           <p className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400">
             © {year} {SITE.name}. All rights reserved.
           </p>
@@ -156,6 +158,12 @@ export function Footer() {
               className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400 transition-colors hover:text-ink-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
             >
               Courses
+            </Link>
+            <Link
+              href="/privacy-policy"
+              className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400 transition-colors hover:text-ink-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
+            >
+              Privacy
             </Link>
             <Link
               href="/admin/login"

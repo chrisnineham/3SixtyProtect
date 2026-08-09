@@ -74,6 +74,13 @@ create table if not exists bookings (
   updated_at      timestamptz not null default now()
 );
 
+-- Payment fields (deposit taken via Stripe Checkout). Added idempotently so
+-- re-running this file migrates an existing bookings table.
+alter table bookings add column if not exists reference text;
+alter table bookings add column if not exists payment_status text not null default 'unpaid';
+alter table bookings add column if not exists deposit_amount numeric(10,2);
+alter table bookings add column if not exists stripe_session_id text;
+
 create index if not exists bookings_course_idx on bookings (course_id);
 create index if not exists bookings_status_idx on bookings (booking_status);
 create index if not exists bookings_created_idx on bookings (created_at desc);

@@ -16,7 +16,6 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
 import { SectionHeading } from '@/components/ui/Section';
-import { FeatureCard } from '@/components/ui/FeatureCard';
 import { CourseCard } from '@/components/CourseCard';
 import { ServiceCard } from '@/components/ServiceCard';
 import { CtaBand } from '@/components/CtaBand';
@@ -31,42 +30,35 @@ export default async function HomePage() {
     <>
       {/* ───────────────────────── Hero ───────────────────────── */}
       <section className="relative">
-        {/* Hero — oversized close-protection image bleeds off the right edge on desktop */}
-        <div className="relative overflow-hidden">
-          {/* Desktop image: full-height, fills its area (object-cover) so the subjects read
-              large, bleeds off the right edge, and dissolves into the page. mix-blend-multiply
-              (over the #fcf9f8 backing) removes the white surround; the left-edge gradient mask
-              feathers it into the page so it never collides with the headline. */}
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[50%] bg-background lg:block xl:w-[52%]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/IMG003.jpg"
-              alt="A client flanked by two close protection officers leaving a building"
-              className="h-full w-full select-none object-cover object-center mix-blend-multiply"
-              style={{
-                WebkitMaskImage: 'linear-gradient(to right, transparent, #000 40%)',
-                maskImage: 'linear-gradient(to right, transparent, #000 40%)',
-              }}
-              draggable={false}
-            />
-          </div>
+        {/* Hero — full-bleed image with the headline and copy overlaid in white */}
+        <div className="relative isolate overflow-hidden">
+          {/* Background image — fills the hero edge to edge */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/STERLINGONE.png"
+            alt="A close protection officer escorting a client from a vehicle"
+            className="absolute inset-0 -z-20 h-full w-full select-none object-cover object-center"
+            draggable={false}
+          />
+          {/* Legibility scrim — darkens the left so the white text stays readable;
+              fades toward the right on desktop to keep the image subject visible */}
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/85 via-ink-950/55 to-ink-950/25 md:from-ink-950/80 md:via-ink-950/40 md:to-transparent" />
 
-          <div className="container relative z-10 grid items-center gap-12 pb-16 pt-28 sm:pt-32 lg:grid-cols-12 lg:gap-8 lg:pb-24 lg:pt-32">
-            {/* Left — text */}
-            <div className="lg:col-span-7">
+          <div className="container relative flex min-h-[785px] flex-col justify-center pb-16 pt-32 sm:pt-36 md:min-h-[940px] lg:min-h-[995px] lg:pb-24">
+            <div className="max-w-2xl">
               <Reveal>
-                <span className="inline-flex items-center gap-2 border border-ink-950 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-800">
-                  <ShieldCheck className="h-3.5 w-3.5 text-ink-900" />
+                <span className="inline-flex items-center gap-2 border border-white/60 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.05em] text-white">
+                  <ShieldCheck className="h-3.5 w-3.5 text-white" />
                   Private Security · Protection · Training
                 </span>
               </Reveal>
               <Reveal delay={60}>
-                <h1 className="mt-6 font-heading font-bold uppercase leading-[1.08] tracking-tight text-ink-900 text-display-lg-mobile md:text-display-lg">
+                <h1 className="mt-6 font-heading font-bold uppercase leading-[1.08] tracking-tight text-white text-display-lg-mobile md:text-display-lg">
                   Full&#8209;spectrum security, protection &amp; training
                 </h1>
               </Reveal>
               <Reveal delay={120}>
-                <p className="mt-6 max-w-xl text-ink-500 text-lg leading-relaxed">
+                <p className="mt-6 max-w-xl text-white/80 text-lg leading-relaxed">
                   3Sixty Protect delivers professional security across six
                   disciplines: from executive protection, risk consultancy and
                   technical surveillance to industry-leading SIA training. One
@@ -76,18 +68,18 @@ export default async function HomePage() {
               </Reveal>
               <Reveal delay={180}>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Button href="/services" size="lg">
+                  <Button href="/services" variant="light" size="lg">
                     Explore Services
                     <ArrowRight className="h-4 w-4" />
                   </Button>
-                  <Button href="/book" variant="outline" size="lg">
+                  <Button href="/book" variant="outline-light" size="lg">
                     Book a Course
                   </Button>
                 </div>
               </Reveal>
               <Reveal delay={240}>
-                <div className="mt-10 border-t border-ink-200 pt-6">
-                  <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-400">
+                <div className="mt-10 border-t border-white/20 pt-6">
+                  <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.05em] text-white/60">
                     Our standard
                   </p>
                   <ul className="flex flex-wrap gap-2">
@@ -98,28 +90,13 @@ export default async function HomePage() {
                     ].map((item) => (
                       <li
                         key={item}
-                        className="inline-flex items-center gap-1.5 border border-ink-950 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-800"
+                        className="inline-flex items-center gap-1.5 border border-white/60 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.05em] text-white"
                       >
-                        <Check className="h-3.5 w-3.5 text-ink-900" />
+                        <Check className="h-3.5 w-3.5 text-white" />
                         {item}
                       </li>
                     ))}
                   </ul>
-                </div>
-              </Reveal>
-            </div>
-
-            {/* Image — mobile & tablet (desktop uses the bleed image above) */}
-            <div className="lg:hidden">
-              <Reveal delay={160}>
-                <div className="bg-background">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/IMG003.jpg"
-                    alt="A client flanked by two close protection officers leaving a building"
-                    className="mx-auto block h-auto w-full max-w-lg select-none mix-blend-multiply"
-                    draggable={false}
-                  />
                 </div>
               </Reveal>
             </div>
@@ -163,9 +140,10 @@ export default async function HomePage() {
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
-          <div className="mt-12 grid gap-px bg-ink-950 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Individually separated cards */}
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
             {SERVICES.map((s, i) => (
-              <Reveal key={s.slug} delay={i * 60}>
+              <Reveal key={s.slug} delay={i * 60} className="h-full">
                 <ServiceCard service={s} index={i} />
               </Reveal>
             ))}
@@ -182,7 +160,7 @@ export default async function HomePage() {
             description="Training is the flagship of our services. Whether you’re starting out on the door or aiming for a career in professional protection, we have the SIA qualification to get you there."
           />
 
-          <div className="mt-14 grid gap-6 lg:grid-cols-2">
+          <div className="mt-8 grid gap-6 md:mt-14 lg:grid-cols-2">
             <CourseOverviewCard
               icon={ShieldCheck}
               type="door_supervision"
@@ -213,12 +191,24 @@ export default async function HomePage() {
             title="Training that prepares you for the real world"
             description="We focus on practical, job-ready skills, taught by people who’ve worked the door and the principal’s side."
           />
-          <div className="mt-12 grid gap-px bg-ink-950 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Open "spec-sheet" grid — hairline rule per item instead of enclosing boxes */}
+          <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 sm:gap-x-10 sm:gap-y-9 md:mt-14 lg:grid-cols-3">
             {whyChoose.map((item, i) => (
               <Reveal key={item.title} delay={i * 60}>
-                <FeatureCard icon={item.icon} title={item.title}>
-                  {item.text}
-                </FeatureCard>
+                <div className="border-t border-ink-300 pt-4 sm:pt-5">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                    <item.icon
+                      className="h-6 w-6 shrink-0 text-ink-900"
+                      strokeWidth={1.5}
+                    />
+                    <h3 className="font-heading text-base font-bold text-ink-900 sm:text-lg">
+                      {item.title}
+                    </h3>
+                  </div>
+                  <p className="mt-2.5 text-pretty text-sm leading-relaxed text-ink-500 sm:text-base">
+                    {item.text}
+                  </p>
+                </div>
               </Reveal>
             ))}
           </div>
@@ -241,9 +231,9 @@ export default async function HomePage() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
               {upcoming.map((course, i) => (
-                <Reveal key={course.id} delay={i * 70}>
+                <Reveal key={course.id} delay={i * 70} className="h-full">
                   <CourseCard course={course} />
                 </Reveal>
               ))}
@@ -254,7 +244,7 @@ export default async function HomePage() {
 
       {/* ───────────────── Trust section ───────────────── */}
       <section className="section bg-ink-950 text-white">
-        <div className="container grid items-center gap-12 lg:grid-cols-2">
+        <div className="container grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
           <div>
             <SectionHeading
               dark
@@ -276,7 +266,7 @@ export default async function HomePage() {
           </div>
 
           <Reveal delay={120}>
-            <figure className="relative border border-white/20 p-8">
+            <figure className="relative border border-white/20 p-6 md:p-8">
               <Quote className="h-9 w-9 text-white/70" />
               <blockquote className="mt-4 text-pretty text-xl font-medium leading-relaxed text-ink-100">
                 “The training was practical, professional and genuinely prepared me
@@ -308,10 +298,10 @@ export default async function HomePage() {
             title="Booking your course takes minutes"
             description="A straightforward journey from choosing your course to walking into the classroom."
           />
-          <ol className="mt-14 grid gap-6 md:grid-cols-4">
+          <ol className="mt-8 grid grid-cols-2 gap-4 md:mt-14 md:grid-cols-4 md:gap-6">
             {journey.map((step, i) => (
               <Reveal key={step.title} delay={i * 70}>
-                <li className="relative h-full border border-ink-950 bg-background p-6">
+                <li className="relative h-full border border-ink-950 bg-background p-5 md:p-6">
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-4xl text-ink-300">
                       {String(i + 1).padStart(2, '0')}
@@ -359,7 +349,7 @@ function CourseOverviewCard({
   const meta = COURSE_TYPE_META[type];
   return (
     <Reveal className="h-full">
-      <div className="group flex h-full flex-col border border-ink-950 bg-background p-8 transition-colors hover:bg-ink-950">
+      <div className="group flex h-full flex-col border border-ink-950 bg-background p-6 transition-colors hover:bg-ink-950 md:p-8">
         <div className="flex items-center gap-4">
           <div className="flex h-14 w-14 items-center justify-center border border-ink-950 text-ink-900 transition-colors group-hover:border-white group-hover:text-white">
             <Icon className="h-7 w-7" strokeWidth={1.75} />

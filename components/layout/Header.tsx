@@ -38,7 +38,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-ink-950 bg-background">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4">
         <Link
           href="/"
           aria-label={`${SITE.name} home`}
@@ -92,7 +92,7 @@ export function Header() {
       {/* Mobile full-screen drawer */}
       {open && (
         <div className="fixed inset-0 z-50 flex flex-col bg-background lg:hidden">
-          <div className="flex h-16 items-center justify-between border-b border-ink-950 px-4">
+          <div className="flex h-20 items-center justify-between border-b border-ink-950 px-4">
             <Link
               href="/"
               aria-label={`${SITE.name} home`}

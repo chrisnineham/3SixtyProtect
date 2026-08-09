@@ -8,12 +8,16 @@ import {
 } from '@/lib/supabase/config';
 import { getCourseById } from '@/lib/courses';
 import { bookingSchema, fieldErrors } from '@/lib/validation';
+import { isStripeEnabled, createCheckoutSession } from '@/lib/stripe';
+import { depositAmount } from '@/lib/payments';
 
 export interface BookingFormState {
-  status: 'idle' | 'success' | 'error';
+  status: 'idle' | 'success' | 'error' | 'redirect';
   message?: string;
   errors?: Record<string, string>;
   reference?: string;
+  /** Stripe Checkout URL to send the browser to when status === 'redirect'. */
+  url?: string;
   summary?: {
     courseTitle: string;
     name: string;
@@ -25,6 +29,13 @@ function reference(): string {
   // e.g. 3SP-8F2A9C — short, human-friendly booking reference.
   const id = crypto.randomUUID().replace(/-/g, '').slice(0, 6).toUpperCase();
   return `3SP-${id}`;
+}
+
+function siteUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ||
+    'http://localhost:3000'
+  );
 }
 
 export async function createBookingAction(
@@ -68,51 +79,81 @@ export async function createBookingAction(
   const message = noteParts.join('\n') || null;
 
   const ref = reference();
+  const deposit = depositAmount(course.price);
+
+  const summary = {
+    courseTitle: course.title,
+    name: values.customer_name,
+    email: values.customer_email,
+  };
 
   // No Supabase yet → simulate a successful booking so the flow is testable.
   if (!isSupabaseConfigured()) {
-    return {
-      status: 'success',
-      reference: ref,
-      summary: {
-        courseTitle: course.title,
-        name: values.customer_name,
-        email: values.customer_email,
-      },
-    };
+    return { status: 'success', reference: ref, summary };
   }
 
   try {
-    // Prefer the service-role client for trusted server writes; fall back to
-    // the anon client (covered by the "bookings public insert" RLS policy).
-    const supabase = isServiceRoleConfigured()
-      ? createAdminClient()
-      : createClient();
+    // Trusted (service-role) client can read back the inserted id (needed to
+    // link the Stripe session) and bypass RLS for the write.
+    const trusted = isServiceRoleConfigured();
+    const supabase = trusted ? createAdminClient() : createClient();
 
-    const { error } = await supabase.from('bookings').insert({
+    const insertPayload = {
       course_id: course.id,
       customer_name: values.customer_name,
       customer_email: values.customer_email,
       customer_phone: values.customer_phone,
       message,
-      booking_status: 'new',
-    });
+      booking_status: 'new' as const,
+      reference: ref,
+      payment_status: 'unpaid' as const,
+      deposit_amount: deposit,
+    };
 
+    // Take a deposit only when Stripe is configured AND we can read the new
+    // booking id back (service role). Otherwise fall back to a no-payment
+    // booking so the site keeps working.
+    const takePayment = isStripeEnabled() && trusted;
+
+    if (takePayment) {
+      const { data: inserted, error } = await supabase
+        .from('bookings')
+        .insert(insertPayload)
+        .select('id')
+        .single();
+      if (error || !inserted) throw error ?? new Error('Booking insert returned no id');
+
+      const session = await createCheckoutSession({
+        courseTitle: course.title,
+        courseId: course.id,
+        fee: course.price,
+        amount: deposit,
+        bookingId: inserted.id,
+        reference: ref,
+        customerEmail: values.customer_email,
+        successUrl: `${siteUrl()}/book/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${siteUrl()}/book?course=${course.id}&canceled=1`,
+      });
+
+      // Runtime Stripe issue → the booking is stored; confirm without payment.
+      if (!session) {
+        return { status: 'success', reference: ref, summary };
+      }
+
+      // Best-effort: record the session id for reconciliation.
+      await supabase
+        .from('bookings')
+        .update({ stripe_session_id: session.id })
+        .eq('id', inserted.id);
+
+      return { status: 'redirect', url: session.url, reference: ref };
+    }
+
+    // No-payment path.
+    const { error } = await supabase.from('bookings').insert(insertPayload);
     if (error) throw error;
 
-    // ── Stripe-ready hook ────────────────────────────────────────────
-    // When online payment is enabled, create a checkout session here and
-    // return its URL for the client to redirect to. See lib/stripe.ts.
-
-    return {
-      status: 'success',
-      reference: ref,
-      summary: {
-        courseTitle: course.title,
-        name: values.customer_name,
-        email: values.customer_email,
-      },
-    };
+    return { status: 'success', reference: ref, summary };
   } catch (err) {
     console.error('[book] createBookingAction failed:', err);
     return {

@@ -8,42 +8,88 @@ import { ServiceIcon } from '@/components/ServiceIcon';
 import type { Service } from '@/lib/services';
 
 export function ServicePageTemplate({ service }: { service: Service }) {
+  const hasHeroImage = Boolean(service.heroImage);
+
   return (
     <>
       {/* ── Hero ── */}
       <section className="relative bg-background border-b border-ink-950">
-        <div className="container relative z-10 pb-14 pt-40 sm:pt-44 lg:pb-20 lg:pt-52">
-          <div className="max-w-4xl">
-            <Reveal>
-              <span className="inline-flex items-center gap-2 border border-ink-950 bg-background px-3 py-1 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-800">
-                <ServiceIcon name={service.icon} className="h-3.5 w-3.5" />
-                {service.category}
-              </span>
-            </Reveal>
-            <Reveal delay={60}>
-              <h1 className="mt-8 text-left font-heading font-bold uppercase tracking-tight text-display-lg-mobile leading-[0.95] text-ink-900 md:text-display-2xl">
-                {service.name}
-              </h1>
-            </Reveal>
-            <Reveal delay={120}>
-              <p className="mt-6 text-xl text-ink-500">{service.tagline}</p>
-            </Reveal>
-            <Reveal delay={160}>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-800">
-                {service.heroBlurb}
-              </p>
-            </Reveal>
-            <Reveal delay={220}>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button href={service.ctaHref} size="lg">
-                  {service.ctaLabel}
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-                <Button href="/services" variant="outline" size="lg">
-                  All services
-                </Button>
-              </div>
-            </Reveal>
+        <div className={hasHeroImage ? 'relative isolate overflow-hidden' : 'relative'}>
+          {hasHeroImage && (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={service.heroImage}
+                alt=""
+                aria-hidden
+                className="absolute inset-0 -z-20 h-full w-full select-none object-cover object-[72%_center] md:object-center"
+                draggable={false}
+              />
+              {/* Legibility scrim — darker on the left where the copy sits */}
+              <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/85 via-ink-950/60 to-ink-950/30 md:from-ink-950/80 md:via-ink-950/45 md:to-transparent" />
+            </>
+          )}
+          <div
+            className={`container relative z-10 pb-14 pt-40 sm:pt-44 lg:pb-20 lg:pt-52 ${
+              hasHeroImage ? 'min-h-[785px] md:min-h-[940px] lg:min-h-[995px]' : ''
+            }`}
+          >
+            <div className="max-w-4xl">
+              <Reveal>
+                <span
+                  className={
+                    hasHeroImage
+                      ? 'inline-flex items-center gap-2 border border-white/60 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.05em] text-white'
+                      : 'inline-flex items-center gap-2 border border-ink-950 bg-background px-3 py-1 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-800'
+                  }
+                >
+                  <ServiceIcon name={service.icon} className="h-3.5 w-3.5" />
+                  {service.category}
+                </span>
+              </Reveal>
+              <Reveal delay={60}>
+                <h1
+                  className={`mt-8 text-left font-heading font-bold uppercase tracking-tight text-display-lg-mobile leading-[0.95] md:text-display-2xl ${
+                    hasHeroImage ? 'text-white' : 'text-ink-900'
+                  }`}
+                >
+                  {service.name}
+                </h1>
+              </Reveal>
+              <Reveal delay={120}>
+                <p className={`mt-6 text-xl ${hasHeroImage ? 'text-white/80' : 'text-ink-500'}`}>
+                  {service.tagline}
+                </p>
+              </Reveal>
+              <Reveal delay={160}>
+                <p
+                  className={`mt-6 max-w-2xl text-lg leading-relaxed ${
+                    hasHeroImage ? 'text-white/85' : 'text-ink-800'
+                  }`}
+                >
+                  {service.heroBlurb}
+                </p>
+              </Reveal>
+              <Reveal delay={220}>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <Button
+                    href={service.ctaHref}
+                    variant={hasHeroImage ? 'light' : 'primary'}
+                    size="lg"
+                  >
+                    {service.ctaLabel}
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    href="/services"
+                    variant={hasHeroImage ? 'outline-light' : 'outline'}
+                    size="lg"
+                  >
+                    All services
+                  </Button>
+                </div>
+              </Reveal>
+            </div>
           </div>
         </div>
 

@@ -17,7 +17,7 @@ export function FeatureCard({
   return (
     <div
       className={cn(
-        'group border p-8 transition-colors',
+        'group border p-6 transition-colors md:p-8',
         dark
           ? 'border-white bg-ink-950 hover:bg-background'
           : 'border-ink-950 bg-background hover:bg-ink-950',

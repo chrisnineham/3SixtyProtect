@@ -21,17 +21,17 @@ export function CtaBand({
   secondaryHref?: string;
 }) {
   return (
-    <section className="bg-ink-950 py-20 text-white md:py-28">
+    <section className="bg-ink-950 py-14 text-white md:py-28">
       <div className="container">
         <Reveal className="mx-auto max-w-3xl">
           <span className="eyebrow-on-dark">{eyebrow}</span>
-          <h2 className="mt-6 font-heading text-display-lg-mobile font-bold uppercase tracking-tight text-white md:text-display-lg">
+          <h2 className="mt-5 font-heading text-display-lg-mobile font-bold uppercase tracking-tight text-white md:mt-6 md:text-display-lg">
             {title}
           </h2>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/70 md:mt-6">
             {description}
           </p>
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div className="mt-8 flex flex-wrap items-center gap-4 md:mt-10">
             <Button href={primaryHref} variant="light" size="lg">
               {primaryLabel}
               <ArrowRight className="h-4 w-4" />

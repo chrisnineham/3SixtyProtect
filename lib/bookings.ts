@@ -17,7 +17,7 @@ export async function getAllBookingsAdmin(): Promise<Booking[]> {
     const { data, error } = await supabase
       .from('bookings')
       .select(
-        'id, course_id, customer_name, customer_email, customer_phone, message, booking_status, created_at, updated_at, course:courses ( id, title, course_type, start_date )',
+        'id, course_id, customer_name, customer_email, customer_phone, message, booking_status, reference, payment_status, deposit_amount, stripe_session_id, created_at, updated_at, course:courses ( id, title, course_type, start_date )',
       )
       .order('created_at', { ascending: false });
     if (error) throw error;

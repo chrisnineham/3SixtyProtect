@@ -2,6 +2,8 @@ import type { CourseType } from './types';
 
 export interface CoursePageContent {
   type: CourseType;
+  /** Optional full-bleed hero background image (path under /public). */
+  heroImage?: string;
   hero: {
     eyebrow: string;
     title: string;
@@ -24,6 +26,7 @@ export interface CoursePageContent {
 
 export const DOOR_SUPERVISION_CONTENT: CoursePageContent = {
   type: 'door_supervision',
+  heroImage: '/images/DS4BANNER.png',
   level: 'SIA Level 2 Award',
   durationLabel: 'Typically 6 days',
   hero: {
@@ -134,6 +137,7 @@ export const DOOR_SUPERVISION_CONTENT: CoursePageContent = {
 
 export const CLOSE_PROTECTION_CONTENT: CoursePageContent = {
   type: 'close_protection',
+  heroImage: '/images/CPTRAINING.png',
   level: 'SIA Level 3 Award',
   durationLabel: 'Typically 14–15 days',
   hero: {

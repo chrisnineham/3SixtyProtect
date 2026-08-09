@@ -8,6 +8,8 @@ export type CourseStatus = 'draft' | 'published' | 'fully_booked' | 'cancelled';
 
 export type BookingStatus = 'new' | 'confirmed' | 'cancelled' | 'completed';
 
+export type PaymentStatus = 'unpaid' | 'deposit_paid';
+
 export type EnquiryType =
   | 'door_supervision'
   | 'close_protection'
@@ -42,6 +44,10 @@ export interface Booking {
   customer_phone: string;
   message: string | null;
   booking_status: BookingStatus;
+  reference?: string | null;
+  payment_status?: PaymentStatus;
+  deposit_amount?: number | null;
+  stripe_session_id?: string | null;
   created_at: string;
   updated_at: string;
   // Joined when reading bookings in the admin portal

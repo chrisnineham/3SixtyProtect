@@ -33,6 +33,12 @@ export interface Service {
   whoFor: string[];
   approach: ServiceApproachStep[];
   icon: ServiceIconName;
+  /** Optional decorative background image (path under /public). */
+  image?: string;
+  /** Crop focus for the card image (default 'top'). */
+  imageFocus?: 'top' | 'center' | 'bottom';
+  /** Optional full-bleed hero background image for the detail page (path under /public). */
+  heroImage?: string;
   ctaLabel: string;
   ctaHref: string;
   href: string;
@@ -42,6 +48,7 @@ export interface Service {
 export const SERVICES: Service[] = [
   {
     slug: "training-sia-security-courses",
+    image: "/images/DS1.png",
     name: "Training & SIA Security Courses",
     category: "Training",
     tagline: "Licence-linked SIA qualifications, taught by operators who work the field.",
@@ -127,6 +134,8 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "executive-protection",
+    image: "/images/ST4.png",
+    heroImage: "/images/EPB1.png",
     name: "Executive Protection",
     category: "Close Protection",
     tagline: "Discreet, SIA-licensed protection for those who cannot afford to be exposed.",
@@ -212,6 +221,8 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "security-risk-management-consultancy",
+    image: "/images/ST5.png",
+    heroImage: "/images/SRMC1.png",
     name: "Security Risk Management Consultancy",
     category: "Consultancy",
     tagline: "See the threat before it moves.",
@@ -297,6 +308,8 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "technical-surveillance",
+    image: "/images/ST6.png",
+    heroImage: "/images/TACT1.png",
     name: "Technical Surveillance",
     category: "Surveillance",
     tagline: "See everything. Reveal nothing you don't intend to.",
@@ -382,6 +395,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "manpower-supply-management",
+    image: "/images/ST1.png",
+    imageFocus: "center",
+    heroImage: "/images/MSM1.png",
     name: "Manpower Supply & Management",
     category: "Guarding",
     tagline: "SIA-licensed officers, deployed and managed to standard.",
@@ -465,6 +481,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "private-investigations",
+    image: "/images/ST2.png",
     name: "Private Investigations",
     category: "Investigations",
     tagline: "Discreet, lawful investigation. Evidence that stands up.",

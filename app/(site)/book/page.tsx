@@ -4,6 +4,8 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { BookingForm } from '@/components/booking/BookingForm';
 import { Button } from '@/components/ui/Button';
 import { getPublicCourses } from '@/lib/courses';
+import { isStripeEnabled } from '@/lib/stripe';
+import { DEPOSIT_PERCENT } from '@/lib/payments';
 
 export const metadata: Metadata = {
   title: 'Book a Course Online',
@@ -12,14 +14,18 @@ export const metadata: Metadata = {
   alternates: { canonical: '/book' },
 };
 
-const assurances = ['Takes 2 minutes', 'No payment taken now', 'Team confirms by email'];
-
 export default async function BookPage({
   searchParams,
 }: {
   searchParams: { course?: string };
 }) {
   const courses = await getPublicCourses();
+  const paymentEnabled = isStripeEnabled();
+  const assurances = [
+    'Takes 2 minutes',
+    paymentEnabled ? `${DEPOSIT_PERCENT}% deposit secures your place` : 'No payment taken now',
+    'Team confirms by email',
+  ];
 
   return (
     <>
@@ -27,8 +33,10 @@ export default async function BookPage({
         eyebrow="Book Online"
         title="Reserve your place"
         description="Select your course, tell us a little about yourself, and we’ll confirm your booking. It only takes a couple of minutes."
+        image="/images/BKG1.png"
+        imageAlt="3Sixty Protect SIA training in progress"
       >
-        <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400">
+        <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[12px] uppercase tracking-[0.05em] text-white/70">
           {assurances.map((label, i) => (
             <li key={label} className="flex items-center gap-3">
               {i > 0 && <span aria-hidden>·</span>}
@@ -41,7 +49,11 @@ export default async function BookPage({
       <section className="section">
         <div className="container">
           {courses.length > 0 ? (
-            <BookingForm courses={courses} initialCourseId={searchParams.course} />
+            <BookingForm
+              courses={courses}
+              initialCourseId={searchParams.course}
+              paymentEnabled={paymentEnabled}
+            />
           ) : (
             <div className="mx-auto flex max-w-xl flex-col items-center border border-ink-950 bg-background px-6 py-16 text-center">
               <div className="flex h-14 w-14 items-center justify-center border border-ink-950 text-ink-800">

@@ -38,7 +38,7 @@ export function CourseCard({
   return (
     <article
       className={cn(
-        'group relative flex flex-col border border-ink-950 bg-background transition-colors',
+        'group relative flex h-full flex-col border border-ink-950 bg-background transition-colors',
         className,
       )}
     >
@@ -50,7 +50,7 @@ export function CourseCard({
             alt={course.title}
             fill
             sizes="(max-width: 768px) 100vw, 400px"
-            className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+            className="h-full w-full object-cover object-top grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-surface-container">
@@ -114,7 +114,7 @@ export function CourseCard({
           </div>
         </dl>
 
-        <div className="mt-4 flex items-end justify-between border-t border-ink-200 pt-4">
+        <div className="mt-auto flex items-end justify-between border-t border-ink-200 pt-4">
           <div className="flex flex-col gap-1">
             <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-ink-400">
               From

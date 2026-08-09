@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/Badge';
 import { BookingStatusControl } from '@/components/admin/BookingStatusControl';
 import { getAllBookingsAdmin } from '@/lib/bookings';
 import { COURSE_TYPE_META } from '@/lib/constants';
-import { formatDate } from '@/lib/utils';
+import { formatDate, formatPrice } from '@/lib/utils';
 
 export const metadata = { title: 'Bookings' };
 export const dynamic = 'force-dynamic';
@@ -57,6 +57,16 @@ export default async function AdminBookingsPage() {
                         {COURSE_TYPE_META[b.course.course_type].shortLabel}
                       </Badge>
                     ) : null}
+                    {b.payment_status === 'deposit_paid' ? (
+                      <Badge tone="success">
+                        Deposit paid
+                        {b.deposit_amount ? ` · ${formatPrice(b.deposit_amount)}` : ''}
+                      </Badge>
+                    ) : b.deposit_amount ? (
+                      <Badge tone="warning">
+                        Deposit due · {formatPrice(b.deposit_amount)}
+                      </Badge>
+                    ) : null}
                   </div>
                   <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-600">
                     <a
@@ -97,6 +107,11 @@ export default async function AdminBookingsPage() {
                   <Clock className="h-4 w-4 text-ink-400" />
                   Booked: {formatDate(b.created_at.slice(0, 10))}
                 </p>
+                {b.reference ? (
+                  <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.05em] text-ink-500">
+                    Ref: {b.reference}
+                  </p>
+                ) : null}
               </div>
 
               {b.message ? (

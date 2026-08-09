@@ -1,6 +1,7 @@
 import 'server-only';
 
 import Stripe from 'stripe';
+import { DEPOSIT_PERCENT } from './payments';
 
 /**
  * Stripe is wired but OPTIONAL. Online card payment can be switched on later
@@ -27,17 +28,21 @@ export function isStripeEnabled(): boolean {
 }
 
 /**
- * Placeholder for the future payment step. When ready, call this from the
- * booking server action with the chosen course and the new booking id.
+ * Create a Stripe Checkout session for the booking DEPOSIT.
+ * Charges `amount` (the deposit) now; the full `fee` and other context are
+ * carried in metadata so the webhook / success page can reconcile the booking.
  */
 export async function createCheckoutSession(params: {
   courseTitle: string;
-  amount: number; // in GBP
+  courseId?: string;
+  fee: number; // full course fee (GBP)
+  amount: number; // amount charged now — the deposit (GBP)
   bookingId: string;
+  reference: string;
   successUrl: string;
   cancelUrl: string;
   customerEmail?: string;
-}): Promise<{ url: string } | null> {
+}): Promise<{ url: string; id: string } | null> {
   const client = getStripe();
   if (!client) return null;
 
@@ -50,14 +55,24 @@ export async function createCheckoutSession(params: {
         price_data: {
           currency: 'gbp',
           unit_amount: Math.round(params.amount * 100),
-          product_data: { name: params.courseTitle },
+          product_data: {
+            name: `${params.courseTitle} — deposit`,
+            description: `${DEPOSIT_PERCENT}% deposit to reserve your place. Balance payable before the course start.`,
+          },
         },
       },
     ],
-    metadata: { bookingId: params.bookingId },
+    metadata: {
+      bookingId: params.bookingId,
+      reference: params.reference,
+      courseTitle: params.courseTitle,
+      courseId: params.courseId ?? '',
+      fee: String(params.fee),
+      deposit: String(params.amount),
+    },
     success_url: params.successUrl,
     cancel_url: params.cancelUrl,
   });
 
-  return session.url ? { url: session.url } : null;
+  return session.url ? { url: session.url, id: session.id } : null;
 }

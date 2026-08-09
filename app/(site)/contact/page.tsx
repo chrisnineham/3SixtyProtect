@@ -48,7 +48,51 @@ export default function ContactPage() {
         eyebrow="Contact"
         title="Get in touch"
         description="Have a question about a course, a date or your eligibility? We’re here to help you take the next step toward your SIA qualification."
-      />
+        image="/images/CONTACTHERO.png"
+        imageAlt="3Sixty Protect team"
+      >
+        <div className="space-y-7">
+          <p className="max-w-xl text-base leading-relaxed text-white/70">
+            Prefer to talk it through? Call or email us directly, or send an
+            enquiry with the form below and a member of our team will get back to
+            you. Whether it’s course dates, eligibility, group bookings or a
+            security requirement, we’re happy to help.
+          </p>
+
+          <div className="flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-10">
+            <a
+              href={SITE.phoneHref}
+              className="inline-flex items-center gap-3 text-white transition-colors hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
+            >
+              <Phone className="h-5 w-5 text-white/60" />
+              <span className="font-heading text-2xl font-bold tracking-tight">
+                {SITE.phone}
+              </span>
+            </a>
+            <a
+              href={`mailto:${SITE.email}`}
+              className="inline-flex items-center gap-3 font-mono text-[13px] uppercase tracking-[0.05em] text-white/90 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
+            >
+              <Mail className="h-5 w-5 text-white/60" />
+              {SITE.email}
+            </a>
+          </div>
+
+          <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[12px] uppercase tracking-[0.05em] text-white/60">
+            <li className="inline-flex items-center gap-2">
+              <Clock className="h-3.5 w-3.5" />
+              Mon to Fri, 9am to 6pm
+            </li>
+            <li aria-hidden>·</li>
+            <li>Reply within one working day</li>
+            <li aria-hidden>·</li>
+            <li className="inline-flex items-center gap-2">
+              <MapPin className="h-3.5 w-3.5" />
+              {SITE.serviceArea}
+            </li>
+          </ul>
+        </div>
+      </PageHeader>
 
       <section className="section">
         <div className="container grid gap-x-10 gap-y-8 lg:grid-cols-12">

@@ -32,6 +32,8 @@ export default async function CalendarPage({
         eyebrow="Training Calendar"
         title="Upcoming SIA training courses"
         description="Browse our scheduled Door Supervision and Close Protection courses. Filter by course type, check availability and book your place in minutes."
+        image="/images/DS3.png"
+        imageAlt="SIA door supervision training in progress"
       />
       <CalendarView courses={courses} initialFilter={initialFilter} />
     </>

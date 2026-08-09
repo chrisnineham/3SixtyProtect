@@ -45,9 +45,9 @@
 }
 
 @layer components {
-  /* Section vertical rhythm — pragmatic voids (160px reserved for hero/CTA) */
+  /* Section vertical rhythm — tighter on mobile, generous voids on desktop */
   .section {
-    @apply py-24 md:py-32;
+    @apply py-14 md:py-32;
   }
 
   /* Small uppercase monospace label / eyebrow (architectural blueprint) */

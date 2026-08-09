@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import Link from 'next/link';
 import {
@@ -23,15 +23,16 @@ import {
   formatPrice,
   formatTimeRange,
 } from '@/lib/utils';
+import { DEPOSIT_PERCENT, depositAmount, balanceAmount } from '@/lib/payments';
 import type { Course } from '@/lib/types';
 
 const initialState: BookingFormState = { status: 'idle' };
 
-function SubmitButton() {
+function SubmitButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" size="lg" className="w-full" disabled={pending}>
-      {pending ? 'Submitting…' : 'Confirm Booking'}
+      {pending ? 'Submitting…' : label}
       {!pending && <ArrowRight className="h-4 w-4" />}
     </Button>
   );
@@ -40,11 +41,21 @@ function SubmitButton() {
 export function BookingForm({
   courses,
   initialCourseId,
+  paymentEnabled = false,
 }: {
   courses: Course[];
   initialCourseId?: string;
+  paymentEnabled?: boolean;
 }) {
   const [state, formAction] = useFormState(createBookingAction, initialState);
+
+  // When the action returns a Stripe Checkout URL, send the browser there.
+  useEffect(() => {
+    if (state.status === 'redirect' && state.url) {
+      window.location.href = state.url;
+    }
+  }, [state]);
+
   const [selectedId, setSelectedId] = useState(
     initialCourseId && courses.some((c) => c.id === initialCourseId)
       ? initialCourseId
@@ -204,10 +215,14 @@ export function BookingForm({
           ) : null}
 
           <div className="mt-7">
-            <SubmitButton />
-            <p className="mt-3 flex items-center justify-center gap-1.5 font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400">
-              <Lock className="h-3.5 w-3.5" />
-              No payment is taken now. We’ll confirm your place by email.
+            <SubmitButton
+              label={paymentEnabled ? 'Continue to Secure Payment' : 'Confirm Booking'}
+            />
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-center font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400">
+              <Lock className="h-3.5 w-3.5 shrink-0" />
+              {paymentEnabled
+                ? `A ${DEPOSIT_PERCENT}% deposit secures your place. Balance due before the course.`
+                : 'No payment is taken now. We’ll confirm your place by email.'}
             </p>
           </div>
         </div>
@@ -245,13 +260,35 @@ export function BookingForm({
                       {selected.location}
                     </div>
                   </dl>
-                  <div className="mt-5 flex items-end justify-between border-t border-ink-950 pt-4">
-                    <span className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500">
-                      Course fee
-                    </span>
-                    <span className="font-heading text-headline-md text-ink-900">
-                      {formatPrice(selected.price)}
-                    </span>
+                  <div className="mt-5 space-y-3 border-t border-ink-950 pt-4">
+                    <div className="flex items-end justify-between">
+                      <span className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500">
+                        Course fee
+                      </span>
+                      <span className="font-heading text-headline-md text-ink-900">
+                        {formatPrice(selected.price)}
+                      </span>
+                    </div>
+                    {paymentEnabled && (
+                      <>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-ink-600">
+                            Deposit due today ({DEPOSIT_PERCENT}%)
+                          </span>
+                          <span className="font-semibold text-ink-900">
+                            {formatPrice(depositAmount(selected.price))}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-ink-600">
+                            Balance before course
+                          </span>
+                          <span className="font-semibold text-ink-900">
+                            {formatPrice(balanceAmount(selected.price))}
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </>
               ) : (
