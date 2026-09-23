@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    serverActions: {
+      // Screening evidence uploads (ID scans, references) exceed the 1 MB default.
+      bodySizeLimit: '12mb',
+    },
+  },
   images: {
     remotePatterns: [
       // Supabase Storage public buckets (course images)

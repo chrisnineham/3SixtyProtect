@@ -2,6 +2,13 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 type CookieToSet = { name: string; value: string; options: CookieOptions };
+
+const PUBLIC_AUTH_PATHS = [
+  '/admin/login',
+  '/admin/forgot-password',
+  '/admin/reset-password',
+  '/admin/auth/callback',
+];
 import { SUPABASE_ANON_KEY, SUPABASE_URL, isSupabaseConfigured } from './config';
 
 /**
@@ -37,9 +44,10 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const isLogin = path.startsWith('/admin/login');
+  // Pages a signed-out user must be able to reach: sign in and password reset.
+  const isPublicAuthPage = PUBLIC_AUTH_PATHS.some((p) => path.startsWith(p));
 
-  if (path.startsWith('/admin') && !isLogin && !user) {
+  if (path.startsWith('/admin') && !isPublicAuthPage && !user) {
     const url = request.nextUrl.clone();
     url.pathname = '/admin/login';
     return NextResponse.redirect(url);

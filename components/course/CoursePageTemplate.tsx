@@ -215,7 +215,7 @@ export function CoursePageTemplate({
       <section className="section bg-ink-950 text-white">
         <div className="container">
           <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-white/40">
-            02 / Who it's for
+            02 / Who it&apos;s for
           </p>
           <div className="mt-10 grid gap-4 lg:grid-cols-2">
             <Reveal className="border border-white/20 bg-ink-950 p-8">

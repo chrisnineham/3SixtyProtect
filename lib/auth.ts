@@ -4,21 +4,21 @@ import { createClient } from './supabase/server';
 import { isSupabaseConfigured } from './supabase/config';
 
 export type AdminSession =
-  | { mode: 'demo'; email: null; role: null }
-  | { mode: 'unauthenticated'; email: null; role: null }
-  | { mode: 'forbidden'; email: string | null; role: null }
-  | { mode: 'admin'; email: string; role: string };
+  | { mode: 'demo'; id: null; email: null; role: null; permissions: string[] }
+  | { mode: 'unauthenticated'; id: null; email: null; role: null; permissions: string[] }
+  | { mode: 'forbidden'; id: string | null; email: string | null; role: null; permissions: string[] }
+  | { mode: 'admin'; id: string; email: string; role: string; permissions: string[] };
 
 /**
  * Resolve the current admin session.
  *  - demo            → Supabase not configured; preview the UI freely
  *  - unauthenticated → no signed-in user
  *  - forbidden       → signed in but not in admin_users
- *  - admin           → authorised admin
+ *  - admin           → authorised admin (with role + granted permissions)
  */
 export async function getAdminSession(): Promise<AdminSession> {
   if (!isSupabaseConfigured()) {
-    return { mode: 'demo', email: null, role: null };
+    return { mode: 'demo', id: null, email: null, role: null, permissions: [] };
   }
 
   const supabase = createClient();
@@ -26,22 +26,31 @@ export async function getAdminSession(): Promise<AdminSession> {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return { mode: 'unauthenticated', email: null, role: null };
+  if (!user) return { mode: 'unauthenticated', id: null, email: null, role: null, permissions: [] };
 
+  // `select *` so that an admin_users table without the (optional) permissions
+  // column never breaks sign-in.
   const { data: admin } = await supabase
     .from('admin_users')
-    .select('email, role')
+    .select('*')
     .eq('id', user.id)
     .maybeSingle();
 
   if (!admin) {
-    return { mode: 'forbidden', email: user.email ?? null, role: null };
+    return { mode: 'forbidden', id: user.id, email: user.email ?? null, role: null, permissions: [] };
   }
+
+  const record = admin as { email?: string | null; role?: string | null; permissions?: unknown };
+  const permissions = Array.isArray(record.permissions)
+    ? record.permissions.filter((p): p is string => typeof p === 'string')
+    : [];
 
   return {
     mode: 'admin',
-    email: admin.email ?? user.email ?? '',
-    role: admin.role ?? 'admin',
+    id: user.id,
+    email: record.email ?? user.email ?? '',
+    role: record.role ?? 'admin',
+    permissions,
   };
 }
 

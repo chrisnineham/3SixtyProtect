@@ -161,7 +161,7 @@ export function ServicePageTemplate({ service }: { service: Service }) {
       <section className="section bg-ink-50">
         <div className="container">
           <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-ink-400">
-            03 / Who it's for
+            03 / Who it&apos;s for
           </p>
           <div className="mt-6">
             <SectionHeading

@@ -38,13 +38,13 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-ink-950 bg-background">
-      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4">
+      <div className="mx-auto flex h-[110px] max-w-6xl items-center justify-between px-4 md:h-[140px]">
         <Link
           href="/"
           aria-label={`${SITE.name} home`}
           className="shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
         >
-          <Logo />
+          <Logo markClassName="h-[92px] w-[92px] md:h-[123px] md:w-[123px]" />
         </Link>
 
         {/* Desktop nav */}
@@ -98,7 +98,7 @@ export function Header() {
               aria-label={`${SITE.name} home`}
               className="shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 focus-visible:ring-offset-2"
             >
-              <Logo />
+              <Logo markClassName="h-16 w-16" />
             </Link>
             <button
               type="button"

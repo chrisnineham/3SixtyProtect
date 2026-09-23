@@ -12,13 +12,16 @@ function sortByStartDate(a: Course, b: Course) {
   return a.start_date.localeCompare(b.start_date);
 }
 
-/** Today's date as YYYY-MM-DD (UTC) for "upcoming" filtering. */
+/**
+ * Today's date as YYYY-MM-DD in UK time. Public listings only show courses
+ * that start AFTER today, so an event disappears on the morning it begins.
+ */
 function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London' }).format(new Date());
 }
 
 /**
- * Public: upcoming, visible courses — optionally filtered by type.
+ * Public: visible courses starting after today, optionally filtered by type.
  * Falls back to demo data when Supabase is not configured or errors.
  */
 export async function getPublicCourses(type?: CourseType): Promise<Course[]> {
@@ -28,7 +31,7 @@ export async function getPublicCourses(type?: CourseType): Promise<Course[]> {
     return MOCK_COURSES.filter(
       (c) =>
         (PUBLIC_STATUSES as readonly string[]).includes(c.status) &&
-        c.end_date >= today &&
+        c.start_date > today &&
         (!type || c.course_type === type),
     ).sort(sortByStartDate);
   }
@@ -39,7 +42,7 @@ export async function getPublicCourses(type?: CourseType): Promise<Course[]> {
       .from('courses')
       .select('*')
       .in('status', PUBLIC_STATUSES as unknown as string[])
-      .gte('end_date', today)
+      .gt('start_date', today)
       .order('start_date', { ascending: true });
 
     if (type) query = query.eq('course_type', type);
@@ -52,7 +55,7 @@ export async function getPublicCourses(type?: CourseType): Promise<Course[]> {
     return MOCK_COURSES.filter(
       (c) =>
         (PUBLIC_STATUSES as readonly string[]).includes(c.status) &&
-        c.end_date >= today &&
+        c.start_date > today &&
         (!type || c.course_type === type),
     ).sort(sortByStartDate);
   }

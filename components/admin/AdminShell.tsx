@@ -12,16 +12,24 @@ import {
   Menu,
   X,
   PlusCircle,
+  ShieldCheck,
+  UserPlus,
+  Users,
 } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
 import { signOutAction } from '@/app/admin/_actions/auth';
 import { cn } from '@/lib/utils';
 
-const NAV = [
+const NAV: { label: string; href: string; icon: typeof LayoutDashboard; sub?: string }[] = [
   { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { label: 'Courses', href: '/admin/courses', icon: GraduationCap },
   { label: 'Bookings', href: '/admin/bookings', icon: ClipboardList },
+  { label: 'Vetting & Screening', href: '/admin/vetting', icon: ShieldCheck, sub: 'BS 7858 Screening' },
+  { label: 'Users', href: '/admin/users', icon: Users },
 ];
+
+const sectionLabel =
+  'mb-2 px-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-500';
 
 export function AdminShell({
   email,
@@ -36,70 +44,130 @@ export function AdminShell({
   const [open, setOpen] = useState(false);
 
   const isActive = (href: string) => pathname.startsWith(href);
+  const initial = (email ?? 'D').trim().charAt(0).toUpperCase();
 
   const sidebar = (
     <div className="flex h-full flex-col">
-      <div className="flex h-18 items-center px-6">
-        <Link href="/admin/dashboard">
-          <Logo light />
+      {/* Brand */}
+      <div className="border-b border-white/10 px-5 py-5">
+        <Link
+          href="/admin/dashboard"
+          onClick={() => setOpen(false)}
+          className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
+        >
+          <Logo markClassName="h-11 w-11" />
+          <span className="flex flex-col leading-none">
+            <span className="font-heading text-sm font-bold uppercase tracking-tight text-white">
+              Owner portal
+            </span>
+            <span className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-ink-500">
+              Courses · bookings · screening
+            </span>
+          </span>
         </Link>
       </div>
 
       {demo ? (
-        <div className="mx-4 mb-2 border border-white/25 px-3 py-2 text-center font-mono text-[11px] uppercase tracking-[0.05em] text-white">
+        <div className="mx-4 mt-4 border border-white/20 px-3 py-2 text-center font-mono text-[10px] uppercase tracking-[0.1em] text-ink-300">
           Demo mode · read-only
         </div>
       ) : null}
 
-      <nav className="flex-1 space-y-1 px-3 py-4">
-        {NAV.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={() => setOpen(false)}
-            className={cn(
-              'flex items-center gap-3 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] transition-colors',
-              isActive(item.href)
-                ? 'bg-white text-ink-950'
-                : 'text-ink-300 hover:bg-white/10 hover:text-white',
-            )}
-          >
-            <item.icon className="h-5 w-5" />
-            {item.label}
-          </Link>
-        ))}
+      {/* Navigation */}
+      <nav className="flex-1 px-3 py-5">
+        <p className={sectionLabel}>Manage</p>
+        <ul className="space-y-1">
+          {NAV.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? 'page' : undefined}
+                  className={cn(
+                    'group flex items-center gap-3 border-l-2 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] transition-colors',
+                    active
+                      ? 'border-white bg-white/10 text-white'
+                      : 'border-transparent text-ink-300 hover:bg-white/5 hover:text-white',
+                  )}
+                >
+                  <item.icon
+                    className={cn(
+                      'h-[18px] w-[18px] shrink-0 transition-colors',
+                      active ? 'text-white' : 'text-ink-500 group-hover:text-white',
+                    )}
+                  />
+                  <span className="flex flex-col leading-tight">
+                    {item.label}
+                    {item.sub ? (
+                      <span
+                        className={cn(
+                          'mt-0.5 text-[9px] tracking-[0.15em] transition-colors',
+                          active ? 'text-ink-300' : 'text-ink-500 group-hover:text-ink-300',
+                        )}
+                      >
+                        {item.sub}
+                      </span>
+                    ) : null}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
+        <p className={cn(sectionLabel, 'mt-7')}>Quick actions</p>
         <Link
           href="/admin/courses/new"
           onClick={() => setOpen(false)}
-          className="mt-3 flex items-center gap-3 border border-white bg-white px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-950 transition-colors hover:bg-transparent hover:text-white"
+          className="flex items-center justify-center gap-2 border border-white bg-white px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-950 transition-colors hover:bg-transparent hover:text-white"
         >
-          <PlusCircle className="h-5 w-5" />
+          <PlusCircle className="h-4 w-4" />
           New course
+        </Link>
+        <Link
+          href="/admin/vetting/new"
+          onClick={() => setOpen(false)}
+          className="mt-2 flex items-center justify-center gap-2 border border-white/40 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-200 transition-colors hover:border-white hover:bg-white hover:text-ink-950"
+        >
+          <UserPlus className="h-4 w-4" />
+          New screening
         </Link>
       </nav>
 
+      {/* Account */}
       <div className="border-t border-white/10 p-3">
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-3 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-300 transition-colors hover:bg-white/10 hover:text-white"
+          className="group flex items-center gap-3 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-300 transition-colors hover:bg-white/5 hover:text-white"
         >
-          <ExternalLink className="h-5 w-5" />
+          <ExternalLink className="h-[18px] w-[18px] shrink-0 text-ink-500 transition-colors group-hover:text-white" />
           View website
         </Link>
-        <div className="mt-2 flex items-center justify-between gap-2 px-3 py-2">
-          <div className="min-w-0">
-            <p className="truncate font-mono text-[11px] uppercase tracking-[0.05em] text-ink-400">Signed in as</p>
+
+        <div className="mt-2 flex items-center gap-3 border-t border-white/10 px-3 pt-3">
+          <span
+            aria-hidden
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 font-heading text-xs font-bold uppercase text-white"
+          >
+            {initial}
+          </span>
+          <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium text-white">
               {email ?? 'Demo admin'}
+            </p>
+            <p className="truncate font-mono text-[10px] uppercase tracking-[0.1em] text-ink-500">
+              Signed in
             </p>
           </div>
           <form action={signOutAction}>
             <button
               type="submit"
               title="Sign out"
-              className="flex h-9 w-9 items-center justify-center text-ink-300 transition-colors hover:bg-white/10 hover:text-white"
+              aria-label="Sign out"
+              className="flex h-9 w-9 items-center justify-center border border-white/15 text-ink-300 transition-colors hover:border-white hover:bg-white hover:text-ink-950"
             >
               <LogOut className="h-4 w-4" />
             </button>

@@ -30,7 +30,7 @@ export function ServiceCard({
             src={service.image}
             alt=""
             aria-hidden
-            className={`absolute inset-0 h-full w-full select-none object-cover ${focusClass} grayscale transition-transform duration-700 group-hover:scale-[1.04]`}
+            className={`absolute inset-0 h-full w-full select-none object-cover ${focusClass} grayscale transition-[filter,transform] duration-700 group-hover:scale-[1.04] group-hover:grayscale-[0.35]`}
             draggable={false}
           />
         ) : (

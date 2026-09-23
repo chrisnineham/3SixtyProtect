@@ -58,6 +58,8 @@ export interface AdminUser {
   id: string;
   email: string;
   role: string;
+  /** Individually granted capabilities (see lib/permissions.ts). */
+  permissions?: string[];
   created_at: string;
 }
 
