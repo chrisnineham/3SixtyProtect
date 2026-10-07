@@ -5,16 +5,13 @@ import Link from 'next/link';
 import { Save, AlertCircle } from 'lucide-react';
 import { Field, Input, Textarea, Select } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
-import {
-  COURSE_STATUS_OPTIONS,
-  COURSE_TYPE_OPTIONS,
-} from '@/lib/constants';
+import { COURSE_STATUS_OPTIONS } from '@/lib/constants';
 import {
   createCourseAction,
   updateCourseAction,
   type CourseFormState,
 } from '@/app/admin/_actions/courses';
-import type { Course } from '@/lib/types';
+import type { Course, CourseLocation, CourseTypeInfo } from '@/lib/types';
 
 const initialState: CourseFormState = { status: 'idle' };
 
@@ -28,7 +25,15 @@ function SubmitButton({ label }: { label: string }) {
   );
 }
 
-export function CourseForm({ course }: { course?: Course }) {
+export function CourseForm({
+  course,
+  types,
+  locations,
+}: {
+  course?: Course;
+  types: CourseTypeInfo[];
+  locations: CourseLocation[];
+}) {
   const isEdit = Boolean(course);
   const action = isEdit ? updateCourseAction : createCourseAction;
   const [state, formAction] = useFormState(action, initialState);
@@ -74,15 +79,21 @@ export function CourseForm({ course }: { course?: Course }) {
             <Select
               id="course_type"
               name="course_type"
-              defaultValue={course?.course_type ?? 'door_supervision'}
+              defaultValue={course?.course_type ?? types[0]?.key ?? 'door_supervision'}
               required
             >
-              {COURSE_TYPE_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
+              {types.map((t) => (
+                <option key={t.key} value={t.key}>
+                  {t.label}
                 </option>
               ))}
             </Select>
+            <Link
+              href="/admin/courses/types"
+              className="mt-1.5 inline-block font-mono text-[11px] uppercase tracking-[0.05em] text-ink-500 underline-offset-4 hover:text-ink-900 hover:underline"
+            >
+              Add or edit course types
+            </Link>
           </Field>
           <Field
             label="Status"
@@ -144,13 +155,26 @@ export function CourseForm({ course }: { course?: Course }) {
             error={state.errors?.location}
             className="sm:col-span-2"
           >
-            <Input
-              id="location"
-              name="location"
-              defaultValue={course?.location}
-              placeholder="London, Stratford Training Centre"
-              required
-            />
+            <Select id="location" name="location" defaultValue={course?.location ?? ''} required>
+              <option value="" disabled>
+                Choose a location
+              </option>
+              {/* Keep a course's current location selectable even if it has left the menu */}
+              {course?.location && !locations.some((l) => l.name === course.location) ? (
+                <option value={course.location}>{course.location}</option>
+              ) : null}
+              {locations.map((l) => (
+                <option key={l.id} value={l.name}>
+                  {l.name}
+                </option>
+              ))}
+            </Select>
+            <Link
+              href="/admin/courses/locations"
+              className="mt-1.5 inline-block font-mono text-[11px] uppercase tracking-[0.05em] text-ink-500 underline-offset-4 hover:text-ink-900 hover:underline"
+            >
+              Add or edit locations
+            </Link>
           </Field>
         </div>
       </section>

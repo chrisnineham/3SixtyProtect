@@ -164,3 +164,33 @@ async function isLastAdmin(db: ReturnType<typeof createAdminClient>, id: string)
   const admins = data ?? [];
   return admins.length <= 1 && admins.some((a) => a.id === id);
 }
+
+const setPasswordSchema = z.object({
+  id: z.string().uuid(),
+  password: z.string().min(10, 'Use a password of at least 10 characters'),
+});
+
+export interface SetPasswordState {
+  error?: string;
+  success?: string;
+}
+
+/** An admin sets a new password for a portal user (passwords can never be read back). */
+export async function setUserPasswordAction(_prev: SetPasswordState, formData: FormData): Promise<SetPasswordState> {
+  const g = await guard();
+  if (!g.ok) return { error: g.error };
+  const { db } = g;
+
+  const parsed = setPasswordSchema.safeParse({ id: formData.get('id'), password: formData.get('password') });
+  if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? 'Check the password' };
+
+  const { data: target } = await db.from('admin_users').select('id').eq('id', parsed.data.id).maybeSingle();
+  if (!target) return { error: 'That user could not be found.' };
+
+  const { error } = await db.auth.admin.updateUserById(parsed.data.id, { password: parsed.data.password });
+  if (error) {
+    console.error('[users] set password failed:', error.message);
+    return { error: 'The password could not be updated. Please try again.' };
+  }
+  return { success: 'Password updated. Share it with them securely.' };
+}

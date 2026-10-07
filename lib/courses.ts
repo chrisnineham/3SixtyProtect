@@ -3,6 +3,7 @@ import 'server-only';
 import { createClient } from './supabase/server';
 import { isSupabaseConfigured } from './supabase/config';
 import { MOCK_COURSES } from './mock-data';
+import { withTypeLabels } from './course-types';
 import type { Course, CourseType } from './types';
 
 /** Statuses that are allowed to appear on the public website. */
@@ -24,7 +25,7 @@ function todayIso(): string {
  * Public: visible courses starting after today, optionally filtered by type.
  * Falls back to demo data when Supabase is not configured or errors.
  */
-export async function getPublicCourses(type?: CourseType): Promise<Course[]> {
+async function getPublicCoursesRaw(type?: CourseType): Promise<Course[]> {
   const today = todayIso();
 
   if (!isSupabaseConfigured()) {
@@ -68,7 +69,7 @@ export async function getUpcomingCourses(limit = 3): Promise<Course[]> {
 }
 
 /** Public: a single course by id (any visible status), for the booking page. */
-export async function getCourseById(id: string): Promise<Course | null> {
+async function getCourseByIdRaw(id: string): Promise<Course | null> {
   if (!isSupabaseConfigured()) {
     return MOCK_COURSES.find((c) => c.id === id) ?? null;
   }
@@ -88,7 +89,7 @@ export async function getCourseById(id: string): Promise<Course | null> {
 }
 
 /** Admin: every course regardless of status, newest start date first. */
-export async function getAllCoursesAdmin(): Promise<Course[]> {
+async function getAllCoursesAdminRaw(): Promise<Course[]> {
   if (!isSupabaseConfigured()) {
     return [...MOCK_COURSES].sort((a, b) => b.start_date.localeCompare(a.start_date));
   }
@@ -104,4 +105,19 @@ export async function getAllCoursesAdmin(): Promise<Course[]> {
     console.error('[courses] getAllCoursesAdmin failed:', err);
     return [...MOCK_COURSES].sort((a, b) => b.start_date.localeCompare(a.start_date));
   }
+}
+
+// Public API: the raw loaders above, with course type labels attached.
+
+export async function getPublicCourses(type?: CourseType): Promise<Course[]> {
+  return withTypeLabels(await getPublicCoursesRaw(type));
+}
+
+export async function getCourseById(id: string): Promise<Course | null> {
+  const course = await getCourseByIdRaw(id);
+  return course ? (await withTypeLabels([course]))[0] : null;
+}
+
+export async function getAllCoursesAdmin(): Promise<Course[]> {
+  return withTypeLabels(await getAllCoursesAdminRaw());
 }

@@ -1,7 +1,9 @@
 import type {
   BookingStatus,
   CourseStatus,
-  CourseType,
+  BuiltInCourseType,
+  CourseTypeInfo,
+  CourseLocation,
   EnquiryType,
 } from './types';
 
@@ -39,7 +41,7 @@ export const NAV_LINKS = [
 ] as const;
 
 export const COURSE_TYPE_META: Record<
-  CourseType,
+  BuiltInCourseType,
   {
     label: string;
     shortLabel: string;
@@ -97,10 +99,43 @@ export const ENQUIRY_TYPES: { value: EnquiryType; label: string }[] = [
   { value: 'other', label: 'Something else' },
 ];
 
-export const COURSE_TYPE_OPTIONS: { value: CourseType; label: string }[] = [
-  { value: 'door_supervision', label: 'SIA Door Supervision' },
-  { value: 'close_protection', label: 'SIA Close Protection' },
+/** Used when the course_types table is unavailable (demo mode / before migration). */
+export const DEFAULT_COURSE_TYPES: CourseTypeInfo[] = [
+  { key: 'door_supervision', label: 'Level 2 Award for Door Supervisors in the Private Security Industry (RQF)', short_label: 'Door Supervision', sort_order: 40 },
+  { key: 'close_protection', label: 'Level 3 Certificate for Close Protection Operatives in the Private Security Industry (RQF)', short_label: 'Close Protection', sort_order: 220 },
 ];
+
+export const BUILT_IN_COURSE_TYPES: string[] = ['door_supervision', 'close_protection'];
+
+/** Used when the course_locations table is unavailable (demo mode / before migration). */
+export const DEFAULT_COURSE_LOCATIONS: CourseLocation[] = [
+  'London, E14',
+  'West Midlands - Wednesbury - WS10',
+  'Birmingham',
+  'Leicester - LE4',
+  'Edinburgh, Scotland',
+].map((name, i) => ({ id: `default-${i}`, name, sort_order: (i + 1) * 10 }));
+
+function prettifyKey(key: string): string {
+  return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/** Short label for a course type key (e.g. "Door Supervision"). Client-safe. */
+export function courseTypeShortLabel(key: string, types?: CourseTypeInfo[]): string {
+  const t = types?.find((x) => x.key === key) ?? DEFAULT_COURSE_TYPES.find((x) => x.key === key);
+  return t?.short_label ?? prettifyKey(key);
+}
+
+/** Full label for a course type key (e.g. "SIA Door Supervision"). Client-safe. */
+export function courseTypeLabel(key: string, types?: CourseTypeInfo[]): string {
+  const t = types?.find((x) => x.key === key) ?? DEFAULT_COURSE_TYPES.find((x) => x.key === key);
+  return t?.label ?? prettifyKey(key);
+}
+
+/** Short label for a loaded course (uses the label attached when it was fetched). */
+export function courseShortType(course: { course_type: string; type_short_label?: string }): string {
+  return course.type_short_label ?? courseTypeShortLabel(course.course_type);
+}
 
 export const COURSE_STATUS_OPTIONS: { value: CourseStatus; label: string }[] = [
   { value: 'draft', label: 'Draft' },

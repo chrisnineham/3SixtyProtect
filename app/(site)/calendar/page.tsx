@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { CalendarView } from '@/components/calendar/CalendarView';
 import { getPublicCourses } from '@/lib/courses';
-import type { CourseType } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Training Calendar: Upcoming SIA Courses',
@@ -11,10 +10,6 @@ export const metadata: Metadata = {
   alternates: { canonical: '/calendar' },
 };
 
-const SLUG_TO_TYPE: Record<string, CourseType> = {
-  'door-supervision': 'door_supervision',
-  'close-protection': 'close_protection',
-};
 
 export default async function CalendarPage({
   searchParams,
@@ -22,9 +17,9 @@ export default async function CalendarPage({
   searchParams: { type?: string };
 }) {
   const courses = await getPublicCourses();
-  const initialFilter = searchParams.type
-    ? SLUG_TO_TYPE[searchParams.type] ?? 'all'
-    : 'all';
+  // ?type=door-supervision → door_supervision (works for added types too).
+  const requested = (searchParams.type ?? '').toLowerCase().replace(/-/g, '_');
+  const initialFilter = /^[a-z0-9_]{2,60}$/.test(requested) ? requested : 'all';
 
   return (
     <>

@@ -1,18 +1,25 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { CalendarX, ShieldCheck, UserRoundCheck, LayoutGrid } from 'lucide-react';
+import { CalendarX, GraduationCap, ShieldCheck, UserRoundCheck, LayoutGrid } from 'lucide-react';
 import { CourseListItem } from './CourseListItem';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
+import { courseShortType } from '@/lib/constants';
 import type { Course, CourseType } from '@/lib/types';
 
 type Filter = 'all' | CourseType;
 
-const FILTERS: { value: Filter; label: string; icon: typeof LayoutGrid }[] = [
-  { value: 'all', label: 'All Courses', icon: LayoutGrid },
-  { value: 'door_supervision', label: 'Door Supervision', icon: ShieldCheck },
-  { value: 'close_protection', label: 'Close Protection', icon: UserRoundCheck },
+const ICONS: Record<string, typeof LayoutGrid> = {
+  all: LayoutGrid,
+  door_supervision: ShieldCheck,
+  close_protection: UserRoundCheck,
+};
+
+/** The two original types are always offered; others appear when they have dates. */
+const ALWAYS_SHOWN: { value: string; label: string; sort: number }[] = [
+  { value: 'door_supervision', label: 'Door Supervision', sort: 10 },
+  { value: 'close_protection', label: 'Close Protection', sort: 20 },
 ];
 
 export function CalendarView({
@@ -24,16 +31,22 @@ export function CalendarView({
 }) {
   const [filter, setFilter] = useState<Filter>(initialFilter);
 
-  const counts = useMemo(
-    () => ({
-      all: courses.length,
-      door_supervision: courses.filter((c) => c.course_type === 'door_supervision')
-        .length,
-      close_protection: courses.filter((c) => c.course_type === 'close_protection')
-        .length,
-    }),
-    [courses],
-  );
+  const filters = useMemo(() => {
+    const seen = new Map(ALWAYS_SHOWN.map((t) => [t.value, t]));
+    for (const c of courses) {
+      if (!seen.has(c.course_type)) {
+        seen.set(c.course_type, { value: c.course_type, label: courseShortType(c), sort: c.type_sort ?? 100 });
+      } else if (c.type_short_label) {
+        seen.set(c.course_type, { ...seen.get(c.course_type)!, label: c.type_short_label, sort: c.type_sort ?? 100 });
+      }
+    }
+    const types = Array.from(seen.values()).sort((a, b) => a.sort - b.sort || a.label.localeCompare(b.label));
+    return [{ value: 'all', label: 'All Courses', sort: 0 }, ...types].map((f) => ({
+      ...f,
+      icon: ICONS[f.value] ?? GraduationCap,
+      count: f.value === 'all' ? courses.length : courses.filter((c) => c.course_type === f.value).length,
+    }));
+  }, [courses]);
 
   const visible = useMemo(
     () =>
@@ -48,7 +61,7 @@ export function CalendarView({
       {/* Filter bar */}
       <div className="flex flex-col gap-4 border-b border-ink-200 pb-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex flex-wrap items-center gap-5" role="tablist" aria-label="Filter courses by type">
-          {FILTERS.map((f) => {
+          {filters.map((f) => {
             const active = filter === f.value;
             return (
               <button
@@ -65,7 +78,7 @@ export function CalendarView({
               >
                 <f.icon className="h-4 w-4" />
                 {f.label}
-                <sup className="font-mono text-[10px] text-ink-400">{counts[f.value]}</sup>
+                <sup className="font-mono text-[10px] text-ink-400">{f.count}</sup>
               </button>
             );
           })}

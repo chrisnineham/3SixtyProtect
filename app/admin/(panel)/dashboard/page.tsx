@@ -16,7 +16,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { getAllCoursesAdmin } from '@/lib/courses';
 import { getAllBookingsAdmin } from '@/lib/bookings';
-import { COURSE_TYPE_META } from '@/lib/constants';
+import { courseShortType } from '@/lib/constants';
 import { formatDate, formatDateRange } from '@/lib/utils';
 
 export const metadata = { title: 'Dashboard' };
@@ -145,7 +145,7 @@ export default async function DashboardPage() {
                 >
                   <div className="min-w-0">
                     <p className="truncate font-medium text-ink-900">
-                      {COURSE_TYPE_META[c.course_type].shortLabel}
+                      {courseShortType(c)}
                     </p>
                     <p className="truncate text-xs text-ink-500">
                       {formatDateRange(c.start_date, c.end_date)} · {c.location}

@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ShieldCheck, UserRoundCheck } from 'lucide-react';
+import { ArrowRight, GraduationCap, ShieldCheck, UserRoundCheck } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
-import { COURSE_TYPE_META } from '@/lib/constants';
+import { courseShortType } from '@/lib/constants';
 import {
   cn,
   durationInDays,
@@ -29,9 +29,13 @@ export function CourseCard({
   course: Course;
   className?: string;
 }) {
-  const meta = COURSE_TYPE_META[course.course_type];
-  const isCP = course.course_type === 'close_protection';
-  const Icon = isCP ? UserRoundCheck : ShieldCheck;
+  const typeLabel = courseShortType(course);
+  const Icon =
+    course.course_type === 'close_protection'
+      ? UserRoundCheck
+      : course.course_type === 'door_supervision'
+        ? ShieldCheck
+        : GraduationCap;
   const days = durationInDays(course.start_date, course.end_date);
   const soldOut = course.status === 'fully_booked' || course.available_spaces <= 0;
 
@@ -56,12 +60,12 @@ export function CourseCard({
           <div className="flex h-full w-full items-center justify-center bg-surface-container">
             <Icon className="h-16 w-16 text-ink-300" strokeWidth={1.2} />
             <span className="absolute bottom-4 left-4 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-500">
-              {meta.shortLabel}
+              {typeLabel}
             </span>
           </div>
         )}
         <div className="absolute left-4 top-4 flex items-center gap-2">
-          <Badge tone="gold">{meta.shortLabel}</Badge>
+          <Badge tone="gold">{typeLabel}</Badge>
         </div>
         <div className="absolute right-4 top-4">{spacesBadge(course)}</div>
       </div>
@@ -69,7 +73,7 @@ export function CourseCard({
       {/* Body */}
       <div className="flex flex-1 flex-col p-6">
         <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-ink-400">
-          {meta.shortLabel}
+          {typeLabel}
         </span>
         <h3 className="mt-2 text-pretty font-heading text-xl font-bold uppercase leading-snug tracking-tight text-ink-900">
           <Link

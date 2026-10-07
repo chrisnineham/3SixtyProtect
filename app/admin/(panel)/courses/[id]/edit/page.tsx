@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { CourseForm } from '@/components/admin/CourseForm';
 import { getCourseById } from '@/lib/courses';
+import { getCourseTypes } from '@/lib/course-types';
+import { getCourseLocations } from '@/lib/course-locations';
 
 export const metadata = { title: 'Edit course' };
 export const dynamic = 'force-dynamic';
@@ -12,7 +14,11 @@ export default async function EditCoursePage({
 }: {
   params: { id: string };
 }) {
-  const course = await getCourseById(params.id);
+  const [course, types, locations] = await Promise.all([
+    getCourseById(params.id),
+    getCourseTypes(),
+    getCourseLocations(),
+  ]);
   if (!course) notFound();
 
   return (
@@ -33,7 +39,7 @@ export default async function EditCoursePage({
       </p>
 
       <div className="mt-7">
-        <CourseForm course={course} />
+        <CourseForm course={course} types={types} locations={locations} />
       </div>
     </div>
   );

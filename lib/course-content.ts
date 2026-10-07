@@ -1,7 +1,7 @@
-import type { CourseType } from './types';
+import type { BuiltInCourseType } from './types';
 
 export interface CoursePageContent {
-  type: CourseType;
+  type: BuiltInCourseType;
   /** Optional full-bleed hero background image (path under /public). */
   heroImage?: string;
   hero: {
@@ -138,8 +138,8 @@ export const DOOR_SUPERVISION_CONTENT: CoursePageContent = {
 export const CLOSE_PROTECTION_CONTENT: CoursePageContent = {
   type: 'close_protection',
   heroImage: '/images/CPTRAINING.png',
-  level: 'SIA Level 3 Award',
-  durationLabel: 'Typically 14–15 days',
+  level: 'SIA Level 3 Certificate',
+  durationLabel: 'Typically 18–21 days',
   hero: {
     eyebrow: 'SIA Close Protection Training',
     title: 'Train for a career in',
@@ -224,9 +224,9 @@ export const CLOSE_PROTECTION_CONTENT: CoursePageContent = {
   duration: {
     heading: 'Course duration',
     summary:
-      'The course typically runs over 14–15 days of intensive, full-day training and assessment.',
+      'The course typically runs over 18–21 days of intensive, full-day training and assessment.',
     points: [
-      'Around 14–15 days of guided training',
+      'Around 18–21 days of guided training',
       'Full operational days with practical exercises',
       'A blend of classroom theory and live scenarios',
       'Scheduled intakes across the year',
@@ -262,7 +262,7 @@ export const CLOSE_PROTECTION_CONTENT: CoursePageContent = {
   },
 };
 
-export const COURSE_CONTENT: Record<CourseType, CoursePageContent> = {
+export const COURSE_CONTENT: Record<BuiltInCourseType, CoursePageContent> = {
   door_supervision: DOOR_SUPERVISION_CONTENT,
   close_protection: CLOSE_PROTECTION_CONTENT,
 };

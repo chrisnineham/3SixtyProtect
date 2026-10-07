@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Clock, MapPin, Users, ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
-import { COURSE_TYPE_META } from '@/lib/constants';
+import { courseShortType } from '@/lib/constants';
 import {
   cn,
   durationInDays,
@@ -21,7 +21,6 @@ function dateParts(iso: string) {
 }
 
 export function CourseListItem({ course }: { course: Course }) {
-  const meta = COURSE_TYPE_META[course.course_type];
   const parts = dateParts(course.start_date);
   const days = durationInDays(course.start_date, course.end_date);
   const soldOut = course.status === 'fully_booked' || course.available_spaces <= 0;
@@ -49,7 +48,7 @@ export function CourseListItem({ course }: { course: Course }) {
       {/* Details */}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge tone="neutral">{meta.shortLabel}</Badge>
+          <Badge tone="neutral">{courseShortType(course)}</Badge>
           {soldOut ? (
             <Badge tone="danger">Fully booked</Badge>
           ) : course.available_spaces <= 4 ? (

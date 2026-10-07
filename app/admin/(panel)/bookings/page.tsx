@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import {
+  ArrowRight,
   Mail,
   Phone,
   CalendarDays,
@@ -9,14 +11,15 @@ import {
 import { Badge } from '@/components/ui/Badge';
 import { BookingStatusControl } from '@/components/admin/BookingStatusControl';
 import { getAllBookingsAdmin } from '@/lib/bookings';
-import { COURSE_TYPE_META } from '@/lib/constants';
+import { courseTypeShortLabel } from '@/lib/constants';
+import { getCourseTypes } from '@/lib/course-types';
 import { formatDate, formatPrice } from '@/lib/utils';
 
 export const metadata = { title: 'Bookings' };
 export const dynamic = 'force-dynamic';
 
 export default async function AdminBookingsPage() {
-  const bookings = await getAllBookingsAdmin();
+  const [bookings, courseTypes] = await Promise.all([getAllBookingsAdmin(), getCourseTypes()]);
 
   const counts = {
     new: bookings.filter((b) => b.booking_status === 'new').length,
@@ -51,10 +54,14 @@ export default async function AdminBookingsPage() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="font-heading font-semibold text-ink-900">{b.customer_name}</h2>
+                    <h2 className="font-heading font-semibold text-ink-900">
+                      <Link href={`/admin/bookings/${b.id}`} className="underline-offset-4 hover:underline">
+                        {b.customer_name}
+                      </Link>
+                    </h2>
                     {b.course ? (
                       <Badge tone="gold">
-                        {COURSE_TYPE_META[b.course.course_type].shortLabel}
+                        {courseTypeShortLabel(b.course.course_type, courseTypes)}
                       </Badge>
                     ) : null}
                     {b.payment_status === 'deposit_paid' ? (
@@ -85,8 +92,14 @@ export default async function AdminBookingsPage() {
                     </a>
                   </div>
                 </div>
-                <div className="shrink-0">
+                <div className="flex shrink-0 items-center gap-3">
                   <BookingStatusControl id={b.id} status={b.booking_status} />
+                  <Link
+                    href={`/admin/bookings/${b.id}`}
+                    className="inline-flex h-9 items-center gap-1.5 border border-ink-950 px-3 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-950 transition-colors hover:bg-ink-950 hover:text-white"
+                  >
+                    View <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
                 </div>
               </div>
 

@@ -2,6 +2,7 @@ import { CheckCircle2, ShieldOff, UserPlus, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { canManageUsers } from '@/app/admin/_actions/users';
 import { InviteUserForm } from '@/components/admin/users/InviteUserForm';
+import { SetPasswordForm } from '@/components/admin/users/SetPasswordForm';
 import { UserRowActions } from '@/components/admin/users/UserRowActions';
 import { getAdminSession } from '@/lib/auth';
 import { ROLE_LABELS } from '@/lib/permissions';
@@ -115,6 +116,9 @@ export default async function UsersPage({ searchParams }: { searchParams: Record
                       {u.created_at ? `Added ${formatDate(u.created_at.slice(0, 10))}` : ''}
                       {u.permissions?.length ? ` · Extra permissions: ${u.permissions.join(', ')}` : ''}
                     </p>
+                    <div className="mt-2">
+                      <SetPasswordForm id={u.id} email={u.email} />
+                    </div>
                   </div>
                   <UserRowActions
                     id={u.id}

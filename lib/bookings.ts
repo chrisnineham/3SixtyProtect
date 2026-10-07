@@ -3,7 +3,7 @@ import 'server-only';
 import { createClient } from './supabase/server';
 import { isSupabaseConfigured } from './supabase/config';
 import { MOCK_BOOKINGS } from './mock-data';
-import type { Booking } from './types';
+import type { Booking, Course } from './types';
 
 /** Admin: all bookings with their joined course, newest first. */
 export async function getAllBookingsAdmin(): Promise<Booking[]> {
@@ -38,4 +38,26 @@ export async function getBookingCountsByCourse(): Promise<Record<string, number>
     acc[b.course_id] = (acc[b.course_id] ?? 0) + 1;
     return acc;
   }, {});
+}
+
+export type BookingDetail = Omit<Booking, 'course'> & { course: Course | null };
+
+/** Admin: one booking with the full course it was made for. */
+export async function getBookingByIdAdmin(id: string): Promise<BookingDetail | null> {
+  if (!isSupabaseConfigured()) {
+    const b = MOCK_BOOKINGS.find((x) => x.id === id);
+    return b ? ({ ...b, course: (b.course as Course | null) ?? null } as BookingDetail) : null;
+  }
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('*, course:courses ( * )')
+    .eq('id', id)
+    .maybeSingle();
+  if (error) {
+    console.error('[bookings] getBookingByIdAdmin failed:', error);
+    return null;
+  }
+  return (data as unknown as BookingDetail | null) ?? null;
 }

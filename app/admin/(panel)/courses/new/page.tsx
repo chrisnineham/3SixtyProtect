@@ -1,10 +1,15 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { CourseForm } from '@/components/admin/CourseForm';
+import { getCourseTypes } from '@/lib/course-types';
+import { getCourseLocations } from '@/lib/course-locations';
 
 export const metadata = { title: 'New course' };
 
-export default function NewCoursePage() {
+export const dynamic = 'force-dynamic';
+
+export default async function NewCoursePage() {
+  const [types, locations] = await Promise.all([getCourseTypes(), getCourseLocations()]);
   return (
     <div>
       <Link
@@ -22,7 +27,7 @@ export default function NewCoursePage() {
       </p>
 
       <div className="mt-7">
-        <CourseForm />
+        <CourseForm types={types} locations={locations} />
       </div>
     </div>
   );

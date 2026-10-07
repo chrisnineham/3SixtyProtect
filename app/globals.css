@@ -15,6 +15,8 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
@@ -24,6 +26,10 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold tracking-tight text-ink-900;
+    /* Large display type must never overflow narrow screens, e.g. when a
+       mobile browser scales text up for accessibility */
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   /* Interaction = color inversion */
@@ -91,5 +97,16 @@
   .font-display {
     font-family: var(--font-heading), system-ui, sans-serif;
     letter-spacing: -0.04em;
+  }
+}
+
+/* Printing an admin list: drop the sidebar / mobile bar and the content offset. */
+@media print {
+  aside,
+  .sticky.top-0.z-40 {
+    display: none !important;
+  }
+  .lg\:pl-64 {
+    padding-left: 0 !important;
   }
 }

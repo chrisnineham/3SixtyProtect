@@ -17,7 +17,7 @@ import { Field, Input, Textarea, Select } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { createBookingAction, type BookingFormState } from '@/app/(site)/book/actions';
-import { COURSE_TYPE_META } from '@/lib/constants';
+import { courseShortType, courseTypeLabel } from '@/lib/constants';
 import {
   formatDateRange,
   formatPrice,
@@ -67,11 +67,21 @@ export function BookingForm({
     [courses, selectedId],
   );
 
+  // One <optgroup> per course type, in the type's display order.
   const grouped = useMemo(() => {
-    return {
-      door_supervision: courses.filter((c) => c.course_type === 'door_supervision'),
-      close_protection: courses.filter((c) => c.course_type === 'close_protection'),
-    };
+    const groups = new Map<string, { label: string; sort: number; courses: Course[] }>();
+    for (const c of courses) {
+      const g = groups.get(c.course_type) ?? {
+        label: c.type_label ?? courseTypeLabel(c.course_type),
+        sort: c.type_sort ?? 100,
+        courses: [],
+      };
+      g.courses.push(c);
+      groups.set(c.course_type, g);
+    }
+    return Array.from(groups.entries())
+      .map(([key, g]) => ({ key, ...g }))
+      .sort((a, b) => a.sort - b.sort || a.label.localeCompare(b.label));
   }, [courses]);
 
   if (state.status === 'success') {
@@ -106,24 +116,15 @@ export function BookingForm({
                   <option value="" disabled>
                     Select a course date…
                   </option>
-                  {grouped.door_supervision.length > 0 && (
-                    <optgroup label="SIA Door Supervision">
-                      {grouped.door_supervision.map((c) => (
+                  {grouped.map((g) => (
+                    <optgroup key={g.key} label={g.label}>
+                      {g.courses.map((c) => (
                         <option key={c.id} value={c.id}>
                           {formatDateRange(c.start_date, c.end_date)}, {c.location}
                         </option>
                       ))}
                     </optgroup>
-                  )}
-                  {grouped.close_protection.length > 0 && (
-                    <optgroup label="SIA Close Protection">
-                      {grouped.close_protection.map((c) => (
-                        <option key={c.id} value={c.id}>
-                          {formatDateRange(c.start_date, c.end_date)}, {c.location}
-                        </option>
-                      ))}
-                    </optgroup>
-                  )}
+                  ))}
                 </Select>
               </Field>
             </div>
@@ -239,7 +240,7 @@ export function BookingForm({
               {selected ? (
                 <>
                   <Badge tone="gold">
-                    {COURSE_TYPE_META[selected.course_type].shortLabel}
+                    {courseShortType(selected)}
                   </Badge>
                   <h3 className="mt-3 font-heading text-xl uppercase tracking-tight text-ink-900">
                     {selected.title}

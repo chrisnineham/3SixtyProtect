@@ -11,6 +11,7 @@ import {
 import { createClient } from '@/lib/supabase/server';
 import { canManage } from '@/lib/auth';
 import { fieldErrors } from '@/lib/validation';
+import { getCourseTypes } from '@/lib/course-types';
 
 export interface CourseFormState {
   status: 'idle' | 'error';
@@ -21,7 +22,7 @@ export interface CourseFormState {
 const courseSchema = z
   .object({
     title: z.string().trim().min(3, 'Enter a course title').max(160),
-    course_type: z.enum(['door_supervision', 'close_protection']),
+    course_type: z.string().regex(/^[a-z0-9_]{2,60}$/, 'Choose a course type'),
     description: z.string().trim().max(4000).optional().or(z.literal('')),
     start_date: z.string().min(1, 'Choose a start date'),
     end_date: z.string().min(1, 'Choose an end date'),
@@ -133,6 +134,14 @@ export async function createCourseAction(
       errors: fieldErrors(parsed.error),
     };
   }
+  const knownTypes = await getCourseTypes();
+  if (!knownTypes.some((t) => t.key === parsed.data.course_type)) {
+    return {
+      status: 'error',
+      message: 'Please check the highlighted fields.',
+      errors: { course_type: 'Choose one of the listed course types' },
+    };
+  }
 
   const { error } = await db().from('courses').insert(toRow(parsed.data));
   if (error) {
@@ -162,6 +171,14 @@ export async function updateCourseAction(
       status: 'error',
       message: 'Please check the highlighted fields.',
       errors: fieldErrors(parsed.error),
+    };
+  }
+  const knownTypes = await getCourseTypes();
+  if (!knownTypes.some((t) => t.key === parsed.data.course_type)) {
+    return {
+      status: 'error',
+      message: 'Please check the highlighted fields.',
+      errors: { course_type: 'Choose one of the listed course types' },
     };
   }
 

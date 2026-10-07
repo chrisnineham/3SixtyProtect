@@ -2,7 +2,24 @@
 // Domain types — mirror the Supabase schema in supabase/schema.sql
 // ─────────────────────────────────────────────────────────────
 
-export type CourseType = 'door_supervision' | 'close_protection';
+/** The two original types; each has its own landing page and content. */
+export type BuiltInCourseType = 'door_supervision' | 'close_protection';
+/** Any course type key, including ones added from the owner portal. */
+export type CourseType = string;
+
+/** A row of the course_types table. */
+export interface CourseTypeInfo {
+  key: string;
+  label: string;
+  short_label: string;
+  sort_order: number;
+}
+
+export interface CourseLocation {
+  id: string;
+  name: string;
+  sort_order: number;
+}
 
 export type CourseStatus = 'draft' | 'published' | 'fully_booked' | 'cancelled';
 
@@ -21,6 +38,10 @@ export interface Course {
   id: string;
   title: string;
   course_type: CourseType;
+  /** Filled in from course_types when courses are loaded. */
+  type_label?: string;
+  type_short_label?: string;
+  type_sort?: number;
   description: string;
   start_date: string; // YYYY-MM-DD
   end_date: string; // YYYY-MM-DD

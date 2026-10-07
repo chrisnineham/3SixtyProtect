@@ -54,7 +54,7 @@ export default async function HomePage() {
               </Reveal>
               <Reveal delay={60}>
                 <h1 className="mt-6 font-heading font-bold uppercase leading-[1.08] tracking-tight text-white text-display-lg-mobile md:text-display-lg">
-                  Full&#8209;spectrum security, protection &amp; training
+                  Full-spectrum security, protection &amp; training
                 </h1>
               </Reveal>
               <Reveal delay={120}>
@@ -356,7 +356,7 @@ function CourseOverviewCard({
           </div>
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.05em] text-ink-400 group-hover:text-white/60">
-              {meta.abbr === 'DS' ? 'Level 2 Award' : 'Level 3 Award'}
+              {meta.abbr === 'DS' ? 'Level 2 Award' : 'Level 3 Certificate'}
             </p>
             <h3 className="font-heading text-2xl font-bold uppercase tracking-tight text-ink-900 group-hover:text-white">
               {meta.label}

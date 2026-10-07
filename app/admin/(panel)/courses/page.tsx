@@ -6,13 +6,15 @@ import {
   Users,
   CheckCircle2,
   GraduationCap,
+  Tags,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { CourseStatusBadge } from '@/components/admin/StatusBadge';
 import { CourseRowActions } from '@/components/admin/CourseRowActions';
 import { getAllCoursesAdmin } from '@/lib/courses';
-import { COURSE_TYPE_META } from '@/lib/constants';
+import { getBookingCountsByCourse } from '@/lib/bookings';
+import { courseShortType } from '@/lib/constants';
 import { formatDateRange, formatPrice } from '@/lib/utils';
 
 export const metadata = { title: 'Courses' };
@@ -23,7 +25,7 @@ export default async function AdminCoursesPage({
 }: {
   searchParams: { created?: string; updated?: string };
 }) {
-  const courses = await getAllCoursesAdmin();
+  const [courses, bookedCounts] = await Promise.all([getAllCoursesAdmin(), getBookingCountsByCourse()]);
   const toast = searchParams.created
     ? 'Course created.'
     : searchParams.updated
@@ -41,10 +43,20 @@ export default async function AdminCoursesPage({
             Create, edit and publish your training courses.
           </p>
         </div>
-        <Button href="/admin/courses/new" className="shrink-0">
-          <PlusCircle className="h-4 w-4" />
-          New course
-        </Button>
+        <div className="flex shrink-0 flex-wrap gap-2">
+          <Button href="/admin/courses/types" variant="outline">
+            <Tags className="h-4 w-4" />
+            Course types
+          </Button>
+          <Button href="/admin/courses/locations" variant="outline">
+            <MapPin className="h-4 w-4" />
+            Locations
+          </Button>
+          <Button href="/admin/courses/new">
+            <PlusCircle className="h-4 w-4" />
+            New course
+          </Button>
+        </div>
       </div>
 
       {toast ? (
@@ -64,7 +76,7 @@ export default async function AdminCoursesPage({
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge tone="gold">
-                    {COURSE_TYPE_META[course.course_type].shortLabel}
+                    {courseShortType(course)}
                   </Badge>
                   <CourseStatusBadge status={course.status} />
                 </div>
@@ -85,6 +97,13 @@ export default async function AdminCoursesPage({
                     {course.available_spaces}/{course.max_spaces} available
                   </span>
                 </div>
+                <Link
+                  href={`/admin/courses/${course.id}/participants`}
+                  className="mt-3 inline-flex items-center gap-1.5 border border-ink-950 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.05em] text-ink-950 transition-colors hover:bg-ink-950 hover:text-white"
+                >
+                  <Users className="h-3.5 w-3.5" />
+                  Participants ({bookedCounts[course.id] ?? 0})
+                </Link>
               </div>
 
               <div className="flex items-center justify-between gap-4 border-t border-ink-200 pt-4 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">

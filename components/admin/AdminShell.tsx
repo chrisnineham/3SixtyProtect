@@ -60,8 +60,8 @@ export function AdminShell({
             <span className="font-heading text-sm font-bold uppercase tracking-tight text-white">
               Owner portal
             </span>
-            <span className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-ink-500">
-              Courses · bookings · screening
+            <span className="mt-1.5 text-xs leading-snug text-ink-300">
+              Courses, bookings &amp; screening
             </span>
           </span>
         </Link>

@@ -28,5 +28,6 @@ export async function setBookingStatusAction(formData: FormData) {
   if (error) console.error('[admin] setBookingStatus failed:', error);
 
   revalidatePath('/admin/bookings');
+  revalidatePath(`/admin/bookings/${id}`);
   revalidatePath('/admin/dashboard');
 }
