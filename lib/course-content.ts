@@ -6,8 +6,10 @@ export interface CoursePageContent {
   heroImage?: string;
   hero: {
     eyebrow: string;
-    title: string;
-    highlight: string;
+    /** Headline split into the lines it holds from md up; see FixedLines. */
+    titleLines: string[];
+    /** Trailing lines shown in the muted accent colour. */
+    highlightLines: string[];
     description: string;
   };
   level: string;
@@ -31,8 +33,8 @@ export const DOOR_SUPERVISION_CONTENT: CoursePageContent = {
   durationLabel: 'Typically 6 days',
   hero: {
     eyebrow: 'SIA Door Supervision Training',
-    title: 'Become a qualified',
-    highlight: 'SIA Door Supervisor',
+    titleLines: ['Become a', 'qualified'],
+    highlightLines: ['SIA Door', 'Supervisor'],
     description:
       'The fastest, most accessible route into the private security industry. Get the licence-linked qualification you need to work the door at pubs, clubs, events and licensed venues.',
   },
@@ -142,8 +144,8 @@ export const CLOSE_PROTECTION_CONTENT: CoursePageContent = {
   durationLabel: 'Typically 18–21 days',
   hero: {
     eyebrow: 'SIA Close Protection Training',
-    title: 'Train for a career in',
-    highlight: 'Close Protection',
+    titleLines: ['Train for a', 'career in'],
+    highlightLines: ['Close', 'Protection'],
     description:
       'Our advanced Close Protection programme prepares you for one of the most respected and rewarding roles in private security, protecting people to the highest professional standard.',
   },

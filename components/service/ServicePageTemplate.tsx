@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Reveal } from '@/components/ui/Reveal';
+import { FixedLines } from '@/components/ui/FixedLines';
 import { SectionHeading } from '@/components/ui/Section';
 import { CheckList } from '@/components/ui/CheckList';
 import { CtaBand } from '@/components/CtaBand';
@@ -34,7 +35,7 @@ export function ServicePageTemplate({ service }: { service: Service }) {
               hasHeroImage ? 'min-h-[785px] md:min-h-[940px] lg:min-h-[995px]' : ''
             }`}
           >
-            <div className="max-w-4xl">
+            <div className="max-w-4xl xl:max-w-5xl">
               <Reveal>
                 <span
                   className={
@@ -49,11 +50,11 @@ export function ServicePageTemplate({ service }: { service: Service }) {
               </Reveal>
               <Reveal delay={60}>
                 <h1
-                  className={`mt-8 text-left font-heading font-bold uppercase tracking-tight text-display-lg-mobile leading-[0.95] md:text-display-2xl ${
+                  className={`mt-8 text-left font-heading font-bold uppercase tracking-tight text-display-lg-mobile leading-[0.95] md:text-display-lg md:leading-none md:tracking-[-0.03em] xl:text-display-2xl xl:leading-[0.92] xl:tracking-[-0.04em] ${
                     hasHeroImage ? 'text-white' : 'text-ink-900'
                   }`}
                 >
-                  {service.name}
+                  <FixedLines lines={service.nameLines ?? [service.name]} />
                 </h1>
               </Reveal>
               <Reveal delay={120}>

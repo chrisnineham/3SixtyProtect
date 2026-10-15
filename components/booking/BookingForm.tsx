@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Field, Input, Textarea, Select } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
+import { FixedLines } from '@/components/ui/FixedLines';
 import { Badge } from '@/components/ui/Badge';
 import { createBookingAction, type BookingFormState } from '@/app/(site)/book/actions';
 import { courseShortType, courseTypeLabel } from '@/lib/constants';
@@ -362,7 +363,7 @@ function BookingConfirmation({ state }: { state: BookingFormState }) {
             <CheckCircle2 className="h-9 w-9 text-white" />
           </div>
           <h1 className="mt-5 font-heading text-headline-md uppercase tracking-tight text-white md:text-display-lg">
-            Booking received
+            <FixedLines lines={['Booking', 'received']} />
           </h1>
           <p className="mt-3 text-lg leading-relaxed text-ink-200">
             Thank you{state.summary ? `, ${state.summary.name.split(' ')[0]}` : ''}.

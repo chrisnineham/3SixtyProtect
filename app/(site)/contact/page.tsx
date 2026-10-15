@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Mail, Phone, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { FixedLines } from '@/components/ui/FixedLines';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { Button } from '@/components/ui/Button';
 import { SITE } from '@/lib/constants';
@@ -46,7 +47,7 @@ export default function ContactPage() {
     <>
       <PageHeader
         eyebrow="Contact"
-        title="Get in touch"
+        title={<FixedLines lines={['Get in touch']} />}
         description="Have a question about a course, a date or your eligibility? We’re here to help you take the next step toward your SIA qualification."
         image="/images/CONTACTHERO.png"
         imageAlt="3Sixty Protect team"

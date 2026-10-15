@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CheckCircle2, Mail, CalendarClock, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { FixedLines } from '@/components/ui/FixedLines';
 import { getStripe } from '@/lib/stripe';
 import { confirmBookingPayment } from '@/lib/booking-payments';
 import { formatPrice } from '@/lib/utils';
@@ -59,7 +60,7 @@ export default async function BookingSuccessPage({
                   <CheckCircle2 className="h-9 w-9 text-white" />
                 </div>
                 <h1 className="mt-5 font-heading text-headline-md uppercase tracking-tight text-white md:text-display-lg">
-                  Payment received: you’re booked
+                  <FixedLines lines={['Payment', 'received:', 'you’re booked']} />
                 </h1>
                 <p className="mt-3 text-lg leading-relaxed text-ink-200">
                   Thank you. Your payment has been received and your place on
@@ -151,7 +152,7 @@ export default async function BookingSuccessPage({
               <AlertCircle className="h-7 w-7" />
             </div>
             <h1 className="mt-5 font-heading text-headline-md uppercase tracking-tight text-ink-900">
-              We couldn’t confirm your payment
+              <FixedLines lines={['We couldn’t confirm', 'your payment']} />
             </h1>
             <p className="mt-3 text-lg leading-relaxed text-ink-500">
               If you completed payment, it may still be processing; you’ll get an

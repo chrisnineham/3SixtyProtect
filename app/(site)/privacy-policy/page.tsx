@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { FixedLines } from '@/components/ui/FixedLines';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -97,7 +98,7 @@ export default function PrivacyPolicyPage() {
     <>
       <PageHeader
         eyebrow="Legal"
-        title="Privacy policy"
+        title={<FixedLines lines={['Privacy policy']} />}
         description="How 3Sixty Protect Ltd collects, uses, and protects your personal data, and the rights you have over it."
       />
 

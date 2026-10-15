@@ -24,6 +24,8 @@ export interface ServiceApproachStep {
 export interface Service {
   slug: string;
   name: string;
+  /** Hero headline split into the lines it holds from md up; see FixedLines. */
+  nameLines?: string[];
   category: string;
   tagline: string;
   heroBlurb: string;
@@ -137,6 +139,7 @@ export const SERVICES: Service[] = [
     image: "/images/4COL.png",
     heroImage: "/images/EPB1.png",
     name: "Executive Protection",
+    nameLines: ["Executive", "Protection"],
     category: "Close Protection",
     tagline: "Discreet, SIA-licensed protection for those who cannot afford to be exposed.",
     heroBlurb:
@@ -224,6 +227,7 @@ export const SERVICES: Service[] = [
     image: "/images/5COL.png",
     heroImage: "/images/SRMC1.png",
     name: "Security Risk Management Consultancy",
+    nameLines: ["Security Risk", "Management", "Consultancy"],
     category: "Consultancy",
     tagline: "See the threat before it moves.",
     heroBlurb:
@@ -311,6 +315,7 @@ export const SERVICES: Service[] = [
     image: "/images/2COL.png",
     heroImage: "/images/TACT1.png",
     name: "Technical Surveillance",
+    nameLines: ["Technical", "Surveillance"],
     category: "Surveillance",
     tagline: "See everything. Reveal nothing you don't intend to.",
     heroBlurb:
@@ -399,6 +404,7 @@ export const SERVICES: Service[] = [
     imageFocus: "center",
     heroImage: "/images/MSM1.png",
     name: "Manpower Supply & Management",
+    nameLines: ["Manpower", "Supply &", "Management"],
     category: "Guarding",
     tagline: "SIA-licensed officers, deployed and managed to standard.",
     heroBlurb:
@@ -483,6 +489,7 @@ export const SERVICES: Service[] = [
     slug: "private-investigations",
     image: "/images/3COL.png",
     name: "Private Investigations",
+    nameLines: ["Private", "Investigations"],
     category: "Investigations",
     tagline: "Discreet, lawful investigation. Evidence that stands up.",
     heroBlurb:

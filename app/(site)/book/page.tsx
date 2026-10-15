@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { CalendarX } from 'lucide-react';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { FixedLines } from '@/components/ui/FixedLines';
 import { BookingForm } from '@/components/booking/BookingForm';
 import { Button } from '@/components/ui/Button';
 import { getPublicCourses } from '@/lib/courses';
@@ -30,7 +31,7 @@ export default async function BookPage({
     <>
       <PageHeader
         eyebrow="Book Online"
-        title="Reserve your place"
+        title={<FixedLines lines={['Reserve your', 'place']} />}
         description="Choose your course date, enter your details and pay securely online. Your place is confirmed as soon as payment goes through."
         image="/images/BKG1.png"
         imageAlt="3Sixty Protect SIA training in progress"

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { FixedLines } from '@/components/ui/FixedLines';
 import { CalendarView } from '@/components/calendar/CalendarView';
 import { getPublicCourses } from '@/lib/courses';
 
@@ -25,7 +26,7 @@ export default async function CalendarPage({
     <>
       <PageHeader
         eyebrow="Training Calendar"
-        title="Upcoming SIA training courses"
+        title={<FixedLines lines={['Upcoming', 'SIA training', 'courses']} />}
         description="Browse our scheduled Door Supervision and Close Protection courses. Filter by course type, check availability and book your place in minutes."
         image="/images/DS3.png"
         imageAlt="SIA door supervision training in progress"

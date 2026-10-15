@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Reveal } from '@/components/ui/Reveal';
+import { FixedLines } from '@/components/ui/FixedLines';
 import { SectionHeading } from '@/components/ui/Section';
 import { CheckList } from '@/components/ui/CheckList';
 import { CourseCard } from '@/components/CourseCard';
@@ -62,7 +63,7 @@ export function CoursePageTemplate({
               hasHeroImage ? 'min-h-[785px] md:min-h-[940px] lg:min-h-[995px]' : ''
             }`}
           >
-            <div className="max-w-4xl">
+            <div className="max-w-4xl xl:max-w-5xl">
               <Reveal>
                 <span
                   className={
@@ -77,14 +78,20 @@ export function CoursePageTemplate({
               </Reveal>
               <Reveal delay={60}>
                 <h1
-                  className={`mt-8 text-left font-heading font-bold uppercase tracking-tight text-display-lg-mobile leading-[0.95] md:text-display-2xl ${
+                  className={`mt-8 text-left font-heading font-bold uppercase tracking-tight text-display-lg-mobile leading-[0.95] md:text-display-lg md:leading-none md:tracking-[-0.03em] xl:text-display-2xl xl:leading-[0.92] xl:tracking-[-0.04em] ${
                     hasHeroImage ? 'text-white' : 'text-ink-900'
                   }`}
                 >
-                  {content.hero.title}{' '}
-                  <span className={hasHeroImage ? 'text-white/60' : 'text-ink-500'}>
-                    {content.hero.highlight}
-                  </span>
+                  <FixedLines
+                    lines={[
+                      ...content.hero.titleLines,
+                      ...content.hero.highlightLines.map((line) => (
+                        <span key={line} className={hasHeroImage ? 'text-white/60' : 'text-ink-500'}>
+                          {line}
+                        </span>
+                      )),
+                    ]}
+                  />
                 </h1>
               </Reveal>
               <Reveal delay={120}>
