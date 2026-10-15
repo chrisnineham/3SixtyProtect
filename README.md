@@ -6,7 +6,7 @@ protection, security risk-management consultancy, technical surveillance, manpow
 private investigations. Built with Next.js, TypeScript, Tailwind CSS and Supabase, and deployed
 on Vercel.
 
-**Live:** <https://3-sixty-protect.vercel.app>
+**Live:** <https://3sixtyprotect.co.uk>
 
 > **Works out of the box.** The site ships with built-in demo data, so you can run it and click
 > through every page (including the admin portal in read-only "demo mode") before connecting a
@@ -138,6 +138,11 @@ Deployed on **Vercel**; every push to `main` auto-deploys.
    - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (or `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
    - `SUPABASE_SERVICE_ROLE_KEY` (or `SUPABASE_SECRET_KEY`)
    - `NEXT_PUBLIC_SITE_URL` — set to your production URL
+   - `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` and
+     `STRIPE_WEBHOOK_SECRET`: required to take booking payments
+   - `RESEND_API_KEY` and `EMAIL_FROM`: staff email alerts for new bookings and enquiries.
+     Without them the alerts are simply skipped; bookings and enquiries still go through
+   - `CONTACT_NOTIFICATION_EMAIL`: inbox that receives those alerts, comma-separated for several
 4. **Deploy.** Build command (`next build`) and output are auto-detected.
 5. Set `NEXT_PUBLIC_SITE_URL` to the live URL (or your custom domain) and **redeploy** so
    canonical / SEO links point at production.
