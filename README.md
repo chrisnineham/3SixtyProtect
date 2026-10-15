@@ -6,7 +6,7 @@ protection, security risk-management consultancy, technical surveillance, manpow
 private investigations. Built with Next.js, TypeScript, Tailwind CSS and Supabase, and deployed
 on Vercel.
 
-**Live:** <https://3sixtyprotect.co.uk>
+**Live:** <https://www.3sixtyprotect.com>
 
 > **Works out of the box.** The site ships with built-in demo data, so you can run it and click
 > through every page (including the admin portal in read-only "demo mode") before connecting a
