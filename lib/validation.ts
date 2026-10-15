@@ -4,8 +4,20 @@ export const bookingSchema = z.object({
   customer_name: z
     .string()
     .trim()
-    .min(2, 'Please enter your full name')
+    .min(2, 'Please enter your full legal name')
     .max(120),
+  date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Please enter your date of birth'),
+  address_line_1: z.string().trim().min(2, 'Please enter your address').max(200),
+  address_line_2: z.string().trim().max(200).optional().or(z.literal('')),
+  town: z.string().trim().min(2, 'Please enter your town or city').max(120),
+  postcode: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .regex(/^[A-Z0-9][A-Z0-9 ]{3,8}[A-Z0-9]$/, 'Please enter a valid postcode'),
+  emergency_contact_name: z.string().trim().max(120).optional().or(z.literal('')),
+  emergency_contact_phone: z.string().trim().max(40).optional().or(z.literal('')),
+  confirm: z.literal('on', { errorMap: () => ({ message: 'Please confirm your details and agree to continue' }) }),
   customer_email: z
     .string()
     .trim()
@@ -18,7 +30,6 @@ export const bookingSchema = z.object({
     .min(7, 'Please enter a valid phone number')
     .max(40),
   course_id: z.string().trim().min(1, 'Please select a course'),
-  preferred_date: z.string().trim().max(40).optional().or(z.literal('')),
   message: z.string().trim().max(1500).optional().or(z.literal('')),
 });
 

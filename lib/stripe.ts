@@ -1,7 +1,6 @@
 import 'server-only';
 
 import Stripe from 'stripe';
-import { DEPOSIT_PERCENT } from './payments';
 
 /**
  * Stripe is wired but OPTIONAL. Online card payment can be switched on later
@@ -28,15 +27,16 @@ export function isStripeEnabled(): boolean {
 }
 
 /**
- * Create a Stripe Checkout session for the booking DEPOSIT.
- * Charges `amount` (the deposit) now; the full `fee` and other context are
- * carried in metadata so the webhook / success page can reconcile the booking.
+ * Create a Stripe Checkout session for the FULL course fee.
+ * Booking context travels in metadata so the webhook and success page can
+ * reconcile the booking. Sessions expire after 30 minutes if not completed.
  */
 export async function createCheckoutSession(params: {
   courseTitle: string;
   courseId?: string;
-  fee: number; // full course fee (GBP)
-  amount: number; // amount charged now — the deposit (GBP)
+  courseDates: string;
+  location: string;
+  amount: number; // full course fee (GBP)
   bookingId: string;
   reference: string;
   successUrl: string;
@@ -49,6 +49,8 @@ export async function createCheckoutSession(params: {
   const session = await client.checkout.sessions.create({
     mode: 'payment',
     customer_email: params.customerEmail,
+    client_reference_id: params.reference,
+    expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     line_items: [
       {
         quantity: 1,
@@ -56,19 +58,23 @@ export async function createCheckoutSession(params: {
           currency: 'gbp',
           unit_amount: Math.round(params.amount * 100),
           product_data: {
-            name: `${params.courseTitle} — deposit`,
-            description: `${DEPOSIT_PERCENT}% deposit to reserve your place. Balance payable before the course start.`,
+            name: params.courseTitle,
+            description: `${params.courseDates}, ${params.location}. Booking ref ${params.reference}.`,
           },
         },
       },
     ],
+    payment_intent_data: {
+      description: `${params.courseTitle} (${params.reference})`,
+      metadata: { bookingId: params.bookingId, reference: params.reference },
+    },
     metadata: {
       bookingId: params.bookingId,
       reference: params.reference,
       courseTitle: params.courseTitle,
       courseId: params.courseId ?? '',
-      fee: String(params.fee),
-      deposit: String(params.amount),
+      fee: String(params.amount),
+      payment: 'full',
     },
     success_url: params.successUrl,
     cancel_url: params.cancelUrl,

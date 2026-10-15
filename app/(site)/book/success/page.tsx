@@ -3,8 +3,7 @@ import Link from 'next/link';
 import { CheckCircle2, Mail, CalendarClock, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { getStripe } from '@/lib/stripe';
-import { createAdminClient } from '@/lib/supabase/admin';
-import { isServiceRoleConfigured } from '@/lib/supabase/config';
+import { confirmBookingPayment } from '@/lib/booking-payments';
 import { formatPrice } from '@/lib/utils';
 
 export const metadata: Metadata = {
@@ -26,7 +25,7 @@ export default async function BookingSuccessPage({
   let reference = '';
   let courseTitle = '';
   let customerEmail = '';
-  let depositPaid = 0;
+  let amountPaid = 0;
   let balance = 0;
 
   if (stripe && sessionId) {
@@ -38,21 +37,12 @@ export default async function BookingSuccessPage({
       courseTitle = m.courseTitle ?? '';
       customerEmail =
         session.customer_details?.email ?? session.customer_email ?? '';
-      depositPaid = (session.amount_total ?? 0) / 100;
-      balance = Math.max(0, Number(m.fee ?? 0) - depositPaid);
+      amountPaid = (session.amount_total ?? 0) / 100;
+      balance = Math.max(0, Number(m.fee ?? 0) - amountPaid);
 
       // Safety net: reconcile the booking here too, in case the webhook
-      // isn't configured yet. Idempotent.
-      if (paid && m.bookingId && isServiceRoleConfigured()) {
-        const supabase = createAdminClient();
-        await supabase
-          .from('bookings')
-          .update({
-            payment_status: 'deposit_paid',
-            stripe_session_id: session.id,
-          })
-          .eq('id', m.bookingId);
-      }
+      // hasn't arrived yet. Idempotent.
+      if (paid) await confirmBookingPayment(session);
     } catch (err) {
       console.error('[book/success] retrieve session failed:', err);
     }
@@ -69,11 +59,11 @@ export default async function BookingSuccessPage({
                   <CheckCircle2 className="h-9 w-9 text-white" />
                 </div>
                 <h1 className="mt-5 font-heading text-headline-md uppercase tracking-tight text-white md:text-display-lg">
-                  Deposit paid — place reserved
+                  Payment received: you’re booked
                 </h1>
                 <p className="mt-3 text-lg leading-relaxed text-ink-200">
-                  Thank you. Your deposit has been received and your place is
-                  secured.
+                  Thank you. Your payment has been received and your place on
+                  the course is confirmed.
                 </p>
                 {reference ? (
                   <div className="mt-5 inline-flex items-center gap-2 border border-white/40 px-4 py-2 font-mono text-[12px] uppercase tracking-[0.05em]">
@@ -97,20 +87,22 @@ export default async function BookingSuccessPage({
                   ) : null}
                   <div className="flex justify-between gap-4">
                     <dt className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500">
-                      Deposit paid
+                      Amount paid
                     </dt>
                     <dd className="font-semibold text-ink-900">
-                      {formatPrice(depositPaid)}
+                      {formatPrice(amountPaid)}
                     </dd>
                   </div>
-                  <div className="flex justify-between gap-4">
-                    <dt className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500">
-                      Balance due before course
-                    </dt>
-                    <dd className="font-semibold text-ink-900">
-                      {formatPrice(balance)}
-                    </dd>
-                  </div>
+                  {balance > 0 ? (
+                    <div className="flex justify-between gap-4">
+                      <dt className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500">
+                        Balance due before course
+                      </dt>
+                      <dd className="font-semibold text-ink-900">
+                        {formatPrice(balance)}
+                      </dd>
+                    </div>
+                  ) : null}
                   {customerEmail ? (
                     <div className="flex justify-between gap-4">
                       <dt className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500">
@@ -126,8 +118,8 @@ export default async function BookingSuccessPage({
                 <div className="mt-6 flex items-start gap-3 border border-ink-950 p-4 text-sm text-ink-800">
                   <CalendarClock className="mt-0.5 h-5 w-5 shrink-0 text-ink-500" />
                   <p>
-                    Our team will email your joining instructions and arrange the
-                    remaining balance ({formatPrice(balance)}) before your course
+                    Stripe has emailed your payment receipt. Our team will send your
+                    joining instructions, including what to bring, before the course
                     start date.
                   </p>
                 </div>
@@ -162,7 +154,7 @@ export default async function BookingSuccessPage({
               We couldn’t confirm your payment
             </h1>
             <p className="mt-3 text-lg leading-relaxed text-ink-500">
-              If you completed payment, it may still be processing — you’ll get an
+              If you completed payment, it may still be processing; you’ll get an
               email shortly. If you didn’t, you can start your booking again.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">

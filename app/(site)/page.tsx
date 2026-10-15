@@ -53,8 +53,14 @@ export default async function HomePage() {
                 </span>
               </Reveal>
               <Reveal delay={60}>
-                <h1 className="mt-6 font-heading font-bold uppercase leading-[1.08] tracking-tight text-white text-display-lg-mobile md:text-display-lg">
-                  Full-spectrum security, protection &amp; training
+                <h1 className="mt-6 font-heading font-bold uppercase leading-[1.08] tracking-tight text-white text-display-lg-mobile md:text-display-lg md:leading-none md:tracking-[-0.03em]">
+                  {/* The line breaks are fixed from md up so the headline is always
+                      four lines on desktop and laptop, whatever the OS font metrics
+                      or the reader's default font size. Below md it wraps naturally. */}
+                  <span className="md:block">Full-spectrum</span>{' '}
+                  <span className="md:block">security,</span>{' '}
+                  <span className="md:block">protection &amp;</span>{' '}
+                  <span className="md:block">training</span>
                 </h1>
               </Reveal>
               <Reveal delay={120}>

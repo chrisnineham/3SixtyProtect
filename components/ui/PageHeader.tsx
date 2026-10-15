@@ -8,14 +8,17 @@ export function PageHeader({
   children,
   image,
   imageAlt = '',
+  compact = false,
 }: {
   eyebrow?: string;
-  title: string;
+  title: ReactNode;
   description?: string;
   children?: ReactNode;
   /** Optional full-bleed background image (path under /public). */
   image?: string;
   imageAlt?: string;
+  /** Shorter image hero for task pages (e.g. booking) where the form matters more. */
+  compact?: boolean;
 }) {
   const hasImage = Boolean(image);
 
@@ -38,7 +41,9 @@ export function PageHeader({
       <div
         className={`container relative z-10 ${
           hasImage
-            ? 'flex min-h-[785px] flex-col justify-center py-24 md:min-h-[940px] lg:min-h-[995px]'
+            ? compact
+              ? 'flex min-h-[420px] flex-col justify-center pb-12 pt-28 md:min-h-[480px] md:pt-32'
+              : 'flex min-h-[785px] flex-col justify-center py-24 md:min-h-[940px] lg:min-h-[995px]'
             : 'pb-12 pt-28 md:pb-16 md:pt-36'
         }`}
       >
@@ -55,7 +60,7 @@ export function PageHeader({
             </span>
           ) : null}
           <h1
-            className={`mt-5 font-heading font-bold uppercase tracking-tight text-display-lg-mobile md:text-display-lg ${
+            className={`mt-5 font-heading font-bold uppercase tracking-tight text-display-lg-mobile md:text-display-lg md:tracking-[-0.03em] ${
               hasImage ? 'text-white' : 'text-ink-900'
             }`}
           >

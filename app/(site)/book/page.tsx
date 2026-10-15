@@ -5,7 +5,6 @@ import { BookingForm } from '@/components/booking/BookingForm';
 import { Button } from '@/components/ui/Button';
 import { getPublicCourses } from '@/lib/courses';
 import { isStripeEnabled } from '@/lib/stripe';
-import { DEPOSIT_PERCENT } from '@/lib/payments';
 
 export const metadata: Metadata = {
   title: 'Book a Course Online',
@@ -17,14 +16,14 @@ export const metadata: Metadata = {
 export default async function BookPage({
   searchParams,
 }: {
-  searchParams: { course?: string };
+  searchParams: { course?: string; canceled?: string };
 }) {
   const courses = await getPublicCourses();
   const paymentEnabled = isStripeEnabled();
   const assurances = [
-    'Takes 2 minutes',
-    paymentEnabled ? `${DEPOSIT_PERCENT}% deposit secures your place` : 'No payment taken now',
-    'Team confirms by email',
+    'Takes 3 minutes',
+    paymentEnabled ? 'Secure card payment by Stripe' : 'No payment taken now',
+    paymentEnabled ? 'Place confirmed instantly' : 'Team confirms by email',
   ];
 
   return (
@@ -32,9 +31,10 @@ export default async function BookPage({
       <PageHeader
         eyebrow="Book Online"
         title="Reserve your place"
-        description="Select your course, tell us a little about yourself, and we’ll confirm your booking. It only takes a couple of minutes."
+        description="Choose your course date, enter your details and pay securely online. Your place is confirmed as soon as payment goes through."
         image="/images/BKG1.png"
         imageAlt="3Sixty Protect SIA training in progress"
+        compact
       >
         <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[12px] uppercase tracking-[0.05em] text-white/70">
           {assurances.map((label, i) => (
@@ -48,6 +48,11 @@ export default async function BookPage({
 
       <section className="section">
         <div className="container">
+          {searchParams.canceled ? (
+            <p className="mb-6 border border-ink-950 px-4 py-3 text-sm text-ink-800">
+              Payment was cancelled, so you haven’t been charged and your place isn’t booked yet. You can try again below.
+            </p>
+          ) : null}
           {courses.length > 0 ? (
             <BookingForm
               courses={courses}

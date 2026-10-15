@@ -19,6 +19,7 @@ import { BookingStatusControl } from '@/components/admin/BookingStatusControl';
 import { BookingStatusBadge } from '@/components/admin/StatusBadge';
 import { getBookingByIdAdmin } from '@/lib/bookings';
 import { courseShortType } from '@/lib/constants';
+import { PAYMENT_STATUS_META } from '@/lib/payments';
 import { withTypeLabels } from '@/lib/course-types';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { isServiceRoleConfigured } from '@/lib/supabase/config';
@@ -94,8 +95,18 @@ export default async function BookingDetailPage({ params }: { params: { id: stri
 
   const course = booking.course ? (await withTypeLabels([booking.course]))[0] : null;
   const screenings = await linkedScreenings(booking.id);
-  const deposit = booking.deposit_amount ?? null;
-  const balance = course && deposit !== null ? Math.max(0, course.price - deposit) : null;
+  const payment = PAYMENT_STATUS_META[booking.payment_status ?? 'unpaid'];
+  const paid = booking.amount_paid ?? (booking.payment_status === 'deposit_paid' ? booking.deposit_amount ?? null : null);
+  const balance = course ? Math.max(0, course.price - (paid ?? 0)) : null;
+  const address = [booking.address_line_1, booking.address_line_2, booking.town, booking.postcode].filter(Boolean);
+  const age = (() => {
+    if (!booking.date_of_birth) return null;
+    const d = new Date(`${booking.date_of_birth}T00:00:00Z`);
+    const now = new Date();
+    let a = now.getUTCFullYear() - d.getUTCFullYear();
+    if (now.getUTCMonth() < d.getUTCMonth() || (now.getUTCMonth() === d.getUTCMonth() && now.getUTCDate() < d.getUTCDate())) a -= 1;
+    return a;
+  })();
 
   return (
     <div className="space-y-6">
@@ -113,11 +124,7 @@ export default async function BookingDetailPage({ params }: { params: { id: stri
           <div className="flex flex-wrap items-center gap-2">
             <BookingStatusBadge status={booking.booking_status} />
             {course ? <Badge tone="gold">{courseShortType(course)}</Badge> : null}
-            {booking.payment_status === 'deposit_paid' ? (
-              <Badge tone="success">Deposit paid</Badge>
-            ) : deposit ? (
-              <Badge tone="warning">Deposit due</Badge>
-            ) : null}
+            <Badge tone={payment.tone}>{payment.label}</Badge>
           </div>
           <h1 className="mt-3 font-heading text-2xl font-bold uppercase tracking-tight text-ink-900">
             {booking.customer_name}
@@ -135,7 +142,17 @@ export default async function BookingDetailPage({ params }: { params: { id: stri
       <div className="grid gap-6 lg:grid-cols-2">
         <Panel title="Contact details" icon={User}>
           <dl className="divide-y divide-ink-200">
-            <Row label="Full name">{booking.customer_name}</Row>
+            <Row label="Full legal name">{booking.customer_name}</Row>
+            <Row label="Date of birth">
+              {booking.date_of_birth ? `${formatDate(booking.date_of_birth, { weekday: undefined })}${age !== null ? ` (age ${age})` : ''}` : '–'}
+            </Row>
+            <Row label="Home address">
+              {address.length ? (
+                <span className="whitespace-pre-line">{address.join('\n')}</span>
+              ) : (
+                '–'
+              )}
+            </Row>
             <Row label="Email">
               <a href={`mailto:${booking.customer_email}`} className="inline-flex items-center gap-1.5 underline-offset-4 hover:underline">
                 <Mail className="h-4 w-4 text-ink-500" />
@@ -147,6 +164,11 @@ export default async function BookingDetailPage({ params }: { params: { id: stri
                 <Phone className="h-4 w-4 text-ink-500" />
                 {booking.customer_phone}
               </a>
+            </Row>
+            <Row label="Emergency contact">
+              {booking.emergency_contact_name || booking.emergency_contact_phone
+                ? [booking.emergency_contact_name, booking.emergency_contact_phone].filter(Boolean).join(', ')
+                : '–'}
             </Row>
           </dl>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -200,11 +222,10 @@ export default async function BookingDetailPage({ params }: { params: { id: stri
         <Panel title="Payment" icon={CreditCard}>
           <dl className="divide-y divide-ink-200">
             <Row label="Course fee">{course ? formatPrice(course.price) : '–'}</Row>
-            <Row label="Deposit">
-              {deposit !== null ? formatPrice(deposit) : 'No deposit recorded'}
-              {deposit !== null ? (booking.payment_status === 'deposit_paid' ? ' (paid)' : ' (not yet paid)') : ''}
-            </Row>
-            <Row label="Balance due">{balance !== null ? formatPrice(balance) : '–'}</Row>
+            <Row label="Status">{payment.label}</Row>
+            <Row label="Amount paid">{paid !== null ? formatPrice(paid) : '–'}</Row>
+            {booking.paid_at ? <Row label="Paid on">{formatDateTime(booking.paid_at)}</Row> : null}
+            {balance !== null && balance > 0 && paid !== null ? <Row label="Balance due">{formatPrice(balance)}</Row> : null}
             {booking.stripe_session_id ? (
               <Row label="Stripe session">
                 <span className="font-mono text-xs text-ink-600">{booking.stripe_session_id}</span>

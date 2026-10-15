@@ -7,6 +7,8 @@ import {
   isSupabaseConfigured,
 } from '@/lib/supabase/config';
 import { enquirySchema, fieldErrors } from '@/lib/validation';
+import { ENQUIRY_TYPES } from '@/lib/constants';
+import { notifyNewEnquiry } from '@/lib/email';
 
 export interface EnquiryFormState {
   status: 'idle' | 'success' | 'error';
@@ -57,6 +59,14 @@ export async function createEnquiryAction(
     });
 
     if (error) throw error;
+
+    await notifyNewEnquiry({
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      typeLabel: ENQUIRY_TYPES.find((t) => t.value === values.enquiry_type)?.label ?? values.enquiry_type,
+      message: values.message,
+    });
 
     return { status: 'success', name: values.name };
   } catch (err) {

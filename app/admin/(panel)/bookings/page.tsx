@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/Badge';
 import { BookingStatusControl } from '@/components/admin/BookingStatusControl';
 import { getAllBookingsAdmin } from '@/lib/bookings';
 import { courseTypeShortLabel } from '@/lib/constants';
+import { PAYMENT_STATUS_META } from '@/lib/payments';
 import { getCourseTypes } from '@/lib/course-types';
 import { formatDate, formatPrice } from '@/lib/utils';
 
@@ -64,14 +65,10 @@ export default async function AdminBookingsPage() {
                         {courseTypeShortLabel(b.course.course_type, courseTypes)}
                       </Badge>
                     ) : null}
-                    {b.payment_status === 'deposit_paid' ? (
-                      <Badge tone="success">
-                        Deposit paid
-                        {b.deposit_amount ? ` · ${formatPrice(b.deposit_amount)}` : ''}
-                      </Badge>
-                    ) : b.deposit_amount ? (
-                      <Badge tone="warning">
-                        Deposit due · {formatPrice(b.deposit_amount)}
+                    {b.payment_status ? (
+                      <Badge tone={PAYMENT_STATUS_META[b.payment_status].tone}>
+                        {PAYMENT_STATUS_META[b.payment_status].label}
+                        {b.amount_paid ? ` · ${formatPrice(b.amount_paid)}` : ''}
                       </Badge>
                     ) : null}
                   </div>

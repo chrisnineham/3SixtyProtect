@@ -19,7 +19,16 @@ export default function ServicesPage() {
       {/* ───────────────────────── Hero ───────────────────────── */}
       <PageHeader
         eyebrow="Our Services"
-        title="Full-spectrum security, protection & training"
+        title={
+          <>
+            {/* Breaks fixed from md up so this hero matches the homepage and
+                holds the same height on every desktop and laptop. */}
+            <span className="md:block">Full-spectrum</span>{' '}
+            <span className="md:block">security,</span>{' '}
+            <span className="md:block">protection &amp;</span>{' '}
+            <span className="md:block">training</span>
+          </>
+        }
         description="From flagship SIA licence-linked training to executive protection, security risk consultancy, technical surveillance, manpower and discreet investigations, one accountable partner across every layer of your security."
         image="/images/LDN.png"
         imageAlt="London skyline at dusk"

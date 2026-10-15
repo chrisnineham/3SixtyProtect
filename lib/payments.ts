@@ -5,6 +5,16 @@
 // Shared by client (booking summary) and server (checkout).
 // ─────────────────────────────────────────────────────────────
 
+import type { PaymentStatus } from './types';
+
+/** How a booking's payment status is shown in the admin. */
+export const PAYMENT_STATUS_META: Record<PaymentStatus, { label: string; tone: 'neutral' | 'success' | 'warning' | 'danger' }> = {
+  paid: { label: 'Paid', tone: 'success' },
+  deposit_paid: { label: 'Deposit paid', tone: 'success' },
+  unpaid: { label: 'Awaiting payment', tone: 'warning' },
+  expired: { label: 'Payment not completed', tone: 'danger' },
+};
+
 /** Deposit taken at booking, as a percentage of the course fee. */
 export const DEPOSIT_PERCENT = 20;
 

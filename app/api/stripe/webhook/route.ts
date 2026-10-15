@@ -1,16 +1,16 @@
 import type Stripe from 'stripe';
 import { getStripe } from '@/lib/stripe';
-import { createAdminClient } from '@/lib/supabase/admin';
-import { isServiceRoleConfigured } from '@/lib/supabase/config';
+import { confirmBookingPayment, expireBookingPayment } from '@/lib/booking-payments';
 
 // Stripe signature verification needs the raw body + Node runtime.
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 /**
- * Stripe webhook — the authoritative confirmation of deposit payment.
- * On `checkout.session.completed` (paid), marks the linked booking as
- * deposit_paid. Idempotent: re-delivery just re-applies the same update.
+ * Stripe webhook: the authoritative confirmation of payment.
+ *  - checkout.session.completed → booking paid + confirmed, one space taken
+ *  - checkout.session.expired   → unpaid booking released
+ * Both handlers are idempotent, so Stripe re-deliveries are harmless.
  */
 export async function POST(req: Request) {
   const stripe = getStripe();
@@ -34,26 +34,16 @@ export async function POST(req: Request) {
     return new Response('Invalid signature', { status: 400 });
   }
 
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.Checkout.Session;
-    const bookingId = session.metadata?.bookingId;
-
-    if (session.payment_status === 'paid' && bookingId && isServiceRoleConfigured()) {
-      try {
-        const supabase = createAdminClient();
-        await supabase
-          .from('bookings')
-          .update({
-            payment_status: 'deposit_paid',
-            stripe_session_id: session.id,
-          })
-          .eq('id', bookingId);
-      } catch (err) {
-        console.error('[stripe] failed to mark booking paid:', err);
-        // Return 500 so Stripe retries delivery.
-        return new Response('Failed to update booking', { status: 500 });
-      }
+  try {
+    if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
+      await confirmBookingPayment(event.data.object as Stripe.Checkout.Session);
+    } else if (event.type === 'checkout.session.expired') {
+      await expireBookingPayment(event.data.object as Stripe.Checkout.Session);
     }
+  } catch (err) {
+    console.error('[stripe] failed to update booking:', err);
+    // 500 so Stripe retries delivery.
+    return new Response('Failed to update booking', { status: 500 });
   }
 
   return new Response('ok', { status: 200 });

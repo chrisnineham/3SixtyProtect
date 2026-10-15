@@ -23,7 +23,6 @@ import {
   formatPrice,
   formatTimeRange,
 } from '@/lib/utils';
-import { DEPOSIT_PERCENT, depositAmount, balanceAmount } from '@/lib/payments';
 import type { Course } from '@/lib/types';
 
 const initialState: BookingFormState = { status: 'idle' };
@@ -48,6 +47,7 @@ export function BookingForm({
   paymentEnabled?: boolean;
 }) {
   const [state, formAction] = useFormState(createBookingAction, initialState);
+  const today = new Date().toISOString().slice(0, 10);
 
   // When the action returns a Stripe Checkout URL, send the browser there.
   useEffect(() => {
@@ -138,75 +138,101 @@ export function BookingForm({
               <span>02 /</span>
               <span className="text-ink-900">Your details</span>
             </legend>
+            <p className="mt-2 text-sm text-ink-500">
+              Use your details exactly as they appear on your ID. They’re needed for your qualification and SIA licence application.
+            </p>
             <div className="mt-4 grid gap-5 sm:grid-cols-2">
               <Field
-                label="Full name"
+                label="Full legal name"
                 htmlFor="customer_name"
                 required
+                hint="As shown on your passport or driving licence."
                 error={state.errors?.customer_name}
                 className="sm:col-span-2"
               >
-                <Input
-                  id="customer_name"
-                  name="customer_name"
-                  autoComplete="name"
-                  placeholder="Jordan Taylor"
-                  required
-                />
+                <Input id="customer_name" name="customer_name" autoComplete="name" placeholder="Jordan Alex Taylor" required />
+              </Field>
+              <Field label="Date of birth" htmlFor="date_of_birth" required hint="You must be 18 or over by the course start date." error={state.errors?.date_of_birth}>
+                <Input id="date_of_birth" name="date_of_birth" type="date" autoComplete="bday" max={today} required />
+              </Field>
+              <Field label="Phone number" htmlFor="customer_phone" required error={state.errors?.customer_phone}>
+                <Input id="customer_phone" name="customer_phone" type="tel" autoComplete="tel" placeholder="07700 900000" required />
               </Field>
               <Field
                 label="Email address"
                 htmlFor="customer_email"
                 required
+                hint="Your receipt and joining instructions are sent here."
                 error={state.errors?.customer_email}
-              >
-                <Input
-                  id="customer_email"
-                  name="customer_email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="you@email.com"
-                  required
-                />
-              </Field>
-              <Field
-                label="Phone number"
-                htmlFor="customer_phone"
-                required
-                error={state.errors?.customer_phone}
-              >
-                <Input
-                  id="customer_phone"
-                  name="customer_phone"
-                  type="tel"
-                  autoComplete="tel"
-                  placeholder="07700 900000"
-                  required
-                />
-              </Field>
-              <Field
-                label="Preferred course date"
-                htmlFor="preferred_date"
-                hint="Optional: only if you’re flexible on dates."
-                error={state.errors?.preferred_date}
                 className="sm:col-span-2"
               >
-                <Input id="preferred_date" name="preferred_date" type="date" />
+                <Input id="customer_email" name="customer_email" type="email" autoComplete="email" placeholder="you@email.com" required />
+              </Field>
+            </div>
+          </fieldset>
+
+          <div className="my-7 hairline" />
+
+          {/* 3 — address */}
+          <fieldset>
+            <legend className="flex items-baseline gap-3 font-mono text-[12px] uppercase tracking-[0.1em] text-ink-400">
+              <span>03 /</span>
+              <span className="text-ink-900">Home address</span>
+            </legend>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2">
+              <Field label="Address line 1" htmlFor="address_line_1" required error={state.errors?.address_line_1} className="sm:col-span-2">
+                <Input id="address_line_1" name="address_line_1" autoComplete="address-line1" required />
+              </Field>
+              <Field label="Address line 2" htmlFor="address_line_2" error={state.errors?.address_line_2} className="sm:col-span-2">
+                <Input id="address_line_2" name="address_line_2" autoComplete="address-line2" />
+              </Field>
+              <Field label="Town or city" htmlFor="town" required error={state.errors?.town}>
+                <Input id="town" name="town" autoComplete="address-level2" required />
+              </Field>
+              <Field label="Postcode" htmlFor="postcode" required error={state.errors?.postcode}>
+                <Input id="postcode" name="postcode" autoComplete="postal-code" className="uppercase" required />
+              </Field>
+            </div>
+          </fieldset>
+
+          <div className="my-7 hairline" />
+
+          {/* 4 — extras */}
+          <fieldset>
+            <legend className="flex items-baseline gap-3 font-mono text-[12px] uppercase tracking-[0.1em] text-ink-400">
+              <span>04 /</span>
+              <span className="text-ink-900">Anything else</span>
+            </legend>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2">
+              <Field label="Emergency contact name" htmlFor="emergency_contact_name" hint="Optional." error={state.errors?.emergency_contact_name}>
+                <Input id="emergency_contact_name" name="emergency_contact_name" autoComplete="off" />
+              </Field>
+              <Field label="Emergency contact phone" htmlFor="emergency_contact_phone" hint="Optional." error={state.errors?.emergency_contact_phone}>
+                <Input id="emergency_contact_phone" name="emergency_contact_phone" type="tel" autoComplete="off" />
               </Field>
               <Field
                 label="Message or special requirements"
                 htmlFor="message"
-                hint="Optional: let us know anything we should be aware of."
+                hint="Optional: access needs, dietary requirements or questions."
                 error={state.errors?.message}
                 className="sm:col-span-2"
               >
-                <Textarea
-                  id="message"
-                  name="message"
-                  placeholder="Any questions, access requirements or notes…"
-                />
+                <Textarea id="message" name="message" placeholder="Anything we should know before the course…" />
               </Field>
             </div>
+
+            <label htmlFor="confirm" className="mt-6 flex items-start gap-3 text-sm text-ink-800">
+              <input id="confirm" name="confirm" type="checkbox" required className="mt-0.5 h-4 w-4 shrink-0 accent-ink-950" />
+              <span>
+                I confirm these details are correct and agree to them being used to arrange my training and qualification, as
+                described in the{' '}
+                <Link href="/privacy-policy" className="font-semibold underline underline-offset-4">
+                  Privacy Policy
+                </Link>
+                .
+              </span>
+            </label>
+            {state.errors?.confirm ? <p className="mt-1.5 text-sm text-error">{state.errors.confirm}</p> : null}
           </fieldset>
 
           {state.status === 'error' && state.message ? (
@@ -217,12 +243,18 @@ export function BookingForm({
 
           <div className="mt-7">
             <SubmitButton
-              label={paymentEnabled ? 'Continue to Secure Payment' : 'Confirm Booking'}
+              label={
+                paymentEnabled
+                  ? selected
+                    ? `Pay ${formatPrice(selected.price)} securely`
+                    : 'Continue to secure payment'
+                  : 'Confirm booking'
+              }
             />
             <p className="mt-3 flex items-center justify-center gap-1.5 text-center font-mono text-[12px] uppercase tracking-[0.05em] text-ink-400">
               <Lock className="h-3.5 w-3.5 shrink-0" />
               {paymentEnabled
-                ? `A ${DEPOSIT_PERCENT}% deposit secures your place. Balance due before the course.`
+                ? 'You’ll pay the full course fee on Stripe’s secure checkout page.'
                 : 'No payment is taken now. We’ll confirm your place by email.'}
             </p>
           </div>
@@ -271,24 +303,10 @@ export function BookingForm({
                       </span>
                     </div>
                     {paymentEnabled && (
-                      <>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-ink-600">
-                            Deposit due today ({DEPOSIT_PERCENT}%)
-                          </span>
-                          <span className="font-semibold text-ink-900">
-                            {formatPrice(depositAmount(selected.price))}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-ink-600">
-                            Balance before course
-                          </span>
-                          <span className="font-semibold text-ink-900">
-                            {formatPrice(balanceAmount(selected.price))}
-                          </span>
-                        </div>
-                      </>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-ink-600">Total due today</span>
+                        <span className="font-semibold text-ink-900">{formatPrice(selected.price)}</span>
+                      </div>
                     )}
                   </div>
                 </>
@@ -308,11 +326,18 @@ export function BookingForm({
               What happens next?
             </h3>
             <ol className="mt-4 space-y-3 text-sm text-ink-800">
-              {[
-                'We receive your booking instantly.',
-                'Our team confirms your place by email.',
-                'You’ll get joining details and what to bring.',
-              ].map((step, i) => (
+              {(paymentEnabled
+                ? [
+                    'Pay securely by card on Stripe’s checkout page.',
+                    'Your place is confirmed and a receipt is emailed to you.',
+                    'We send joining instructions and what to bring.',
+                  ]
+                : [
+                    'We receive your booking instantly.',
+                    'Our team confirms your place by email.',
+                    'You’ll get joining details and what to bring.',
+                  ]
+              ).map((step, i) => (
                 <li key={step} className="flex gap-3">
                   <span className="font-mono text-ink-400">
                     {String(i + 1).padStart(2, '0')}

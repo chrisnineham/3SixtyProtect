@@ -8,6 +8,7 @@ import {
   GraduationCap,
   ClipboardList,
   ExternalLink,
+  Inbox,
   LogOut,
   Menu,
   X,
@@ -24,6 +25,7 @@ const NAV: { label: string; href: string; icon: typeof LayoutDashboard; sub?: st
   { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { label: 'Courses', href: '/admin/courses', icon: GraduationCap },
   { label: 'Bookings', href: '/admin/bookings', icon: ClipboardList },
+  { label: 'Enquiries', href: '/admin/enquiries', icon: Inbox },
   { label: 'Vetting & Screening', href: '/admin/vetting', icon: ShieldCheck, sub: 'BS 7858 Screening' },
   { label: 'Users', href: '/admin/users', icon: Users },
 ];

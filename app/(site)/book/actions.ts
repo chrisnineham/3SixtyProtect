@@ -9,7 +9,8 @@ import {
 import { getCourseById } from '@/lib/courses';
 import { bookingSchema, fieldErrors } from '@/lib/validation';
 import { isStripeEnabled, createCheckoutSession } from '@/lib/stripe';
-import { depositAmount } from '@/lib/payments';
+import { notifyNewBooking } from '@/lib/email';
+import { formatDateRange } from '@/lib/utils';
 
 export interface BookingFormState {
   status: 'idle' | 'success' | 'error' | 'redirect';
@@ -46,9 +47,16 @@ export async function createBookingAction(
     customer_name: formData.get('customer_name'),
     customer_email: formData.get('customer_email'),
     customer_phone: formData.get('customer_phone'),
+    date_of_birth: formData.get('date_of_birth'),
+    address_line_1: formData.get('address_line_1'),
+    address_line_2: formData.get('address_line_2') ?? '',
+    town: formData.get('town'),
+    postcode: formData.get('postcode'),
+    emergency_contact_name: formData.get('emergency_contact_name') ?? '',
+    emergency_contact_phone: formData.get('emergency_contact_phone') ?? '',
+    confirm: formData.get('confirm') ?? '',
     course_id: formData.get('course_id'),
-    preferred_date: formData.get('preferred_date'),
-    message: formData.get('message'),
+    message: formData.get('message') ?? '',
   };
 
   const parsed = bookingSchema.safeParse(raw);
@@ -70,22 +78,50 @@ export async function createBookingAction(
     };
   }
 
-  // Fold the optional "preferred date" note into the stored message.
-  const noteParts: string[] = [];
-  if (values.preferred_date) {
-    noteParts.push(`Preferred date: ${values.preferred_date}`);
+  if (course.status === 'fully_booked' || course.available_spaces <= 0) {
+    return {
+      status: 'error',
+      message: 'Sorry, this course is now fully booked. Please choose another date.',
+      errors: { course_id: 'This date is fully booked' },
+    };
   }
-  if (values.message) noteParts.push(values.message);
-  const message = noteParts.join('\n') || null;
+
+  // SIA licences are only issued to people aged 18 or over.
+  const dob = new Date(`${values.date_of_birth}T00:00:00Z`);
+  const start = new Date(`${course.start_date}T00:00:00Z`);
+  const eighteenth = new Date(Date.UTC(dob.getUTCFullYear() + 18, dob.getUTCMonth(), dob.getUTCDate()));
+  if (Number.isNaN(dob.getTime()) || dob > new Date() || dob.getUTCFullYear() < 1900) {
+    return { status: 'error', message: 'Please check the highlighted fields and try again.', errors: { date_of_birth: 'Please enter a valid date of birth' } };
+  }
+  if (eighteenth > start) {
+    return {
+      status: 'error',
+      message: 'Please check the highlighted fields and try again.',
+      errors: { date_of_birth: 'You must be 18 or over by the course start date' },
+    };
+  }
+
+  const message = values.message || null;
 
   const ref = reference();
-  const deposit = depositAmount(course.price);
 
   const summary = {
     courseTitle: course.title,
     name: values.customer_name,
     email: values.customer_email,
   };
+
+  const notify = () =>
+    notifyNewBooking({
+      reference: ref,
+      name: values.customer_name,
+      email: values.customer_email,
+      phone: values.customer_phone,
+      courseTitle: course.title,
+      courseDate: formatDateRange(course.start_date, course.end_date),
+      location: course.location,
+      message,
+    });
 
   // No Supabase yet → simulate a successful booking so the flow is testable.
   if (!isSupabaseConfigured()) {
@@ -107,27 +143,51 @@ export async function createBookingAction(
       booking_status: 'new' as const,
       reference: ref,
       payment_status: 'unpaid' as const,
-      deposit_amount: deposit,
+    };
+    const detailsPayload = {
+      date_of_birth: values.date_of_birth,
+      address_line_1: values.address_line_1,
+      address_line_2: values.address_line_2 || null,
+      town: values.town,
+      postcode: values.postcode,
+      emergency_contact_name: values.emergency_contact_name || null,
+      emergency_contact_phone: values.emergency_contact_phone || null,
+      terms_accepted_at: new Date().toISOString(),
+    };
+    // Before supabase/booking-details.sql is run the new columns don't exist;
+    // keep the details by folding them into the message instead of failing.
+    const detailsAsText = [
+      `Date of birth: ${values.date_of_birth}`,
+      `Address: ${[values.address_line_1, values.address_line_2, values.town, values.postcode].filter(Boolean).join(', ')}`,
+      values.emergency_contact_name || values.emergency_contact_phone
+        ? `Emergency contact: ${[values.emergency_contact_name, values.emergency_contact_phone].filter(Boolean).join(', ')}`
+        : '',
+      message ?? '',
+    ]
+      .filter(Boolean)
+      .join('\n');
+    const insertBooking = async () => {
+      const full = await supabase.from('bookings').insert({ ...insertPayload, ...detailsPayload }).select('id').single();
+      if (full.error?.code !== 'PGRST204') return full;
+      return supabase.from('bookings').insert({ ...insertPayload, message: detailsAsText }).select('id').single();
     };
 
-    // Take a deposit only when Stripe is configured AND we can read the new
-    // booking id back (service role). Otherwise fall back to a no-payment
+    // Take payment only when Stripe is configured AND we can read the new
+    // booking id back (service role). Otherwise fall back to a request-only
     // booking so the site keeps working.
     const takePayment = isStripeEnabled() && trusted;
 
     if (takePayment) {
-      const { data: inserted, error } = await supabase
-        .from('bookings')
-        .insert(insertPayload)
-        .select('id')
-        .single();
+      const { data: inserted, error } = await insertBooking();
       if (error || !inserted) throw error ?? new Error('Booking insert returned no id');
+      await notify();
 
       const session = await createCheckoutSession({
         courseTitle: course.title,
         courseId: course.id,
-        fee: course.price,
-        amount: deposit,
+        courseDates: formatDateRange(course.start_date, course.end_date),
+        location: course.location,
+        amount: course.price,
         bookingId: inserted.id,
         reference: ref,
         customerEmail: values.customer_email,
@@ -135,23 +195,23 @@ export async function createBookingAction(
         cancelUrl: `${siteUrl()}/book?course=${course.id}&canceled=1`,
       });
 
-      // Runtime Stripe issue → the booking is stored; confirm without payment.
       if (!session) {
-        return { status: 'success', reference: ref, summary };
+        return {
+          status: 'error',
+          message: 'We couldn’t start the secure payment. Please try again, or call us to book.',
+        };
       }
 
-      // Best-effort: record the session id for reconciliation.
-      await supabase
-        .from('bookings')
-        .update({ stripe_session_id: session.id })
-        .eq('id', inserted.id);
+      // Record the session id for reconciliation.
+      await supabase.from('bookings').update({ stripe_session_id: session.id }).eq('id', inserted.id);
 
       return { status: 'redirect', url: session.url, reference: ref };
     }
 
-    // No-payment path.
-    const { error } = await supabase.from('bookings').insert(insertPayload);
+    // Request-only path (Stripe not configured).
+    const { error } = await insertBooking();
     if (error) throw error;
+    await notify();
 
     return { status: 'success', reference: ref, summary };
   } catch (err) {

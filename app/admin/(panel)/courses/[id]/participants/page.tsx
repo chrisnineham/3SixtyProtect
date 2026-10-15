@@ -7,6 +7,7 @@ import { PrintButton } from '@/components/admin/PrintButton';
 import { getAllBookingsAdmin } from '@/lib/bookings';
 import { getCourseById } from '@/lib/courses';
 import { courseShortType } from '@/lib/constants';
+import { PAYMENT_STATUS_META } from '@/lib/payments';
 import { formatDate, formatDateRange, formatTimeRange } from '@/lib/utils';
 import type { Booking } from '@/lib/types';
 
@@ -24,7 +25,7 @@ function ParticipantTable({ rows, muted = false }: { rows: Booking[]; muted?: bo
             <th className="px-3 py-3 font-medium">Email</th>
             <th className="px-3 py-3 font-medium">Telephone</th>
             <th className="px-3 py-3 font-medium">Booked</th>
-            <th className="px-3 py-3 font-medium">Deposit</th>
+            <th className="px-3 py-3 font-medium">Payment</th>
             <th className="px-3 py-3 font-medium">Status</th>
             <th className="px-5 py-3 font-medium print:hidden" />
           </tr>
@@ -52,7 +53,7 @@ function ParticipantTable({ rows, muted = false }: { rows: Booking[]; muted?: bo
               </td>
               <td className="whitespace-nowrap px-3 py-3">{formatDate(b.created_at.slice(0, 10), { weekday: undefined })}</td>
               <td className="whitespace-nowrap px-3 py-3">
-                {b.payment_status === 'deposit_paid' ? 'Paid' : b.deposit_amount ? 'Due' : '–'}
+                {b.payment_status ? PAYMENT_STATUS_META[b.payment_status].label : '–'}
               </td>
               <td className="px-3 py-3">
                 <BookingStatusBadge status={b.booking_status} />

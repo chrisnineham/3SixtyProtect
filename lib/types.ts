@@ -25,7 +25,8 @@ export type CourseStatus = 'draft' | 'published' | 'fully_booked' | 'cancelled';
 
 export type BookingStatus = 'new' | 'confirmed' | 'cancelled' | 'completed';
 
-export type PaymentStatus = 'unpaid' | 'deposit_paid';
+/** 'deposit_paid' only appears on bookings made before full online payment. */
+export type PaymentStatus = 'unpaid' | 'paid' | 'deposit_paid' | 'expired';
 
 export type EnquiryType =
   | 'door_supervision'
@@ -33,6 +34,17 @@ export type EnquiryType =
   | 'booking'
   | 'general'
   | 'other';
+
+export interface Enquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  enquiry_type: string;
+  message: string;
+  handled: boolean;
+  created_at: string;
+}
 
 export interface Course {
   id: string;
@@ -67,6 +79,16 @@ export interface Booking {
   booking_status: BookingStatus;
   reference?: string | null;
   payment_status?: PaymentStatus;
+  date_of_birth?: string | null;
+  address_line_1?: string | null;
+  address_line_2?: string | null;
+  town?: string | null;
+  postcode?: string | null;
+  emergency_contact_name?: string | null;
+  emergency_contact_phone?: string | null;
+  amount_paid?: number | null;
+  paid_at?: string | null;
+  terms_accepted_at?: string | null;
   deposit_amount?: number | null;
   stripe_session_id?: string | null;
   created_at: string;
