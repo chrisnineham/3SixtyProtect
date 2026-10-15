@@ -58,7 +58,7 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="grid gap-1 py-2.5 sm:grid-cols-[11rem_1fr] sm:gap-4">
       <dt className="font-mono text-[11px] uppercase tracking-[0.05em] text-ink-500">{label}</dt>
-      <dd className="break-words text-sm text-ink-900">{children}</dd>
+      <dd className="min-w-0 break-words text-sm text-ink-900">{children}</dd>
     </div>
   );
 }
@@ -228,7 +228,7 @@ export default async function BookingDetailPage({ params }: { params: { id: stri
             {balance !== null && balance > 0 && paid !== null ? <Row label="Balance due">{formatPrice(balance)}</Row> : null}
             {booking.stripe_session_id ? (
               <Row label="Stripe session">
-                <span className="font-mono text-xs text-ink-600">{booking.stripe_session_id}</span>
+                <span className="block break-all font-mono text-xs text-ink-600">{booking.stripe_session_id}</span>
               </Row>
             ) : null}
           </dl>
