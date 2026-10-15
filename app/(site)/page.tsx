@@ -111,11 +111,10 @@ export default async function HomePage() {
 
         {/* Trust band */}
         <div className="relative z-10 border-y border-ink-950 bg-background">
-          <div className="container grid grid-cols-2 divide-x divide-ink-200 md:grid-cols-4">
+          <div className="container grid grid-cols-1 divide-y divide-ink-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {[
               { value: 'Level 2 & 3', label: 'SIA qualifications' },
               { value: 'Small groups', label: 'Personal attention' },
-              { value: '6–15 days', label: 'Course durations' },
               { value: 'Licence-ready', label: 'On completion' },
             ].map((stat) => (
               <div key={stat.label} className="px-4 py-7 text-center md:px-6">
