@@ -13,7 +13,7 @@ export const SITE = {
   tagline: 'Private Security, Protection & Training',
   description:
     'A full-spectrum UK private security company: executive protection, risk consultancy, technical surveillance, manpower and investigations, plus accredited SIA training. Delivered to a professional standard.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://3sixtyprotect.co.uk',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.3sixtyprotect.com',
   email: 'info@3sixtyprotect.com',
   phone: '020 3989 7024',
   phoneHref: 'tel:+442039897024',

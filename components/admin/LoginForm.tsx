@@ -39,7 +39,7 @@ export function LoginForm() {
           name="email"
           type="email"
           autoComplete="username"
-          placeholder="owner@3sixtyprotect.co.uk"
+          placeholder="owner@3sixtyprotect.com"
           required
         />
       </Field>
