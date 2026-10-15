@@ -185,6 +185,13 @@ export default async function HomePage() {
               ]}
             />
           </div>
+
+          <div className="mt-8 flex justify-center md:mt-10">
+            <Button href="/calendar" variant="outline">
+              View all training courses
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </section>
 
