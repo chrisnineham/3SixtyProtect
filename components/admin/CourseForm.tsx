@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Save, AlertCircle } from 'lucide-react';
 import { Field, Input, Textarea, Select } from '@/components/ui/Field';
 import { RichTextEditor } from './RichTextEditor';
+import { CourseImageUpload } from './CourseImageUpload';
 import { Button } from '@/components/ui/Button';
 import { COURSE_STATUS_OPTIONS } from '@/lib/constants';
 import {
@@ -40,7 +41,7 @@ export function CourseForm({
   const [state, formAction] = useFormState(action, initialState);
 
   return (
-    <form action={formAction} className="space-y-8">
+    <form action={formAction} encType="multipart/form-data" className="space-y-8">
       {isEdit ? <input type="hidden" name="id" value={course!.id} /> : null}
 
       {state.status === 'error' && state.message ? (
@@ -226,17 +227,13 @@ export function CourseForm({
         </div>
         <div className="mt-5">
           <Field
-            label="Course image URL"
-            htmlFor="image_url"
-            hint="Optional: a public image URL (e.g. from Supabase storage)."
+            label="Course image"
+            hint="Optional: shown on course cards across the site."
             error={state.errors?.image_url}
           >
-            <Input
-              id="image_url"
-              name="image_url"
-              type="url"
-              defaultValue={course?.image_url ?? ''}
-              placeholder="https://…"
+            <CourseImageUpload
+              currentUrl={course?.image_url}
+              error={state.errors?.image_file}
             />
           </Field>
         </div>

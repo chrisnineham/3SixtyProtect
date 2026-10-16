@@ -13,6 +13,7 @@ import { canManage } from '@/lib/auth';
 import { fieldErrors } from '@/lib/validation';
 import { getCourseTypes } from '@/lib/course-types';
 import { sanitizeRichText } from '@/lib/rich-text';
+import { randomUUID } from 'crypto';
 
 export interface CourseFormState {
   status: 'idle' | 'error';
@@ -76,7 +77,7 @@ function parseForm(formData: FormData) {
   });
 }
 
-function toRow(values: z.infer<typeof courseSchema>) {
+function toRow(values: z.infer<typeof courseSchema>, imageUrl: string | null) {
   return {
     title: values.title,
     course_type: values.course_type,
@@ -89,9 +90,61 @@ function toRow(values: z.infer<typeof courseSchema>) {
     price: values.price,
     max_spaces: values.max_spaces,
     available_spaces: values.available_spaces,
-    image_url: values.image_url || null,
+    image_url: imageUrl,
     status: values.status,
   };
+}
+
+const IMAGE_BUCKET = 'course-images';
+const IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+const IMAGE_ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
+
+type ImageResult =
+  | { ok: true; url: string | null | undefined }
+  | { ok: false; message: string; field: string };
+
+/**
+ * Resolve the course image from the form. A newly chosen file is uploaded to
+ * the public course-images bucket and its public URL stored; otherwise the
+ * existing URL is kept, or cleared when the admin removed the image.
+ * `undefined` means "leave whatever is already on the row".
+ */
+async function resolveImage(formData: FormData): Promise<ImageResult> {
+  if (String(formData.get('image_remove') ?? '') === '1') {
+    return { ok: true, url: null };
+  }
+
+  const file = formData.get('image_file');
+  if (!(file instanceof File) || file.size === 0) {
+    // No new upload: keep the URL the form carried through.
+    const existing = String(formData.get('image_url') ?? '').trim();
+    return { ok: true, url: existing || null };
+  }
+
+  if (file.size > IMAGE_MAX_BYTES) {
+    return {
+      ok: false,
+      field: 'image_file',
+      message: `Images must be ${Math.round(IMAGE_MAX_BYTES / 1024 / 1024)} MB or smaller`,
+    };
+  }
+  if (!IMAGE_ALLOWED_MIME.includes(file.type)) {
+    return { ok: false, field: 'image_file', message: 'Upload a JPEG, PNG, WebP or AVIF image' };
+  }
+
+  const ext = (file.name.split('.').pop() ?? '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
+  const path = `${randomUUID()}${ext ? `.${ext}` : ''}`;
+  const client = db();
+  const { error } = await client.storage
+    .from(IMAGE_BUCKET)
+    .upload(path, await file.arrayBuffer(), { contentType: file.type, upsert: false });
+  if (error) {
+    console.error('[admin] course image upload failed:', error);
+    return { ok: false, field: 'image_file', message: 'The image could not be uploaded. Please try again.' };
+  }
+
+  const { data } = client.storage.from(IMAGE_BUCKET).getPublicUrl(path);
+  return { ok: true, url: data.publicUrl };
 }
 
 function db() {
@@ -144,7 +197,12 @@ export async function createCourseAction(
     };
   }
 
-  const { error } = await db().from('courses').insert(toRow(parsed.data));
+  const image = await resolveImage(formData);
+  if (!image.ok) {
+    return { status: 'error', message: image.message, errors: { [image.field]: image.message } };
+  }
+
+  const { error } = await db().from('courses').insert(toRow(parsed.data, image.url ?? null));
   if (error) {
     console.error('[admin] createCourse failed:', error);
     return { status: 'error', message: 'Could not save the course. Please try again.' };
@@ -183,7 +241,15 @@ export async function updateCourseAction(
     };
   }
 
-  const { error } = await db().from('courses').update(toRow(parsed.data)).eq('id', id);
+  const image = await resolveImage(formData);
+  if (!image.ok) {
+    return { status: 'error', message: image.message, errors: { [image.field]: image.message } };
+  }
+
+  const { error } = await db()
+    .from('courses')
+    .update(toRow(parsed.data, image.url ?? null))
+    .eq('id', id);
   if (error) {
     console.error('[admin] updateCourse failed:', error);
     return { status: 'error', message: 'Could not update the course. Please try again.' };
