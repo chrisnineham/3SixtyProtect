@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { SITE } from '@/lib/constants';
 import { DETAIL_SERVICES } from '@/lib/services';
+import { COURSE_OVERVIEWS } from '@/lib/course-overviews';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.url.replace(/\/$/, '');
@@ -14,6 +15,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/contact', priority: 0.6 },
     ...DETAIL_SERVICES.map((s) => ({
       path: '/services/' + s.slug,
+      priority: 0.8,
+    })),
+    ...COURSE_OVERVIEWS.map((c) => ({
+      path: '/courses/' + c.slug,
       priority: 0.8,
     })),
   ];

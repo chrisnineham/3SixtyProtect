@@ -30,15 +30,22 @@ export const SITE = {
   ],
 } as const;
 
+export interface NavLink {
+  label: string;
+  /** Omitted for `mega`, which opens the menu rather than navigating. */
+  href?: string;
+  /** Renders the Training Courses mega menu instead of a plain link. */
+  mega?: boolean;
+}
+
 /** Primary navigation shown in the header. */
-export const NAV_LINKS = [
+export const NAV_LINKS: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'Services', href: '/services' },
-  { label: 'Door Supervision', href: '/door-supervision' },
-  { label: 'Close Protection', href: '/close-protection' },
+  { label: 'Training Courses', mega: true },
   { label: 'Training Calendar', href: '/calendar' },
   { label: 'Contact', href: '/contact' },
-] as const;
+];
 
 export const COURSE_TYPE_META: Record<
   BuiltInCourseType,

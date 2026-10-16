@@ -13,8 +13,12 @@ const config: Config = {
         DEFAULT: '1.25rem', // 20px — mobile side margin
         md: '4rem', // 64px — desktop margin
       },
+      // Capped at 1152px (= max-w-6xl, the width the header uses) so page
+      // content lines up with the nav and keeps a visible margin on laptop
+      // screens instead of running edge to edge.
       screens: {
-        '2xl': '1440px',
+        xl: '1152px',
+        '2xl': '1152px',
       },
     },
     extend: {
@@ -77,7 +81,7 @@ const config: Config = {
       },
       fontSize: {
         // Monolith display/type scale (family + size applied together)
-        'display-2xl': ['7.5rem', { lineHeight: '6.875rem', letterSpacing: '-0.04em', fontWeight: '800' }], // 120/110
+        'display-2xl': ['6rem', { lineHeight: '5.5rem', letterSpacing: '-0.04em', fontWeight: '800' }], // 96/88
         'display-lg': ['4.5rem', { lineHeight: '4.5rem', letterSpacing: '-0.03em', fontWeight: '700' }], // 72/72
         'display-lg-mobile': ['3rem', { lineHeight: '3rem', letterSpacing: '-0.02em', fontWeight: '700' }], // 48/48
         'headline-md': ['2rem', { lineHeight: '2.5rem', letterSpacing: '-0.02em', fontWeight: '600' }], // 32/40

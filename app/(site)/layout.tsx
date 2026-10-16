@@ -1,5 +1,6 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { getCourseTypes } from '@/lib/course-types';
 import { SITE } from '@/lib/constants';
 import { SERVICES } from '@/lib/services';
 
@@ -61,11 +62,13 @@ const jsonLd = {
   },
 };
 
-export default function SiteLayout({
+export default async function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const courseTypes = await getCourseTypes();
+
   return (
     <div className="flex min-h-screen flex-col">
       <script
@@ -73,7 +76,7 @@ export default function SiteLayout({
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header />
+      <Header courseTypes={courseTypes} />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

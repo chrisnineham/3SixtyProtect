@@ -22,7 +22,15 @@ function SubmitButton() {
   );
 }
 
-export function ContactForm() {
+export function ContactForm({
+  defaultEnquiryType = 'general',
+  defaultMessage = '',
+}: {
+  /** Preselected when arriving from a course page via /contact?course=… */
+  defaultEnquiryType?: string;
+  /** Message the form opens with, naming the course they came from. */
+  defaultMessage?: string;
+} = {}) {
   const [state, formAction] = useFormState(createEnquiryAction, initialState);
 
   if (state.status === 'success') {
@@ -83,7 +91,7 @@ export function ContactForm() {
           required
           error={state.errors?.enquiry_type}
         >
-          <Select id="enquiry_type" name="enquiry_type" defaultValue="general" required>
+          <Select id="enquiry_type" name="enquiry_type" defaultValue={defaultEnquiryType} required>
             {ENQUIRY_TYPES.map((t) => (
               <option key={t.value} value={t.value}>
                 {t.label}
@@ -102,6 +110,7 @@ export function ContactForm() {
         <Textarea
           id="message"
           name="message"
+          defaultValue={defaultMessage}
           className="min-h-[5rem] flex-1"
           placeholder="How can we help? Let us know which course you’re interested in…"
           required

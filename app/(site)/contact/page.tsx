@@ -4,7 +4,11 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { FixedLines } from '@/components/ui/FixedLines';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { Button } from '@/components/ui/Button';
-import { SITE } from '@/lib/constants';
+import { SITE, ENQUIRY_TYPES } from '@/lib/constants';
+import { cn } from '@/lib/utils';
+import { courseKeyFromSlug } from '@/lib/course-nav';
+import { getCourseTypes } from '@/lib/course-types';
+import { courseTypeLabel } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -13,6 +17,17 @@ export const metadata: Metadata = {
   alternates: { canonical: '/contact' },
 };
 
+// Training centre map. The address string is resolved by Google rather than
+// hardcoded coordinates, so the pin can't drift from the real address, and the
+// classic `output=embed` form needs no API key.
+const CENTRE_QUERY = '10-16 Tiller Road, London E14 8PX';
+const CENTRE_MAP_EMBED = `https://maps.google.com/maps?q=${encodeURIComponent(
+  CENTRE_QUERY,
+)}&z=15&output=embed`;
+const CENTRE_DIRECTIONS = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+  CENTRE_QUERY,
+)}`;
+
 const contactCards = [
   {
     icon: Mail,
@@ -20,6 +35,9 @@ const contactCards = [
     value: SITE.email,
     href: `mailto:${SITE.email}`,
     detail: 'We aim to reply within one working day.',
+    // Long enough to break mid-domain if it were set in the uppercase
+    // heading style like the other values, so it keeps its own case.
+    valueClass: 'text-[15px] normal-case tracking-normal',
   },
   {
     icon: Phone,
@@ -42,7 +60,26 @@ const contactCards = [
   },
 ];
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: { course?: string };
+}) {
+  // Arriving from a course page (/contact?course=…) opens the form already
+  // naming that course, so the enquiry lands with the context attached.
+  const courseKey = courseKeyFromSlug(searchParams.course ?? '');
+  let defaultEnquiryType = 'general';
+  let defaultMessage = '';
+  if (courseKey) {
+    const label = courseTypeLabel(courseKey, await getCourseTypes());
+    defaultEnquiryType = ENQUIRY_TYPES.some((t) => t.value === courseKey)
+      ? courseKey
+      : 'booking';
+    defaultMessage = `I would like to enquire about the ${label} course.
+
+`;
+  }
+
   return (
     <>
       <PageHeader
@@ -119,7 +156,12 @@ export default function ContactPage() {
                     <p className="mt-5 font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500 group-hover:text-white/70">
                       {card.label}
                     </p>
-                    <p className="mt-2 font-heading text-lg uppercase tracking-tight text-ink-900 group-hover:text-white">
+                    <p
+                      className={cn(
+                        'mt-2 break-words font-heading text-lg uppercase tracking-tight text-ink-900 group-hover:text-white',
+                        card.valueClass,
+                      )}
+                    >
                       {card.value}
                     </p>
                     <p className="mt-2 text-sm leading-relaxed text-ink-500 group-hover:text-white/70">
@@ -131,14 +173,14 @@ export default function ContactPage() {
                   <a
                     key={card.label}
                     href={card.href}
-                    className="group bg-background p-6 transition-colors hover:bg-ink-950"
+                    className="group min-w-0 bg-background p-6 transition-colors hover:bg-ink-950"
                   >
                     {inner}
                   </a>
                 ) : (
                   <div
                     key={card.label}
-                    className="group bg-background p-6 transition-colors hover:bg-ink-950"
+                    className="group min-w-0 bg-background p-6 transition-colors hover:bg-ink-950"
                   >
                     {inner}
                   </div>
@@ -148,8 +190,11 @@ export default function ContactPage() {
           </div>
 
           {/* Form — same grid row as the boxes; stretches to match their height exactly */}
-          <div className="lg:col-span-7">
-            <ContactForm />
+          <div id="enquiry" className="scroll-mt-28 lg:col-span-7">
+            <ContactForm
+              defaultEnquiryType={defaultEnquiryType}
+              defaultMessage={defaultMessage}
+            />
           </div>
 
           {/* Addresses + book prompt — row below the boxes */}
@@ -187,6 +232,35 @@ export default function ContactPage() {
                 Book a Course
                 <ArrowRight className="h-4 w-4" />
               </Button>
+            </div>
+          </div>
+
+          {/* Training centre map — fills the row alongside the addresses */}
+          <div className="lg:col-span-7">
+            <div className="flex h-full flex-col border border-ink-950 bg-background">
+              <div className="flex items-center justify-between gap-4 border-b border-ink-950 px-6 py-4">
+                <div className="flex items-center gap-2.5">
+                  <MapPin className="h-4 w-4 shrink-0 text-ink-400" />
+                  <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-400">
+                    Training Centre
+                  </p>
+                </div>
+                <a
+                  href={CENTRE_DIRECTIONS}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-900 underline underline-offset-4 transition-colors hover:text-ink-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink-950"
+                >
+                  Get directions
+                </a>
+              </div>
+              <iframe
+                src={CENTRE_MAP_EMBED}
+                title="Map showing the 3Sixty Protect training centre, 10-16 Tiller Road, London E14 8PX"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="min-h-[260px] w-full flex-1 grayscale transition duration-500 hover:grayscale-0"
+              />
             </div>
           </div>
         </div>

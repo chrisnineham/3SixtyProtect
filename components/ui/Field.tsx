@@ -26,7 +26,7 @@ export function Label({
     <label
       htmlFor={htmlFor}
       className={cn(
-        'block mb-2 font-mono uppercase text-[12px] tracking-[0.05em] text-ink-500',
+        'block mb-3.5 font-mono uppercase text-[12px] tracking-[0.05em] text-ink-500',
         className,
       )}
     >
@@ -65,12 +65,12 @@ export function Field({
   className?: string;
 }) {
   return (
-    <div className={cn('space-y-1.5', className)}>
+    <div className={className}>
       <Label htmlFor={htmlFor} required={required}>
         {label}
       </Label>
       {children}
-      {hint && !error ? <p className="text-xs text-ink-500">{hint}</p> : null}
+      {hint && !error ? <p className="mt-1.5 text-xs text-ink-500">{hint}</p> : null}
       <FieldError>{error}</FieldError>
     </div>
   );

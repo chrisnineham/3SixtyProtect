@@ -421,7 +421,7 @@ export function CoursePageTemplate({
         primaryLabel="Book a Course"
         primaryHref="/book"
         secondaryLabel="Ask a Question"
-        secondaryHref="/contact"
+        secondaryHref={`/contact?course=${meta.slug}#enquiry`}
       />
     </>
   );
