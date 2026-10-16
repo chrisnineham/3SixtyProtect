@@ -12,6 +12,7 @@ import { createClient } from '@/lib/supabase/server';
 import { canManage } from '@/lib/auth';
 import { fieldErrors } from '@/lib/validation';
 import { getCourseTypes } from '@/lib/course-types';
+import { sanitizeRichText } from '@/lib/rich-text';
 
 export interface CourseFormState {
   status: 'idle' | 'error';
@@ -79,7 +80,7 @@ function toRow(values: z.infer<typeof courseSchema>) {
   return {
     title: values.title,
     course_type: values.course_type,
-    description: values.description || '',
+    description: sanitizeRichText(values.description || ''),
     start_date: values.start_date,
     end_date: values.end_date,
     start_time: values.start_time || null,

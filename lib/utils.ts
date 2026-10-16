@@ -78,3 +78,28 @@ export function absoluteUrl(path = ''): string {
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'http://localhost:3000';
   return `${base}${path.startsWith('/') ? path : `/${path}`}`;
 }
+
+/**
+ * Descriptions are HTML once edited in the admin rich text editor, but rows
+ * saved before it existed are still plain text. Both have to render.
+ */
+export function isRichText(value: string | null | undefined): boolean {
+  return Boolean(value && /<(p|ul|ol|li|strong|em|b|i|a|br)\b/i.test(value));
+}
+
+/** Rich text reduced to a single run of plain text, for clamped summaries. */
+export function richTextToPlain(value: string | null | undefined): string {
+  if (!value) return '';
+  if (!isRichText(value)) return value;
+  return value
+    .replace(/<li\b[^>]*>/gi, '• ')
+    .replace(/<\/(p|li|ul|ol)>/gi, ' ')
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+}

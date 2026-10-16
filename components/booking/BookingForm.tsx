@@ -17,6 +17,7 @@ import { Field, Input, Textarea, Select } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
 import { FixedLines } from '@/components/ui/FixedLines';
 import { Badge } from '@/components/ui/Badge';
+import { RichText } from '@/components/ui/RichText';
 import { createBookingAction, type BookingFormState } from '@/app/(site)/book/actions';
 import { courseShortType, courseTypeLabel } from '@/lib/constants';
 import {
@@ -294,6 +295,11 @@ export function BookingForm({
                       {selected.location}
                     </div>
                   </dl>
+                  {selected.description ? (
+                    <div className="mt-4 border-t border-ink-200 pt-4 text-sm text-ink-600">
+                      <RichText value={selected.description} />
+                    </div>
+                  ) : null}
                   <div className="mt-5 space-y-3 border-t border-ink-950 pt-4">
                     <div className="flex items-end justify-between">
                       <span className="font-mono text-[12px] uppercase tracking-[0.05em] text-ink-500">

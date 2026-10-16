@@ -4,6 +4,7 @@ import { useFormState, useFormStatus } from 'react-dom';
 import Link from 'next/link';
 import { Save, AlertCircle } from 'lucide-react';
 import { Field, Input, Textarea, Select } from '@/components/ui/Field';
+import { RichTextEditor } from './RichTextEditor';
 import { Button } from '@/components/ui/Button';
 import { COURSE_STATUS_OPTIONS } from '@/lib/constants';
 import {
@@ -120,10 +121,9 @@ export function CourseForm({
             error={state.errors?.description}
             className="sm:col-span-2"
           >
-            <Textarea
-              id="description"
+            <RichTextEditor
               name="description"
-              defaultValue={course?.description}
+              defaultValue={course?.description ?? ''}
               placeholder="A short summary shown on the website…"
             />
           </Field>

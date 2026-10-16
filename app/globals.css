@@ -51,6 +51,33 @@
 }
 
 @layer components {
+  /* Rich text: the admin editor body and the public rendering of what it
+     produces. Kept in one place so the two can't drift apart. */
+  .prose-admin,
+  .rich-text {
+    @apply leading-relaxed;
+  }
+  .prose-admin > * + *,
+  .rich-text > * + * {
+    @apply mt-3;
+  }
+  .prose-admin ul,
+  .rich-text ul {
+    @apply list-disc space-y-1 pl-5;
+  }
+  .prose-admin ol,
+  .rich-text ol {
+    @apply list-decimal space-y-1 pl-5;
+  }
+  .prose-admin strong,
+  .rich-text strong {
+    @apply font-semibold;
+  }
+  .prose-admin a,
+  .rich-text a {
+    @apply underline underline-offset-4;
+  }
+
   /* Section vertical rhythm — tighter on mobile, generous voids on desktop */
   .section {
     @apply py-14 md:py-32;

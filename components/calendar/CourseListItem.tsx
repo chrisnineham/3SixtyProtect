@@ -7,6 +7,7 @@ import {
   durationInDays,
   formatPrice,
   formatTimeRange,
+  richTextToPlain,
 } from '@/lib/utils';
 import type { Course } from '@/lib/types';
 
@@ -66,7 +67,7 @@ export function CourseListItem({ course }: { course: Course }) {
           </Link>
         </h3>
         <p className="mt-1 line-clamp-2 text-sm text-ink-500">
-          {course.description}
+          {richTextToPlain(course.description)}
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-600">
           <span className="flex items-center gap-1.5">
